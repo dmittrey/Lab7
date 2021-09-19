@@ -26,3 +26,4 @@ hs_err_pid*
 /Legacy/target/
 /Server/target/
 /Client/target/
+File.xml

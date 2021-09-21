@@ -1,4 +1,4 @@
-![hippo](https://media3.giphy.com/media/aUovxH8Vf9qDu/giphy.gif)
+![hippo](ezgif.com-gif-maker.gif)
 
 
 # Доработать программу из лабораторной работы №6 следующим образом:

@@ -33,7 +33,7 @@ public class CommandReader {
                 line = null;
             }
 
-            Request newCommand = readCommand(line);
+            Command newCommand = readCommand(line);
             if (newCommand != null) {
                 if (newCommand.getCommand().equals("exit") && newCommand.getArg() == null) {
                     console.print(TextFormatting.getGreenText("\tHave a nice day!\n"));
@@ -46,7 +46,7 @@ public class CommandReader {
         }
     }
 
-    public Request readCommand(String anInputString) {
+    public Command readCommand(String anInputString) {
 
         if (anInputString == null) return null;
 
@@ -70,6 +70,6 @@ public class CommandReader {
             if (arg.equals("")) arg = null;
         } else arg = null;
 
-        return new Request(command, arg);
+        return new Command(command, arg);
     }
 }

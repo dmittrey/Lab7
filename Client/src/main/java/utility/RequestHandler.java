@@ -25,6 +25,8 @@ public class RequestHandler {
     private RequestHandler() {
     }
 
+    public
+
     public String send(Request aRequest) {
         try {
             SocketWorker socketWorker = new SocketWorker(socketAddress);

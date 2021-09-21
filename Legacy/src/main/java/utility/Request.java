@@ -1,59 +1,31 @@
 package utility;
 
-import data.StudyGroup;
-
 import java.io.Serializable;
-import java.util.concurrent.RecursiveAction;
-import java.util.concurrent.RecursiveTask;
 
 /**
  * Class to serialize requests to server
  */
 public class Request implements Serializable {
 
-    private final String commandName;
-    private final String argName;
-    private StudyGroup studyGroup;
+    private final Command command;
+    private final Session session;
 
-    public Request(String aCommandName, String anArgName) {
+    public Request(Command aCommand, Session aSession) {
 
-        commandName = aCommandName;
-        argName = anArgName;
-        studyGroup = null;
+        command = aCommand;
+        session = aSession;
     }
 
-    public Request addStudyGroup(StudyGroup aStudyGroup) {
-        studyGroup = aStudyGroup;
-        return this;
+    public Command getCommand(){
+        return command;
     }
 
-    public String getCommand() {
-        return commandName;
-    }
-
-    public String getArg() {
-        return argName;
-    }
-
-    public StudyGroup getStudyGroup() {
-        return studyGroup;
+    public Session getSession(){
+        return session;
     }
 
     @Override
     public String toString() {
-        return commandName + " "
-                + (argName != null ? argName : "")
-                + (studyGroup != null ? studyGroup : "");
-    }
-
-    public boolean isArgInt() {
-        try {
-            if (argName != null) {
-                Integer.parseInt(argName);
-                return true;
-            } else return false;
-        } catch (NumberFormatException e) {
-            return false;
-        }
+        return command.toString() + " from user " + session.toString();
     }
 }

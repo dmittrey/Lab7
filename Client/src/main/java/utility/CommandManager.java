@@ -17,6 +17,7 @@ public class CommandManager {
     private final Console console;
     private final Set<String> usedScripts;
     private final StudyGroupFactory studyGroupFactory;
+    private final SessionWorker sessionWorker;
 
 
     public CommandManager(CommandReader aCommandReader) {
@@ -27,10 +28,14 @@ public class CommandManager {
         console = Console.getInstance();
         usedScripts = new HashSet<>();
         studyGroupFactory = new StudyGroupFactory();
+        sessionWorker = new SessionWorker(console);
     }
 
 
     public void transferCommand(Request aCommand) {
+
+        Session session = sessionWorker.getSession();
+        if (check)
 
         if (validator.notObjectArgumentCommands(aCommand))
             console.print(RequestHandler.getInstance().send(aCommand) + "\n");
@@ -42,6 +47,11 @@ public class CommandManager {
         } else {
             console.print(TextFormatting.getRedText("\tCommand entered incorrectly!\n"));
         }
+    }
+
+    private boolean checkSession(Session session){
+
+        RequestHandler.getInstance().send()
     }
 
     private void executeScript(String scriptName) {

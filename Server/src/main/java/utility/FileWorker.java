@@ -1,11 +1,13 @@
 package utility;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
-import java.util.logging.Logger;
 
 /**
  * FileWorker is used to operate with file
@@ -13,7 +15,7 @@ import java.util.logging.Logger;
 public class FileWorker {
     private final CollectionManager collectionManager;
     private final CollectionValidator collectionValidator;
-    final Logger logger = Logger.getLogger(FileWorker.class.getCanonicalName());
+    public static final Logger logger = LoggerFactory.getLogger("Server");
 
     public FileWorker(CollectionManager aCollectionManager) {
         collectionManager = aCollectionManager;

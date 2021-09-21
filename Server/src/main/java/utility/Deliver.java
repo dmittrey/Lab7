@@ -1,32 +1,40 @@
 package utility;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketAddress;
-import java.util.logging.Logger;
 
-public class Deliver {
+public class Deliver implements Runnable{
 
-    private final Invoker invoker;
-    private final AutoGenFieldsSetter fieldsSetter;
-    final Logger logger = Logger.getLogger(Deliver.class.getCanonicalName());
+    private final DatagramSocket datagramSocket;
+    private final Response answer;
+    private final SocketAddress socketAddress;
+    public static final Logger logger = LoggerFactory.getLogger("Server");
 
-    public Deliver(Invoker anInvoker, AutoGenFieldsSetter aFieldsSetter) {
-        invoker = anInvoker;
-        fieldsSetter = aFieldsSetter;
+    public Deliver(DatagramSocket aDatagramSocket, Response anAnswer, SocketAddress aSocketAddress) {
+        datagramSocket = aDatagramSocket;
+        answer = anAnswer;
+        socketAddress = aSocketAddress;
     }
 
-    public void answer(Request aCommand, DatagramSocket aDatagramSocket, SocketAddress aSocketAddress) throws IOException {
-        Response anAnswer = invoker.execute(fieldsSetter.setFields(aCommand));
+    @Override
+    public void run() {
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ObjectOutputStream outObj = new ObjectOutputStream(byteArrayOutputStream);
+            outObj.writeObject(answer);
 
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ObjectOutputStream outObj = new ObjectOutputStream(byteArrayOutputStream);
-        outObj.writeObject(anAnswer);
+            DatagramPacket packet = new DatagramPacket(byteArrayOutputStream.toByteArray(),
+                    byteArrayOutputStream.size(), socketAddress);
 
-        DatagramPacket packet = new DatagramPacket(byteArrayOutputStream.toByteArray(), byteArrayOutputStream.size(),
-                aSocketAddress);
-        aDatagramSocket.send(packet);
-        logger.info("Server send an answer!");
+            datagramSocket.send(packet);
+            logger.info("Server send an answer!");
+        } catch (IOException e) {
+            logger.info("Some troubles with sending answer!");
+        }
     }
 }

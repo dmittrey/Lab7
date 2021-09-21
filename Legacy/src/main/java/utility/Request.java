@@ -3,6 +3,8 @@ package utility;
 import data.StudyGroup;
 
 import java.io.Serializable;
+import java.util.concurrent.RecursiveAction;
+import java.util.concurrent.RecursiveTask;
 
 /**
  * Class to serialize requests to server

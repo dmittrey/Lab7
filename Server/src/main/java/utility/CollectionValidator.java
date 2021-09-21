@@ -4,6 +4,7 @@ import data.StudyGroup;
 import utility.Interfaces.ObjectValidator;
 
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Class to validate objects from xml file and add correct study groups in collection
@@ -16,7 +17,7 @@ public class CollectionValidator implements ObjectValidator {
         collectionManager = aCollectionManager;
     }
 
-    public String validateCollection(HashSet<StudyGroup> inputCollection) {
+    public String validateCollection(Set<StudyGroup> inputCollection) {
         inputCollection.stream().filter(this::validateObject).forEach(studyGroup -> collectionManager.add(studyGroup));
 
         return TextFormatting.getGreenText("\n\tCollection was loaded!\n\n");

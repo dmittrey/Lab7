@@ -5,6 +5,7 @@ import data.StudyGroup;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Class to work with collection
@@ -12,13 +13,13 @@ import java.util.*;
 @XmlRootElement(name = "studyGroups")
 public class CollectionManager {
 
-    private HashSet<StudyGroup> studyGroups;
+    private Set<StudyGroup> studyGroups;
     private final HashSet<Integer> usedId;
     private int highUsedId;
     private final String initTime;
 
     public CollectionManager() {
-        studyGroups = new HashSet<>();
+        studyGroups = Collections.newSetFromMap(new ConcurrentHashMap<>());
         initTime = new Date().toString();
         usedId = new HashSet<>();
         highUsedId = 0;
@@ -33,7 +34,7 @@ public class CollectionManager {
                 "Number of items in te collection" + "\t:\t" + studyGroups.size() + "\n\n";
     }
 
-    public HashSet<StudyGroup> getCollection() {
+    public Set<StudyGroup> getCollection() {
         return studyGroups;
     }
 

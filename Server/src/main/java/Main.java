@@ -1,21 +1,24 @@
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import utility.*;
 
+import java.io.IOException;
 import java.net.*;
 import java.util.Scanner;
-import java.util.logging.Logger;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static final Logger logger = LoggerFactory.getLogger("Server");
 
-        final Logger logger = Logger.getLogger(Main.class.getCanonicalName());
+    public static void main(String[] args) {
 
         logger.info("Entering server!");
 
-        try (Scanner scanner = new Scanner(System.in)) {
-
-            DatagramSocket datagramSocket = getDatagramSocket(scanner);
+        try (Scanner scanner = new Scanner(System.in);
+             DatagramSocket datagramSocket = getDatagramSocket(scanner)) {
 
             logger.info("Server listening port " + datagramSocket.getLocalPort() + "!");
 
@@ -24,29 +27,35 @@ public class Main {
             FileWorker fileWorker = new FileWorker(collectionManager);
             if (!fileWorker.getFromXmlFormat()) return;
 
-            AutoGenFieldsSetter fieldsSetter = new AutoGenFieldsSetter(collectionManager.getHighUsedId());
-
             Invoker invoker = new Invoker(collectionManager, fileWorker);
-
-            Deliver deliver = new Deliver(invoker, fieldsSetter);
-            Receiver receiver = new Receiver(deliver, datagramSocket);
+            AutoGenFieldsSetter fieldsSetter = new AutoGenFieldsSetter(collectionManager.getHighUsedId());
+            Executor deliverManager = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()/3);
 
             Runtime.getRuntime().addShutdownHook(new Thread(new ExitSaver(fileWorker)));
 
-            receiver.start();
+            while (true) {
+                byte[] buf = new byte[4096];
+                DatagramPacket packet = new DatagramPacket(buf, buf.length);
+                datagramSocket.receive(packet);
+                RequestReceiver requestReceiver = new RequestReceiver(datagramSocket, packet, invoker,
+                        fieldsSetter, deliverManager);
+                requestReceiver.start();
+            }
+        } catch (IOException e) {
+            logger.info("Some problem's with network!");
         }
     }
 
     private static int getPort(Scanner scanner) {
 
         String arg;
-        Pattern remoteHostPortPattern = Pattern.compile("^\\s*(\\d{1,5})\\s*");
+        Pattern remoteHostPortPattern = Pattern.compile("^\\s*\\b(\\d{1,5})\\b\\s*");
 
         do {
             System.out.print(TextFormatting.getGreenText("Please, enter remote host port(1-65535): "));
             arg = scanner.nextLine();
-        } while (!(remoteHostPortPattern.matcher(arg).find() && (Integer.parseInt(arg.trim()) < 65536)
-                && (Integer.parseInt(arg.trim()) > 0)));
+        } while (!remoteHostPortPattern.matcher(arg).find() || (Integer.parseInt(arg.trim()) >= 65536)
+                || (Integer.parseInt(arg.trim()) <= 0));
 
         return Integer.parseInt(arg.trim());
     }

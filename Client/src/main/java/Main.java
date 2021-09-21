@@ -61,13 +61,13 @@ public class Main {
     private static int getPort(Scanner scanner) {
 
         String arg;
-        Pattern remoteHostPortPattern = Pattern.compile("^\\s*(\\d{1,5})\\s*");
+        Pattern remoteHostPortPattern = Pattern.compile("^\\s*\\b(\\d{1,5})\\b\\s*");
 
         do {
-            System.out.print(TextFormatting.getGreenText("\nPlease, enter remote host port(1-65535): "));
+            System.out.print(TextFormatting.getGreenText("Please, enter remote host port(1-65535): "));
             arg = scanner.nextLine();
-        } while (!(remoteHostPortPattern.matcher(arg).find() && (Integer.parseInt(arg.trim()) < 65536)
-                && (Integer.parseInt(arg.trim()) > 0)));
+        } while (!remoteHostPortPattern.matcher(arg).find() || (Integer.parseInt(arg.trim()) >= 65536)
+                || (Integer.parseInt(arg.trim()) <= 0));
 
         return Integer.parseInt(arg.trim());
     }

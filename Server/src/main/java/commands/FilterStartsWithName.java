@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  */
 public class FilterStartsWithName extends CommandAbstract {
 
-    private final HashSet<StudyGroup> collection;
+    private final Set<StudyGroup> collection;
 
     public FilterStartsWithName(CollectionManager aCollectionManager) {
         super("filter_starts_with_name", "output elements whose name field value starts " +

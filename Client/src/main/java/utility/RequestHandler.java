@@ -1,6 +1,8 @@
 package utility;
 
 import data.StudyGroup;
+import utility.Interfaces.RequestHandlerInterface;
+import utility.Interfaces.SessionWorkerInterface;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,11 +12,12 @@ import java.net.InetSocketAddress;
 /**
  * Class to completing requests
  */
-public class RequestHandler {
+public class RequestHandler implements RequestHandlerInterface {
 
     private static RequestHandler instance;
     private InetSocketAddress socketAddress;
     private boolean socketStatus;
+    private final SessionWorkerInterface sessionWorker;
 
 
     public static RequestHandler getInstance() {
@@ -23,34 +26,39 @@ public class RequestHandler {
     }
 
     private RequestHandler() {
+        sessionWorker = new SessionWorker(Console.getInstance());
     }
 
-    public
-
-    public String send(Request aRequest) {
+    @Override
+    public String send(Command aCommand) {
         try {
+            Request request = new Request(aCommand, sessionWorker.getSession());
+
             SocketWorker socketWorker = new SocketWorker(socketAddress);
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(4096);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(8192);
             ObjectOutputStream outObj = new ObjectOutputStream(byteArrayOutputStream);
-            outObj.writeObject(aRequest);
+            outObj.writeObject(request);
             return socketWorker.sendRequest(byteArrayOutputStream.toByteArray());
         } catch (IOException e) {
             return TextFormatting.getRedText("\tRequest can't be serialized, call programmer!\n");
         }
     }
 
-    public String send(Request aRequest, StudyGroup studyGroup) {
+    @Override
+    public String send(Command aCommand, StudyGroup studyGroup) {
 
         if (studyGroup != null) {
-            aRequest.addStudyGroup(studyGroup);
-            return send(aRequest);
+            aCommand.addStudyGroup(studyGroup);
+            return send(aCommand);
         } else return TextFormatting.getRedText("\tStudy group isn't exist, try again!\n");
     }
 
+    @Override
     public void setRemoteHostSocketAddress(InetSocketAddress aSocketAddress) {
         socketAddress = aSocketAddress;
     }
 
+    @Override
     public String getInformation() {
 
         return TextFormatting.getGreenText("\n\t\t\t\t\u0020----------------") +
@@ -60,10 +68,12 @@ public class RequestHandler {
                 "Remote host port:\t" + TextFormatting.getGreenText(String.valueOf(socketAddress.getPort())) + "\n\n";
     }
 
+    @Override
     public void setSocketStatus(boolean aSocketStatus) {
         socketStatus = aSocketStatus;
     }
 
+    @Override
     public boolean getSocketStatus() {
         return socketStatus;
     }

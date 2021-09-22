@@ -1,5 +1,7 @@
 package utility;
 
+import utility.Interfaces.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,18 +11,16 @@ import java.util.Set;
 /**
  * The class that serves the command
  */
-public class CommandManager {
+public class CommandManager implements CommandManagerInterface {
 
-    private final CommandReader commandReader;
-    private final Validator validator;
-    private final RequestHandler requestHandler;
-    private final Console console;
+    private final CommandReaderInterface commandReader;
+    private final ValidatorInterface validator;
+    private final RequestHandlerInterface requestHandler;
+    private final ConsoleInterface console;
     private final Set<String> usedScripts;
-    private final StudyGroupFactory studyGroupFactory;
-    private final SessionWorker sessionWorker;
+    private final StudyGroupFactoryInterface studyGroupFactory;
 
-
-    public CommandManager(CommandReader aCommandReader) {
+    public CommandManager(CommandReaderInterface aCommandReader) {
 
         commandReader = aCommandReader;
         validator = Validator.getInstance();
@@ -28,30 +28,20 @@ public class CommandManager {
         console = Console.getInstance();
         usedScripts = new HashSet<>();
         studyGroupFactory = new StudyGroupFactory();
-        sessionWorker = new SessionWorker(console);
     }
 
-
-    public void transferCommand(Request aCommand) {
-
-        Session session = sessionWorker.getSession();
-        if (check)
+    @Override
+    public void transferCommand(Command aCommand) {
 
         if (validator.notObjectArgumentCommands(aCommand))
-            console.print(RequestHandler.getInstance().send(aCommand) + "\n");
+            console.print(requestHandler.send(aCommand) + "\n");
 
-        else if (validator.objectArgumentCommands(aCommand)) {
-            console.print(RequestHandler.getInstance().send(aCommand, studyGroupFactory.createStudyGroup()) + "\n");
-        } else if (validator.validateScriptArgumentCommand(aCommand)) {
-            executeScript(aCommand.getArg());
-        } else {
-            console.print(TextFormatting.getRedText("\tCommand entered incorrectly!\n"));
-        }
-    }
+        else if (validator.objectArgumentCommands(aCommand))
+            console.print(requestHandler.send(aCommand, studyGroupFactory.createStudyGroup()) + "\n");
 
-    private boolean checkSession(Session session){
+        else if (validator.validateScriptArgumentCommand(aCommand)) executeScript(aCommand.getArg());
 
-        RequestHandler.getInstance().send()
+        else console.print(TextFormatting.getRedText("\tCommand entered incorrectly!\n"));
     }
 
     private void executeScript(String scriptName) {
@@ -59,7 +49,6 @@ public class CommandManager {
         if (usedScripts.add(scriptName)) {
 
             try {
-
                 if (usedScripts.size() == 1) console.setExeStatus(true);
 
                 ScriptReader scriptReader = new ScriptReader(this, commandReader, new File(scriptName));
@@ -80,11 +69,8 @@ public class CommandManager {
                             TextFormatting.getRedText("\n\tThe system does not have permission to read the file!\n"));
                     else console.print("\n\tWe have some problem's with script!\n");
                 }
-
                 usedScripts.remove(scriptName);
-
                 if (usedScripts.size() == 0) console.setExeStatus(false);
-
             } catch (FileNotFoundException e) {
                 console.print("\n\tScript not found!\n");
             }

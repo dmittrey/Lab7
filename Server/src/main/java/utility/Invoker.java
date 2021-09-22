@@ -25,7 +25,7 @@ public class Invoker {
 
     public Response execute(Request newCommand) {
 
-        String aCommand = newCommand.getCommand();
+        String aCommand = newCommand.getCommand().getCommand();
 
         previousCommands.offerLast(aCommand);
         if (previousCommands.size() == 15) previousCommands.removeFirst();

@@ -26,7 +26,7 @@ public class AddIfMax extends CommandAbstract {
     @Override
     public Response execute(Request aCommand) {
 
-        StudyGroup studyGroup = aCommand.getStudyGroup();
+        StudyGroup studyGroup = aCommand.getCommand().getStudyGroup();
 
         if (collectionManager.getMax() != null && studyGroup.compareTo(collectionManager.getMax()) <= 0) {
             previousCommands.pollLast();

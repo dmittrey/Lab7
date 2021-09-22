@@ -26,8 +26,8 @@ public class UpdateId extends CommandAbstract {
     @Override
     public Response execute(Request aCommand) {
 
-        String anArg = aCommand.getArg();
-        StudyGroup upgradedGroup = aCommand.getStudyGroup();
+        String anArg = aCommand.getCommand().getArg();
+        StudyGroup upgradedGroup = aCommand.getCommand().getStudyGroup();
 
         Object studyGroup = collectionManager.getId(Integer.parseInt(anArg));
 

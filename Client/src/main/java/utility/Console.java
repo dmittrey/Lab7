@@ -1,5 +1,7 @@
 package utility;
 
+import utility.Interfaces.ConsoleInterface;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.NoSuchElementException;
@@ -8,7 +10,7 @@ import java.util.Scanner;
 /**
  * Class to works with user's input and console
  */
-public class Console {
+public class Console implements ConsoleInterface {
 
     private static Console instance;
     private Scanner scanner;
@@ -20,19 +22,23 @@ public class Console {
         return instance;
     }
 
+    @Override
     public void setScanner(Scanner aScanner) {
         exeStatus = false;
         scanner = aScanner;
     }
 
+    @Override
     public void print(Object anObj) {
         System.out.print(anObj);
     }
 
+    @Override
     public void print(Object anObj, boolean fieldsReading) {
         if (!exeStatus || !fieldsReading) print(anObj);
     }
 
+    @Override
     public String read() throws IOException {
 
         try {
@@ -43,14 +49,17 @@ public class Console {
         }
     }
 
+    @Override
     public boolean getExeStatus() {
         return exeStatus;
     }
 
+    @Override
     public void setBufferedReader(BufferedReader aBufferedReader) {
         bufferedReader = aBufferedReader;
     }
 
+    @Override
     public void setExeStatus(boolean anExeStatus) {
         exeStatus = anExeStatus;
     }

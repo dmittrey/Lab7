@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Class for storage and sort available commands
+ * Class for storage available commands
  */
 public class AvailableCommands {
 

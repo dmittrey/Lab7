@@ -21,7 +21,7 @@ public class Add extends CommandAbstract {
     @Override
     public Response execute(Request aCommand) {
 
-        StudyGroup studyGroup = aCommand.getStudyGroup();
+        StudyGroup studyGroup = aCommand.getCommand().getStudyGroup();
 
         collectionManager.add(studyGroup);
 

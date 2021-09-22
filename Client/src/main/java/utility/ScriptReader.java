@@ -1,17 +1,21 @@
 package utility;
 
+import utility.Interfaces.CommandManagerInterface;
+import utility.Interfaces.CommandReaderInterface;
+import utility.Interfaces.ScriptReaderInterface;
+
 import java.io.*;
 
 /**
  * Class for reading script
  */
-public class ScriptReader {
+public class ScriptReader implements ScriptReaderInterface {
 
     private final File file;
-    private final CommandManager commandManager;
-    private final CommandReader commandReader;
+    private final CommandManagerInterface commandManager;
+    private final CommandReaderInterface commandReader;
 
-    public ScriptReader(CommandManager aCommandManager, CommandReader aCommandReader, File aFile)
+    public ScriptReader(CommandManager aCommandManager, CommandReaderInterface aCommandReader, File aFile)
             throws FileNotFoundException {
 
         file = aFile;
@@ -30,7 +34,7 @@ public class ScriptReader {
 
                 Console.getInstance().setBufferedReader(bufferedReader);
 
-                Request newCommand = commandReader.readCommand(nextLine + " ");
+                Command newCommand = commandReader.readCommand(nextLine + " ");
                 commandManager.transferCommand(newCommand);
             } while (true);
         }

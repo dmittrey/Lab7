@@ -1,9 +1,6 @@
 package commands;
 
-import utility.CollectionManager;
-import utility.Request;
-import utility.Response;
-import utility.TextFormatting;
+import utility.*;
 
 /**
  * Class for count elements whose less than specified amount of students count
@@ -20,9 +17,9 @@ public class CountLessThanStudentsCount extends CommandAbstract {
     }
 
     @Override
-    public Response execute(Request aCommand) {
+    public Response execute(Request aRequest) {
 
-        String anArg = aCommand.getArg();
+        String anArg = aRequest.getCommand().getArg();
 
         if (collectionManager.getCollection().size() == 0)
             return new Response(TextFormatting.getRedText("\n\tCollection is empty!\n"));

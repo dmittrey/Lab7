@@ -1,5 +1,7 @@
 package utility;
 
+import utility.Interfaces.ResponseHandlerInterface;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InvalidClassException;
@@ -9,7 +11,7 @@ import java.nio.ByteBuffer;
 /**
  * Class to response processing
  */
-public class ResponseHandler {
+public class ResponseHandler implements ResponseHandlerInterface {
 
     private static ResponseHandler instance;
 
@@ -21,6 +23,7 @@ public class ResponseHandler {
         return instance;
     }
 
+    @Override
     public String receive(ByteBuffer buffer) {
         try {
             ObjectInputStream inObj = new ObjectInputStream(new ByteArrayInputStream(buffer.array()));
@@ -35,6 +38,7 @@ public class ResponseHandler {
         }
     }
 
+    @Override
     public String receive(String errorInformation) {
         return errorInformation;
     }

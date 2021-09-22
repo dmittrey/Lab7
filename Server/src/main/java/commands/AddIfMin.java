@@ -24,9 +24,9 @@ public class AddIfMin extends CommandAbstract {
     }
 
     @Override
-    public Response execute(Request aCommand) {
+    public Response execute(Request aRequest) {
 
-        StudyGroup studyGroup = aCommand.getStudyGroup();
+        StudyGroup studyGroup = aRequest.getCommand().getStudyGroup();
 
         if (collectionManager.getMin() != null && studyGroup.compareTo(collectionManager.getMin()) >= 0) {
             previousCommands.pollLast();

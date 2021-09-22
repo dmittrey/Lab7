@@ -6,7 +6,7 @@ import utility.Interfaces.FieldsReceiver;
 /**
  * Class for creating Study groups without id and Date
  */
-public class StudyGroupFactory {
+public class StudyGroupFactory implements utility.Interfaces.StudyGroupFactoryInterface {
 
     private final FieldsReceiver fieldsReceiver;
 
@@ -15,9 +15,7 @@ public class StudyGroupFactory {
         fieldsReceiver = new FieldsGetter(Console.getInstance());
     }
 
-    /**
-     * Method creates new Data.StudyGroup object
-     */
+    @Override
     public StudyGroup createStudyGroup() {
 
         String name = fieldsReceiver.getName();

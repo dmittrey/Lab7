@@ -1,5 +1,8 @@
 package utility;
 
+import utility.Interfaces.ResponseHandlerInterface;
+import utility.Interfaces.SocketWorkerInterface;
+
 import java.io.IOException;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
@@ -8,28 +11,27 @@ import java.nio.channels.DatagramChannel;
 /**
  * Class to work with client's socket
  */
-public class SocketWorker {
+public class SocketWorker implements SocketWorkerInterface {
 
-    private final SocketAddress socketAddress;
     private DatagramChannel datagramChannel;
-    private final ResponseHandler responseHandler;
+    private final ResponseHandlerInterface responseHandler;
 
     public SocketWorker(SocketAddress aSocketAddress) {
         responseHandler = ResponseHandler.getInstance();
-        socketAddress = aSocketAddress;
         try {
             datagramChannel = DatagramChannel.open();
             datagramChannel.configureBlocking(false);
-            datagramChannel.connect(socketAddress);
+            datagramChannel.connect(aSocketAddress);
         } catch (IOException e) {
             Console.getInstance().print("Some problem's with network!");
         }
     }
 
-    public String sendRequest(byte[] dataToSend) {
+    @Override
+    public String sendRequest(byte[] serializedRequest) {
 
         try {
-            ByteBuffer buf = ByteBuffer.wrap(dataToSend);
+            ByteBuffer buf = ByteBuffer.wrap(serializedRequest);
             do {
                 datagramChannel.write(buf);
             } while (buf.hasRemaining());
@@ -40,7 +42,7 @@ public class SocketWorker {
         }
     }
 
-    public String receiveAnswer() {
+    private String receiveAnswer() {
 
         long timeStart = System.currentTimeMillis();
         ByteBuffer buffer = ByteBuffer.allocate(4096);

@@ -25,7 +25,7 @@ public class FilterStartsWithName extends CommandAbstract {
 
     public Response execute(Request aCommand) {
 
-        String anArg = aCommand.getArg();
+        String anArg = aCommand.getCommand().getArg();
 
         if (collection.size() == 0) return new Response(TextFormatting.getRedText("\n\tCollection is empty!\n"));
 

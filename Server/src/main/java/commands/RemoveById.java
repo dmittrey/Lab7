@@ -25,7 +25,7 @@ public class RemoveById extends CommandAbstract {
     @Override
     public Response execute(Request aCommand) {
 
-        String anArg = aCommand.getArg();
+        String anArg = aCommand.getCommand().getArg();
         Integer anId = Integer.parseInt(anArg);
 
         if (!collectionManager.remove(collectionManager.getId(anId))) {

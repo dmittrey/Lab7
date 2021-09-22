@@ -1,5 +1,7 @@
 package utility;
 
+import data.StudyGroup;
+
 import java.util.Date;
 
 public class AutoGenFieldsSetter {
@@ -12,9 +14,11 @@ public class AutoGenFieldsSetter {
 
     public Request setFields(Request aCommand) {
 
-        if (aCommand.getStudyGroup() != null) {
-            aCommand.getStudyGroup().setId(++lastUsedId);
-            aCommand.getStudyGroup().setCreationDate(new Date());
+        StudyGroup studyGroup = aCommand.getCommand().getStudyGroup();
+
+        if (studyGroup != null) {
+            studyGroup.setId(++lastUsedId);
+            studyGroup.setCreationDate(new Date());
         }
 
         return aCommand;

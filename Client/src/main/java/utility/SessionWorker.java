@@ -1,55 +1,72 @@
 package utility;
 
+import utility.Interfaces.ConsoleInterface;
+import utility.Interfaces.SessionWorkerInterface;
+
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-public class SessionWorker {
+public class SessionWorker implements SessionWorkerInterface {
 
-    private final Console console;
+    private final ConsoleInterface console;
 
     public SessionWorker(Console aConsole) {
         console = aConsole;
     }
 
+    @Override
     public Session getSession() {
-
-        return new Session(getUserLogin(), getUserPassword());
+        console.print(TextFormatting.getBlueText("\nAuthorization(Registration): \n"));
+        return new Session(getUsername(), getUserPassword());
     }
 
-    private String getUserLogin() {
+    private String getUsername() {
 
-        String arg;
-        Pattern remoteHostPortPattern = Pattern.compile("^\\s*\\b(\\w+)\\b\\s*");
+        String username;
+        Pattern usernamePattern = Pattern.compile("^\\s*\\b(\\w+)\\b\\s*");
 
-        do {
-            console.print(TextFormatting.getGreenText("\nPlease, enter username! (Example: Lololoshka1337): "));
+        while (true) {
+            console.print(TextFormatting.getGreenText("\tPlease, enter username! (Example: Lololoshka1337): "));
             try {
-                arg = console.read();
+                username = console.read();
+                if (username != null && usernamePattern.matcher(username).find()) break;
             } catch (IOException e) {
-                arg = null;
+                username = null;
             }
-        } while (arg == null || !remoteHostPortPattern.matcher(arg).find() || (Integer.parseInt(arg.trim()) >= 65536)
-                || (Integer.parseInt(arg.trim()) <= 0));
+            console.print(TextFormatting.getRedText("\tUsername should be not empty string of letters and digits!\n"));
+        }
 
-        return arg.trim();
-
+        return username.trim();
     }
 
     private String getUserPassword() {
 
-        String arg;
-        Pattern remoteHostPortPattern = Pattern.compile("^\\s*\\b([\\d\\w]+)\\b\\s*");
+        if (System.console() == null) {
 
-        do {
-            console.print(TextFormatting.getGreenText("\nPlease, enter password! (Example: 232323): "));
-            try {
-                arg = console.read();
-            } catch (IOException e) {
-                arg = null;
+            String password;
+            Pattern passwordPattern = Pattern.compile("^\\s*\\b([\\d\\w]+)\\b\\s*");
+            while (true) {
+                console.print(TextFormatting.getGreenText("\tPlease, enter password! (Example: 232323): "));
+                try {
+                    password = console.read();
+                    if (password != null && passwordPattern.matcher(password).find()) break;
+                } catch (IOException e) {
+                    password = null;
+                }
+                console.print(TextFormatting.getRedText("\tPassword should be not empty string of letters and digits!\n"));
             }
-        } while (arg == null || !remoteHostPortPattern.matcher(arg).find() || (Integer.parseInt(arg.trim()) >= 65536)
-                || (Integer.parseInt(arg.trim()) <= 0));
+            return password.trim();
+        } else {
 
-        return arg.trim();
+            String password;
+            Pattern passwordPattern = Pattern.compile("^\\s*\\b([\\d\\w]+)\\b\\s*");
+
+            do {
+                console.print(TextFormatting.getGreenText("\tPlease, enter password! (Example: 232323): "));
+                password = new String(System.console().readPassword());
+                console.print(TextFormatting.getRedText("\tPassword should be not empty string of letters and digits!\n"));
+            } while (!passwordPattern.matcher(password).find());
+            return password.trim();
+        }
     }
 }

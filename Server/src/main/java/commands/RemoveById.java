@@ -1,38 +1,22 @@
 package commands;
 
-import utility.CollectionManager;
-
-import java.util.Deque;
-import utility.Request;
-import utility.Response;
-import utility.TextFormatting;
+import utility.*;
 
 /**
  * Class that remove object with current id from collection
  */
 public class RemoveById extends CommandAbstract {
 
-    private final CollectionManager collectionManager;
-    private final Deque<String> previousCommands;
+    private final Receiver receiver;
 
-    public RemoveById(CollectionManager aCollectionManager, Deque<String> aPreviousCommands) {
+    public RemoveById(Receiver aReceiver) {
         super("remove_by_id", "remove an element from the collection by ID." +
                 TextFormatting.getBlueText("\n\tYou should to enter ID after entering a command"));
-        collectionManager = aCollectionManager;
-        previousCommands = aPreviousCommands;
+        receiver = aReceiver;
     }
 
     @Override
     public Response execute(Request aCommand) {
-
-        String anArg = aCommand.getCommand().getArg();
-        Integer anId = Integer.parseInt(anArg);
-
-        if (!collectionManager.remove(collectionManager.getId(anId))) {
-            previousCommands.pollLast();
-            return new Response(TextFormatting.getRedText("\n\tAn object with this id does not exist!\n"));
-        }
-
-        return new Response(TextFormatting.getGreenText("\n\tObject has been removed!\n"));
+        return receiver.removeById(aCommand);
     }
 }

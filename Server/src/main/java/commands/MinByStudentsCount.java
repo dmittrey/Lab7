@@ -1,29 +1,22 @@
 package commands;
 
-import utility.CollectionManager;
-import utility.Request;
-import utility.Response;
-import utility.TextFormatting;
+import utility.*;
 
 /**
  * Class print object form collection
  */
 public class MinByStudentsCount extends CommandAbstract {
 
-    private final CollectionManager collectionManager;
+    private final Receiver receiver;
 
-    public MinByStudentsCount(CollectionManager aCollectionManager) {
+    public MinByStudentsCount(Receiver aReceiver) {
         super("min_by_students_count", "print any object from the collection whose " +
                 "studentsCount field value is minimal");
-        collectionManager = aCollectionManager;
+        receiver = aReceiver;
     }
 
     @Override
     public Response execute(Request aCommand) {
-
-        if (collectionManager.getMinStudentsCount() != null)
-            return new Response(collectionManager.getMinStudentsCount());
-        else
-            return new Response(TextFormatting.getRedText("\n\tThere are no study groups in the collection yet!\n"));
+        return receiver.minByStudentsCount();
     }
 }

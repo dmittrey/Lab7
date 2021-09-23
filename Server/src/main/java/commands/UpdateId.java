@@ -1,45 +1,22 @@
 package commands;
 
-import data.StudyGroup;
-import utility.CollectionManager;
-import utility.Request;
-import utility.Response;
-import utility.TextFormatting;
-
-import java.util.Deque;
+import utility.*;
 
 /**
  * Class to update study groups in collection by id
  */
 public class UpdateId extends CommandAbstract {
 
-    private final CollectionManager collectionManager;
-    private final Deque<String> previousCommands;
+    private final Receiver receiver;
 
-    public UpdateId(CollectionManager aCollectionManager, Deque<String> aPreviousCommands) {
+    public UpdateId(Receiver aReceiver) {
         super("update", "update the element`s value, whose ID is equal to the given. " +
                 TextFormatting.getBlueText("\n\tYou should to enter ID after entering a command"));
-        collectionManager = aCollectionManager;
-        previousCommands = aPreviousCommands;
+        receiver = aReceiver;
     }
 
     @Override
     public Response execute(Request aCommand) {
-
-        String anArg = aCommand.getCommand().getArg();
-        StudyGroup upgradedGroup = aCommand.getCommand().getStudyGroup();
-
-        Object studyGroup = collectionManager.getId(Integer.parseInt(anArg));
-
-        if (studyGroup != null) collectionManager.remove((StudyGroup) studyGroup);
-        else {
-            previousCommands.pollLast();
-            return new Response(TextFormatting.getRedText("\n\tAn object with this id does not exist!\n"));
-        }
-
-        upgradedGroup.setId(Integer.parseInt(anArg));
-        collectionManager.add(upgradedGroup);
-
-        return new Response(TextFormatting.getGreenText("\n\tObject has been updated!\n"));
+        return receiver.updateId(aCommand);
     }
 }

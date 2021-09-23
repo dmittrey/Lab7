@@ -17,11 +17,11 @@ public class RequestReceiver extends Thread {
     private final RequestHandler requestHandler;
     public static final Logger logger = LoggerFactory.getLogger("Server");
 
-    public RequestReceiver(DatagramSocket aDatagramSocket, DatagramPacket aDatagramPacket, Invoker anInvoker,
-                           AutoGenFieldsSetter aFieldsSetter, Executor aDeliverManager) {
+    public RequestReceiver(DatagramSocket aDatagramSocket, DatagramPacket aDatagramPacket,
+                           Invoker anInvoker, Executor aDeliverManager) {
 
         datagramSocket = aDatagramSocket;
-        requestHandler = new RequestHandler(anInvoker, aFieldsSetter, aDeliverManager);
+        requestHandler = new RequestHandler(anInvoker, aDeliverManager);
         datagramPacket = aDatagramPacket;
     }
 

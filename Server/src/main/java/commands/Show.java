@@ -1,28 +1,21 @@
 package commands;
 
-import utility.CollectionManager;
-import utility.Request;
-import utility.Response;
-import utility.TextFormatting;
+import utility.*;
 
 /**
  * Class to print all elements from collection in stdout
  */
 public class Show extends CommandAbstract {
 
-    private final CollectionManager collectionManager;
+    private final Receiver receiver;
 
-    public Show(CollectionManager aCollectionManager) {
+    public Show(Receiver aReceiver) {
         super("show", "print all elements in string representation to standard output");
-        collectionManager = aCollectionManager;
+        receiver = aReceiver;
     }
 
     @Override
     public Response execute(Request aCommand) {
-
-        if (collectionManager.getCollection().size() == 0)
-            return new Response(TextFormatting.getRedText("\n\tCollection is empty!\n"));
-
-        return new Response(collectionManager.getCollection());
+        return receiver.show();
     }
 }

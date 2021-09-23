@@ -1,34 +1,23 @@
 package commands;
 
-import java.util.Map;
+import utility.Receiver;
 import utility.Request;
 import utility.Response;
-import utility.TextFormatting;
 
 /**
  * Class for displaying all commands with explanations
  */
 public class Help extends CommandAbstract {
 
-    private final Map<String, CommandAbstract> commandsInfo;
+    private final Receiver receiver;
 
-    public Help(Map<String, CommandAbstract> aCommands) {
+    public Help(Receiver aReceiver) {
         super("help", "display help for available commands");
-        commandsInfo = aCommands;
+        receiver = aReceiver;
     }
 
     @Override
     public Response execute(Request aCommand) {
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(TextFormatting.getBlueText("\nList of commands:\n\n"));
-
-        commandsInfo.keySet().stream().filter(command -> !command.equals("save")).
-                map(command -> "\t" + commandsInfo.get(command).getDescription() + "\n\n").
-                forEach(sb::append);
-
-        sb.append("\t").append("exit : end the program (without saving it to a file)").append("\n\n");
-
-        return new Response(sb.toString());
+        return receiver.help();
     }
 }

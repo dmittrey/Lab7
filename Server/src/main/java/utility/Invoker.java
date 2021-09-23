@@ -1,26 +1,25 @@
 package utility;
 
+import Database.DBWorker;
 import commands.*;
 
 import java.util.*;
 
 /**
- * Proxy class to redirect commands and write the executed commands to the queue
+ * Invoker class from pattern Command to logging commands from client
  */
 public class Invoker {
 
-    private final CollectionManager collectionManager;
     private final Map<String, CommandAbstract> commands;
     private final Deque<String> previousCommands;
-    private final FileWorker fileWorker;
+    private final Receiver receiver;
 
-    public Invoker(CollectionManager aCollectionManager, FileWorker aFileWorker) {
+    public Invoker(CollectionManager aCollectionManager, DBWorker aDBWorker) {
 
-        collectionManager = aCollectionManager;
-        commands = new HashMap<>();
         previousCommands = new ArrayDeque<>(14);
-        fileWorker = aFileWorker;
+        commands = new HashMap<>();
         initMap();
+        receiver = new Receiver(aCollectionManager, aDBWorker, commands, previousCommands);
     }
 
     public Response execute(Request newCommand) {
@@ -34,20 +33,19 @@ public class Invoker {
     }
 
     private void initMap() {
-        commands.put("help", new Help(commands));
-        commands.put("info", new Info(collectionManager));
-        commands.put("show", new Show(collectionManager));
-        commands.put("add", new Add(collectionManager));
-        commands.put("update", new UpdateId(collectionManager, previousCommands));
-        commands.put("remove_by_id", new RemoveById(collectionManager, previousCommands));
-        commands.put("clear", new Clear(collectionManager));
-        commands.put("save", new Save(fileWorker));
-        commands.put("execute_script", new ExecuteScript());
-        commands.put("add_if_max", new AddIfMax(collectionManager, previousCommands));
-        commands.put("add_if_min", new AddIfMin(collectionManager, previousCommands));
-        commands.put("history", new History(previousCommands));
-        commands.put("min_by_students_count", new MinByStudentsCount(collectionManager));
-        commands.put("count_less_than_students_count", new CountLessThanStudentsCount(collectionManager));
-        commands.put("filter_starts_with_name", new FilterStartsWithName(collectionManager));
+        commands.put("help", new Help(receiver));
+        commands.put("info", new Info(receiver));
+        commands.put("show", new Show(receiver));
+        commands.put("add", new Add(receiver));
+        commands.put("update", new UpdateId(receiver));
+        commands.put("remove_by_id", new RemoveById(receiver));
+        commands.put("clear", new Clear(receiver));
+        commands.put("save", new Save(receiver));
+        commands.put("add_if_max", new AddIfMax(receiver));
+        commands.put("add_if_min", new AddIfMin(receiver));
+        commands.put("history", new History(receiver));
+        commands.put("min_by_students_count", new MinByStudentsCount(receiver));
+        commands.put("count_less_than_students_count", new CountLessThanStudentsCount(receiver));
+        commands.put("filter_starts_with_name", new FilterStartsWithName(receiver));
     }
 }

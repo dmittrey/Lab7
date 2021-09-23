@@ -1,27 +1,22 @@
 package commands;
 
-import utility.CollectionManager;
-import utility.Request;
-import utility.Response;
-import utility.TextFormatting;
+import utility.*;
 
 /**
  * Class for displaying all information about collection
  */
 public class Info extends CommandAbstract {
 
-    private final CollectionManager collectionManager;
+    private final Receiver receiver;
 
-    public Info(CollectionManager aCollectionManager) {
+    public Info(Receiver aReceiver) {
         super("info", "Print information about the collection (type, "
                 + "initialization date, number of elements, etc.) to standard output");
-        collectionManager = aCollectionManager;
+        receiver = aReceiver;
     }
 
     @Override
     public Response execute(Request aCommand) {
-
-        return new Response(TextFormatting.getBlueText("\nInformation about collection:\n")
-                + collectionManager.getInfo());
+        return receiver.info();
     }
 }

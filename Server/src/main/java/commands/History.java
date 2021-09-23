@@ -1,6 +1,6 @@
 package commands;
 
-import java.util.Queue;
+import utility.Receiver;
 import utility.Request;
 import utility.Response;
 
@@ -9,20 +9,15 @@ import utility.Response;
  */
 public class History extends CommandAbstract {
 
-    Queue<String> previousCommands;
+    private final Receiver receiver;
 
-    public History(Queue<String> aPreviousCommands) {
+    public History(Receiver aReceiver) {
         super("history", "print the last 14 commands (without their arguments)");
-        previousCommands = aPreviousCommands;
+        receiver = aReceiver;
     }
 
     @Override
     public Response execute(Request aCommand) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("\n");
-
-        previousCommands.stream().map(command -> ")" + command + "\n").forEach(sb::append);
-
-        return new Response(sb.toString());
+        return receiver.history();
     }
 }

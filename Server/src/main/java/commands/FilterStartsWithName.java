@@ -1,40 +1,21 @@
 package commands;
 
-import data.StudyGroup;
-import utility.CollectionManager;
-import utility.Request;
-import utility.Response;
-import utility.TextFormatting;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
+import utility.*;
 
 /**
  * Class for print elements which name field starts with special substring
  */
 public class FilterStartsWithName extends CommandAbstract {
 
-    private final Set<StudyGroup> collection;
+    private final Receiver receiver;
 
-    public FilterStartsWithName(CollectionManager aCollectionManager) {
+    public FilterStartsWithName(Receiver aReceiver) {
         super("filter_starts_with_name", "output elements whose name field value starts " +
                 "with the specified substring");
-        collection = aCollectionManager.getCollection();
+        receiver = aReceiver;
     }
 
     public Response execute(Request aCommand) {
-
-        String anArg = aCommand.getCommand().getArg();
-
-        if (collection.size() == 0) return new Response(TextFormatting.getRedText("\n\tCollection is empty!\n"));
-
-        Set<StudyGroup> groups = collection.stream().
-                filter(studyGroup -> studyGroup.getName().startsWith(anArg)).
-                collect(Collectors.toSet());
-
-        if (groups.isEmpty()) return new Response(TextFormatting.getRedText("\n\tNo objects found!\n"));
-
-        return new Response(groups);
+        return receiver.filterStartsWithName(aCommand);
     }
 }

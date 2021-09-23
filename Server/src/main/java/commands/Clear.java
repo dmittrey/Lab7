@@ -1,26 +1,21 @@
 package commands;
 
-import utility.CollectionManager;
-import utility.Request;
-import utility.Response;
-import utility.TextFormatting;
+import utility.*;
 
 /**
  * Class for remove all elements from collection
  */
 public class Clear extends CommandAbstract {
 
-    private final CollectionManager collectionManager;
+    private final Receiver receiver;
 
-    public Clear(CollectionManager aCollectionManager) {
+    public Clear(Receiver aReceiver) {
         super("clear", "clear the collection");
-        collectionManager = aCollectionManager;
+        receiver = aReceiver;
     }
 
     @Override
     public Response execute(Request aCommand) {
-        collectionManager.clear();
-
-        return new Response(TextFormatting.getGreenText("\n\tSuccessful!\n"));
+        return receiver.clear();
     }
 }

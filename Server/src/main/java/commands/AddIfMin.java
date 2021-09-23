@@ -1,39 +1,22 @@
 package commands;
 
-import utility.Request;
-import utility.Response;
-import utility.TextFormatting;
-import data.StudyGroup;
-import utility.CollectionManager;
-
-import java.util.Deque;
+import utility.*;
 
 /**
  * Class for add minimal element in collection
  */
 public class AddIfMin extends CommandAbstract {
 
-    private final CollectionManager collectionManager;
-    private final Deque<String> previousCommands;
+    private final Receiver receiver;
 
-    public AddIfMin(CollectionManager aCollectionManager, Deque<String> aPreviousCommands) {
+    public AddIfMin(Receiver aReceiver) {
         super("add_if_min", "add new element to the collection, if it`s value less, than " +
                 "smallest element of this collection.");
-        collectionManager = aCollectionManager;
-        previousCommands = aPreviousCommands;
+        receiver = aReceiver;
     }
 
     @Override
     public Response execute(Request aRequest) {
-
-        StudyGroup studyGroup = aRequest.getCommand().getStudyGroup();
-
-        if (collectionManager.getMin() != null && studyGroup.compareTo(collectionManager.getMin()) >= 0) {
-            previousCommands.pollLast();
-            return new Response(TextFormatting.getRedText("\n\tStudy group isn't worst!\n"));
-        }
-
-        collectionManager.add(studyGroup);
-        return new Response(TextFormatting.getGreenText("\n\n\tStudy group has been added!\n"));
+        return receiver.addIfMin(aRequest);
     }
 }

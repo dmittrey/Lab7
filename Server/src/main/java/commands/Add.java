@@ -1,30 +1,21 @@
 package commands;
 
-import data.StudyGroup;
-import utility.CollectionManager;
-import utility.Request;
-import utility.Response;
-import utility.TextFormatting;
+import utility.*;
 
 /**
  * Class for read study group from console and add this in collection
  */
 public class Add extends CommandAbstract {
 
-    private final CollectionManager collectionManager;
+    private final Receiver receiver;
 
-    public Add(CollectionManager aCollectionManager) {
+    public Add(Receiver aReceiver) {
         super("add", "add new element to the collection");
-        collectionManager = aCollectionManager;
+        receiver = aReceiver;
     }
 
     @Override
     public Response execute(Request aCommand) {
-
-        StudyGroup studyGroup = aCommand.getCommand().getStudyGroup();
-
-        collectionManager.add(studyGroup);
-
-        return new Response(TextFormatting.getGreenText("\n\tStudy group has been added!\n"));
+        return receiver.add(aCommand);
     }
 }

@@ -11,18 +11,16 @@ import java.util.concurrent.ForkJoinPool;
 public class RequestHandler {
 
     private final Invoker invoker;
-    private final AutoGenFieldsSetter fieldsSetter;
     private final Executor deliverManager;
 
-    public RequestHandler(Invoker anInvoker, AutoGenFieldsSetter aFieldsSetter, Executor aDeliverManager) {
+    public RequestHandler(Invoker anInvoker, Executor aDeliverManager) {
         invoker = anInvoker;
-        fieldsSetter = aFieldsSetter;
         deliverManager = aDeliverManager;
     }
 
     public void process(Request request, DatagramSocket datagramSocket, SocketAddress socketAddress) {
         ForkJoinPool requestHandler = new ForkJoinPool(Runtime.getRuntime().availableProcessors()/3);
-        Task task = new Task(invoker, fieldsSetter.setFields(request));
+        Task task = new Task(invoker, request);
         Response response = requestHandler.invoke(task);
 
         Deliver deliver = new Deliver(datagramSocket, response, socketAddress);

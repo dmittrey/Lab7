@@ -2,27 +2,27 @@ package Database;
 
 public enum Statements {
 
-    insertWorker("INSERT INTO s312502StudyGroups " +
-            "(id, name, xCoordinate, yCoordinate, salary, startDate, endDate," +
-            " status,height, eyeColor, hairColor, nationality, creator ) " +
-            "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"),
+    insertStudyGroup("INSERT INTO s312502StudyGroups " +
+            "(id, name, xCoordinate, yCoordinate, studentsCount, averageMark, formOfEducation, " +
+            "semesterEnum, groupAdminName, groupAdminWeight, groupAdminHairColor, author) " +
+            "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"),
 
     generateId("SELECT nextval('ids')"),
 
-    insertUserWithPassword("INSERT INTO s312502Users (login, hashed_password) VALUES(?, ?)"),
+    insertUserWithPassword("INSERT INTO s312502Users (username, hashPassword) VALUES(?, ?)"),
 
-    checkUser("SELECT * FROM s312502Users WHERE login=? AND hashed_password=?"),
+    checkUser("SELECT * FROM s312502Users WHERE username=? AND hashPassword=?"),
 
-    updateWorker("UPDATE s312502StudyGroups SET " +
-            "name=?, xcoordinate=?, ycoordinate=?, salary=?, startdate=?, enddate=?," +
-            " status=?,height=?, eyecolor=?, haircolor=?, nationality=? " +
+    updateStudyGroup("UPDATE s312502StudyGroups SET " +
+            "name=?, xCoordinate=?, yCoordinate=?, studentsCount=?, averageMark=?, formOfEducation=?, " +
+            "semesterEnum=?, groupAdminName=?, groupAdminWeight=?, groupAdminHairColor=? " +
             "WHERE id = ?"),
 
     getById("SELECT * FROM s312502StudyGroups WHERE id = ?"),
 
     deleteById("DELETE FROM s312502StudyGroups WHERE id = ?"),
 
-    clearAllByUser("DELETE FROM s312502StudyGroups WHERE creator = ?"),
+    clearAllByUser("DELETE FROM s312502StudyGroups WHERE author = ?"),
 
     takeAll("SELECT * FROM s312502StudyGroups");
 

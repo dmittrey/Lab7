@@ -3,7 +3,7 @@ package commands;
 import utility.*;
 
 /**
- * Class for read study group from console and add this in collection
+ * Class for add studyGroup in db and collection
  */
 public class Add extends CommandAbstract {
 
@@ -15,7 +15,7 @@ public class Add extends CommandAbstract {
     }
 
     @Override
-    public Response execute(Request aCommand) {
-        return receiver.add(aCommand);
+    public Response execute(Request aRequest) {
+        return receiver.add(aRequest);
     }
 }

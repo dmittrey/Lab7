@@ -25,7 +25,7 @@ public class DBInitializer {
                 "yCoordinate double NOT NULL," +
                 "creationDate date DEFAULT (current_date)," +
                 "studentsCount int NOT NULL CHECK(studentsCount > 0)," +
-                "averageMark int CHECK(averageMark > 0)," +
+                "averageMark double CHECK(averageMark > 0)," +
                 "formOfEducation varchar(20) " +
                 "CHECK(formOfEducation='DISTANCE_EDUCATION' OR " +
                     "formOfEducation='FULL_TIME_EDUCATION' OR " +
@@ -44,7 +44,7 @@ public class DBInitializer {
                     "groupAdminHairColor='YELLOW' OR " +
                     "groupAdminHairColor='WHITE' OR " +
                     "groupAdminHairColor='BROWN')," +
-                "autor varchar(255)" +
+                "author varchar(255)" +
                 ")");
 
         stmt.executeUpdate("CREATE TABLE IF NOT EXISTS s312502Users (" +

@@ -37,4 +37,9 @@ public enum Semester implements Serializable {
                 }
         );
     }
+
+    @Override
+    public String toString(){
+        return getStringInUpperCaseRepresentation();
+    }
 }

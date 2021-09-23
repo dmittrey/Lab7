@@ -22,14 +22,14 @@ public class Invoker {
         receiver = new Receiver(aCollectionManager, aDBWorker, commands, previousCommands);
     }
 
-    public Response execute(Request newCommand) {
+    public Response execute(Request aRequest) {
 
-        String aCommand = newCommand.getCommand().getCommand();
+        String aCommand = aRequest.getCommand().getCommand();
 
         previousCommands.offerLast(aCommand);
         if (previousCommands.size() == 15) previousCommands.removeFirst();
 
-        return commands.get(aCommand).execute(newCommand);
+        return commands.get(aCommand).execute(aRequest);
     }
 
     private void initMap() {

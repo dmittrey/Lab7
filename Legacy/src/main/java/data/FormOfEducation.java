@@ -35,4 +35,9 @@ public enum FormOfEducation implements Comparable<FormOfEducation>, Serializable
                 }
         );
     }
+
+    @Override
+    public String toString(){
+        return getStringInUpperCaseRepresentation();
+    }
 }

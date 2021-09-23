@@ -43,7 +43,6 @@ public class Receiver {
     }
 
     public Response info() {
-
         return new Response(TextFormatting.getBlueText("\nInformation about collection:\n")
                 + collectionManager.getInfo());
     }
@@ -55,46 +54,51 @@ public class Receiver {
         return new Response(collectionManager.getCollection());
     }
 
-    public Response add(Request aCommand) {
+    public Response add(Request aRequest) {
+        StudyGroup newStudyGroup = aRequest.getCommand().getStudyGroup();
+        String username = aRequest.getSession().getName();
+        String answer;
 
-        StudyGroup studyGroup = aCommand.getCommand().getStudyGroup();
-
-        collectionManager.add(studyGroup);
-        // TODO: 23/09/2021 Че за херня, почему мы всегда можем добавить?
-
-        return new Response(TextFormatting.getGreenText("\n\tStudy group has been added!\n"));
-    }
-
-    public Response updateId(Request aCommand) {
-
-        String anArg = aCommand.getCommand().getArg();
-        StudyGroup upgradedGroup = aCommand.getCommand().getStudyGroup();
-
-        StudyGroup studyGroup = collectionManager.getId(Integer.parseInt(anArg));
-
-        if (studyGroup != null) collectionManager.remove(studyGroup);
-        else {
-            previousCommands.pollLast();
-            return new Response(TextFormatting.getRedText("\n\tAn object with this id does not exist!\n"));
+        if (dbWorker.addStudyGroup(newStudyGroup, username)) {
+            collectionManager.add(newStudyGroup);
+            answer = TextFormatting.getGreenText("\n\tStudy group has been added!\n"));
+        } else {
+            answer = TextFormatting.getRedText("\tThis element probably duplicates existing one and can't be added\n"));
         }
 
-        upgradedGroup.setId(Integer.parseInt(anArg));
-        collectionManager.add(upgradedGroup);
-
-        return new Response(TextFormatting.getGreenText("\n\tObject has been updated!\n"));
+        return new Response(answer);
     }
 
-    public Response removeById(Request aCommand) {
+    public Response updateId(Request aRequest) {
+        StudyGroup upgradedGroup = aRequest.getCommand().getStudyGroup();
+        String username = aRequest.getSession().getName();
+        int id = Integer.parseInt(aRequest.getCommand().getArg());
 
-        String anArg = aCommand.getCommand().getArg();
-        Integer anId = Integer.parseInt(anArg);
+        String status = dbWorker.updateById(upgradedGroup, id, username);
 
-        if (!collectionManager.remove(collectionManager.getId(anId))) {
-            previousCommands.pollLast();
-            return new Response(TextFormatting.getRedText("\n\tAn object with this id does not exist!\n"));
+        if (status == null) {
+            StudyGroup studyGroup = collectionManager.getId(id);
+            collectionManager.remove(studyGroup);
+            upgradedGroup.setId(id);
+            collectionManager.add(upgradedGroup);
+            return new Response(TextFormatting.getGreenText("\n\tObject has been updated!\n"));
+        }
+        return new Response(status);
+    }
+
+    public Response removeById(Request aRequest) {
+        String username = aRequest.getSession().getName();
+        int id = Integer.parseInt(aRequest.getCommand().getArg());
+
+        String status = dbWorker.removeById(id, username);
+
+        if (status == null) {
+            StudyGroup studyGroup = collectionManager.getId(id);
+            collectionManager.remove(studyGroup);
+            return new Response(TextFormatting.getGreenText("\n\tObject has been removed!\n"));
         }
 
-        return new Response(TextFormatting.getGreenText("\n\tObject has been removed!\n"));
+        return new Response(status);
     }
 
     public Response clear() {

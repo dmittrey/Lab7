@@ -1,7 +1,9 @@
 package Database;
 
 import data.StudyGroup;
+import utility.TextFormatting;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
@@ -15,181 +17,101 @@ public class DBWorker {
         digest = MessageDigest.getInstance("SHA-512");
     }
 
-    public boolean insertWorker(StudyGroup aStudyGroup) {
+    public boolean addStudyGroup(StudyGroup aStudyGroup, String anUsername) {
         try {
-            PreparedStatement insertStatement = db.prepareStatement(Statements.insertWorker.getStatement());
-            setWorkerToStatement(insertStatement, worker);
-            insertStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            PreparedStatement preparedStatement = db.prepareStatement(Statements.insertStudyGroup.getStatement());
+            setStudyGroupToStatement(preparedStatement, aStudyGroup, anUsername);
+            preparedStatement.executeUpdate();
+        } catch (SQLException throwables) {
             return false;
         }
         return true;
     }
 
-    public Integer generateId() {
+    public String updateById(StudyGroup aStudyGroup, int anId, String anUsername) {
         try {
-            Statement idRequest = database.createStatement();
-            ResultSet resultSet = idRequest.executeQuery(SQLStatements.GENERATE_ID);
+            String getStatus = getById(anId, anUsername);
+            if (getStatus != null) return getStatus;
+
+            PreparedStatement preparedStatement = db.prepareStatement(Statements.updateStudyGroup.getStatement());
+            setUpdatedStudyGroupToStatement(preparedStatement, aStudyGroup);
+            preparedStatement.executeUpdate();
+            return null;
+        } catch (SQLException throwables) {
+            return TextFormatting.getRedText("\n\tSome problem's with DB, try again!\n");
+        }
+    }
+
+    public String removeById(int anId, String anUsername) {
+        try {
+            String getStatus = getById(anId, anUsername);
+            if (getStatus != null) return getStatus;
+
+            PreparedStatement preparedStatement = db.prepareStatement(Statements.deleteById.getStatement());
+            preparedStatement.setInt(1, anId);
+            preparedStatement.executeUpdate();
+            return null;
+        } catch (SQLException throwables) {
+            return TextFormatting.getRedText("\n\tSome problem's with DB, try again!\n");
+        }
+    }
+
+    public String getById(int anId, String anUsername) throws SQLException {
+        PreparedStatement preparedStatement = db.prepareStatement(Statements.getById.getStatement());
+        preparedStatement.setInt(1, anId);
+        ResultSet deletingStudyGroup = preparedStatement.executeQuery();
+
+        if (!deletingStudyGroup.next())
+            return TextFormatting.getRedText("\n\tAn object with this id does not exist!\n");
+
+        if (!deletingStudyGroup.getString("author").equals(anUsername))
+            return TextFormatting.getRedText("\n\tPermission denied\n");
+
+        return null;
+    }
+
+    private Integer generateId() {
+        try {
+            Statement statement = db.createStatement();
+            ResultSet resultSet = statement.executeQuery(Statements.generateId.getStatement());
             if (resultSet.next()) {
                 return resultSet.getInt("nextval");
             }
             return null;
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException throwables) {
             return null;
         }
     }
 
-    public boolean insertUser(String login, String password) {
-        try {
-            PreparedStatement insertStatement;
-            insertStatement = database.prepareStatement(SQLStatements.INSERT_USER_WITH_PASSWORD);
-            insertStatement.setString(1, login);
-            insertStatement.setBytes(2, getHash(password));
-            insertStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+    private void setStudyGroupToStatement(PreparedStatement stmt, StudyGroup sg, String anUsername) throws SQLException {
+        sg.setId(generateId());
+        stmt.setInt(1, sg.getId());
+        stmt.setString(2, sg.getName());
+        stmt.setInt(3, sg.getCoordinates().getX());
+        stmt.setDouble(4, sg.getCoordinates().getY());
+        stmt.setInt(5, sg.getStudentsCount());
+        stmt.setDouble(6, sg.getAverageMark());
+        stmt.setString(7, sg.getFormOfEducation().toString());
+        stmt.setString(8, sg.getSemesterEnum().toString());
+        stmt.setString(9, sg.getGroupAdmin().getName());
+        stmt.setLong(10, sg.getGroupAdmin().getWeight());
+        stmt.setString(11, sg.getGroupAdmin().getHairColor().toString());
+        stmt.setString(12, anUsername);
     }
 
-    /**
-     * Checks if user with this login and password hash exists
-     *
-     * @param login
-     * @param password
-     * @return true if such user is registered, otherwise false
-     */
-    public boolean checkUser(String login, String password) {
-        try {
-            PreparedStatement checkStatement = database.prepareStatement(SQLStatements.CHECK_USER);
-            checkStatement.setString(1, login);
-            checkStatement.setBytes(2, getHash(password));
-            ResultSet user = checkStatement.executeQuery();
-            return user.next();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public String deleteWorker(int id, String login) {
-        try {
-            PreparedStatement workerToBeDeletedRq = database.prepareStatement(SQLStatements.GET_BY_ID);
-            workerToBeDeletedRq.setInt(1, id);
-            ResultSet workerToBeDeleted = workerToBeDeletedRq.executeQuery();
-            if (!workerToBeDeleted.next()) {
-                return "no worker with this id found";
-            }
-            if (!workerToBeDeleted.getString("creator").equals(login)) {
-                return "permission denied";
-            }
-            PreparedStatement delete = database.prepareStatement(SQLStatements.DELETE_BY_ID);
-            delete.setInt(1, id);
-            delete.executeUpdate();
-            return "successfully removed";
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-            return "something went wrong "+e.getMessage();
-        }
-    }
-
-    public String updateWorker(int id, Worker newValue) {
-        try {
-            PreparedStatement workerToUpdateRq = database.prepareStatement(SQLStatements.GET_BY_ID);
-            workerToUpdateRq.setInt(1, id);
-            ResultSet workerToUpdate = workerToUpdateRq.executeQuery();
-            if (!workerToUpdate.next()) {
-                return "no worker with this id found";
-            }
-            if (!workerToUpdate.getString("creator").equals(newValue.getCreator())) {
-                return "permission denied";
-            }
-            PreparedStatement updateRq = database.prepareStatement(SQLStatements.UPDATE_WORKER);
-            updateRq.setString(1, newValue.getName());
-            updateRq.setLong(2, newValue.getCoordinates().getX());
-            updateRq.setLong(3, newValue.getCoordinates().getY());
-            updateRq.setLong(4, newValue.getSalary());
-            updateRq.setTimestamp(5, Timestamp.from(newValue.getStartDate().toInstant()));
-            Date endDate = newValue.getEndDate() != null ? Date.valueOf(newValue.getEndDate()) : null;
-            updateRq.setDate(6, endDate);
-            updateRq.setString(7, newValue.getStatus().toString());
-            updateRq.setDouble(8, newValue.getPerson().getHeight());
-            Color eyeColor, hairColor;
-            eyeColor = newValue.getPerson().getEyeColor();
-            hairColor = newValue.getPerson().getHairColor();
-            updateRq.setString(9, eyeColor == null ? "null" : eyeColor.toString());
-            updateRq.setString(10, hairColor == null ? "null" : hairColor.toString());
-            updateRq.setString(11, newValue.getPerson().getNationality().toString());
-            updateRq.setInt(12, id);
-            updateRq.executeUpdate();
-            return "successfully updated";
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return "something went wrong\n"+e.getMessage();
-        }
-    }
-
-    public void updateAll() {
-        try {
-            Statement statement = database.createStatement();
-            StorageManager.getInstance().updateAll(statement.executeQuery(SQLStatements.TAKE_ALL));
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void clear(String login) {
-        try {
-            PreparedStatement clearRq = database.prepareStatement(SQLStatements.CLEAR_ALL_BY_USER);
-            clearRq.setString(1, login);
-            clearRq.executeUpdate();
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     *
-     * @param status
-     * @param login
-     * @return number of removed elements
-     */
-    public int removeAllByStatus(String status, String login) {
-        try {
-            PreparedStatement removeRq = database.prepareStatement(SQLStatements.REMOVE_ALL_BY_STATUS_AND_USER);
-            removeRq.setString(1, status);
-            removeRq.setString(2, login);
-            return removeRq.executeUpdate();
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-            return -1;
-        }
-    }
-
-    private void setWorkerToStatement(PreparedStatement st, Worker w) throws SQLException{
-        Person person = w.getPerson();
-        st.setInt(1, w.getId());
-        st.setString(2, w.getName());
-        st.setLong(3, w.getCoordinates().getX());
-        st.setLong(4, w.getCoordinates().getY());
-        st.setLong(5, w.getSalary());
-        Timestamp startDate = Timestamp.from(Instant.from(w.getStartDate()));
-        st.setTimestamp(6, Timestamp.from(w.getStartDate().toInstant()));
-        Date endDate = w.getEndDate() != null ? Date.valueOf(w.getEndDate()) : null;
-        st.setDate(7, endDate);
-        st.setString(8, w.getStatus().toString());
-        st.setDouble(9, person.getHeight());
-        st.setString(10, person.getEyeColor() != null ? person.getEyeColor().toString() : "null");
-        st.setString(11, person.getHairColor() != null ? person.getHairColor().toString() : "null");
-        st.setString(12, person.getNationality().toString());
-        st.setString(13, w.getCreator());
+    private void setUpdatedStudyGroupToStatement(PreparedStatement stmt, StudyGroup sg) throws SQLException {
+        sg.setId(generateId());
+        stmt.setString(1, sg.getName());
+        stmt.setInt(2, sg.getCoordinates().getX());
+        stmt.setDouble(3, sg.getCoordinates().getY());
+        stmt.setInt(4, sg.getStudentsCount());
+        stmt.setDouble(5, sg.getAverageMark());
+        stmt.setString(6, sg.getFormOfEducation().toString());
+        stmt.setString(7, sg.getSemesterEnum().toString());
+        stmt.setString(8, sg.getGroupAdmin().getName());
+        stmt.setLong(9, sg.getGroupAdmin().getWeight());
+        stmt.setString(10, sg.getGroupAdmin().getHairColor().toString());
+        stmt.setInt(11, sg.getId());
     }
 
     private byte[] getHash(String str) {

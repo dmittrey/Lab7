@@ -16,7 +16,7 @@ public class AddIfMax extends CommandAbstract {
     }
 
     @Override
-    public Response execute(Request aCommand) {
-        return receiver.addIfMax(aCommand);
+    public Response execute(Request aRequest) {
+        return receiver.addIfMax(aRequest);
     }
 }

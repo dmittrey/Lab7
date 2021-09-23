@@ -32,6 +32,9 @@ public class Receiver {
                 map(command -> "\t" + commands.get(command).getDescription() + "\n\n").
                 forEach(sb::append);
         sb.append("\t")
+                .append("save : save the collection to file")
+                .append("\n\n");
+        sb.append("\t")
                 .append("execute_script : Read and execute script from entered file")
                 .append(TextFormatting.getBlueText("\n\tYou should to enter script name after entering a command"))
                 .append("\n\n");
@@ -61,9 +64,9 @@ public class Receiver {
 
         if (dbWorker.addStudyGroup(newStudyGroup, username)) {
             collectionManager.add(newStudyGroup);
-            answer = TextFormatting.getGreenText("\n\tStudy group has been added!\n"));
+            answer = TextFormatting.getGreenText("\n\tStudy group has been added!\n");
         } else {
-            answer = TextFormatting.getRedText("\tThis element probably duplicates existing one and can't be added\n"));
+            answer = TextFormatting.getRedText("\tThis element probably duplicates existing one and can't be added\n");
         }
 
         return new Response(answer);
@@ -101,46 +104,49 @@ public class Receiver {
         return new Response(status);
     }
 
-    public Response clear() {
-        collectionManager.clear();
+    public Response clear(Request aRequest) {
+        String username = aRequest.getSession().getName();
 
-        return new Response(TextFormatting.getGreenText("\n\tSuccessful!\n"));
-    }
+        String status = dbWorker.clear(username);
 
-    public Response save() {
-//        fileWorker.saveToXml().toString();
-        // TODO: 23/09/2021 Поменять на работу с бд
-
-        return new Response("");
-    }
-
-    public Response addIfMax(Request aCommand) {
-
-        StudyGroup studyGroup = aCommand.getCommand().getStudyGroup();
-
-        if (collectionManager.getMax() != null && studyGroup.compareTo(collectionManager.getMax()) <= 0) {
-            previousCommands.pollLast();
-            return new Response(TextFormatting.getRedText("\n\tStudy group isn't worst!\n"));
+        if (status == null) {
+            collectionManager.clear(username);
+            return new Response(TextFormatting.getGreenText("\n\tSuccessful!\n"));
         }
 
-        collectionManager.add(studyGroup);
-        return new Response(TextFormatting.getGreenText("\n\n\tStudy group has been added!\n"));
+        return new Response(status);
+    }
+
+    public Response addIfMax(Request aRequest) {
+
+        StudyGroup studyGroup = aRequest.getCommand().getStudyGroup();
+        String username = aRequest.getSession().getName();
+
+        if (collectionManager.getMax() != null && studyGroup.compareTo(collectionManager.getMax()) >= 0) {
+            if (dbWorker.addStudyGroup(studyGroup, username)) {
+                collectionManager.add(studyGroup);
+                return new Response(TextFormatting.getGreenText("\n\n\tStudy group has been added!\n"));
+            }
+            return new Response(TextFormatting.getRedText("\n\tFailed to add study group to db!\n"));
+        } else return new Response(TextFormatting.getRedText("\n\tStudy group isn't max!\n"));
     }
 
     public Response addIfMin(Request aRequest) {
 
         StudyGroup studyGroup = aRequest.getCommand().getStudyGroup();
+        String username = aRequest.getSession().getName();
 
-        if (collectionManager.getMin() != null && studyGroup.compareTo(collectionManager.getMin()) >= 0) {
-            previousCommands.pollLast();
-            return new Response(TextFormatting.getRedText("\n\tStudy group isn't worst!\n"));
-        }
-
-        collectionManager.add(studyGroup);
-        return new Response(TextFormatting.getGreenText("\n\n\tStudy group has been added!\n"));
+        if (collectionManager.getMax() != null && studyGroup.compareTo(collectionManager.getMin()) <= 0) {
+            if (dbWorker.addStudyGroup(studyGroup, username)) {
+                collectionManager.add(studyGroup);
+                return new Response(TextFormatting.getGreenText("\n\n\tStudy group has been added!\n"));
+            }
+            return new Response(TextFormatting.getRedText("\n\tFailed to add study group to db!\n"));
+        } else return new Response(TextFormatting.getRedText("\n\tStudy group isn't min!\n"));
     }
 
     public Response history() {
+        // TODO: 24/09/2021 Пофиксить очередь прокидывая через invoker или слить в класс команды логику
         StringBuilder sb = new StringBuilder();
         sb.append("\n");
 

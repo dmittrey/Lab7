@@ -40,7 +40,6 @@ public class Invoker {
         commands.put("update", new UpdateId(receiver));
         commands.put("remove_by_id", new RemoveById(receiver));
         commands.put("clear", new Clear(receiver));
-        commands.put("save", new Save(receiver));
         commands.put("add_if_max", new AddIfMax(receiver));
         commands.put("add_if_min", new AddIfMin(receiver));
         commands.put("history", new History(receiver));

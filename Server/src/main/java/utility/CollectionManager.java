@@ -79,8 +79,8 @@ public class CollectionManager {
         return studyGroups.stream().filter(sg -> sg.getId().equals(key)).findAny().orElse(null);
     }
 
-    public void clear() {
-        studyGroups.clear();
+    public void clear(String username) {
+        studyGroups.stream().filter(sg -> sg.getAuthor().equals(username)).forEach(sg -> studyGroups.remove(sg));
     }
 
     public int getHighUsedId() {

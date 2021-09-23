@@ -1,12 +1,7 @@
 package data;
 
-import utility.DateAdapter;
 import utility.TextFormatting;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -14,8 +9,6 @@ import java.util.Objects;
 /**
  * Class to study group
  */
-@XmlType(propOrder = {"id", "name", "coordinates", "creationDate", "studentsCount", "averageMark", "formOfEducation",
-        "semesterEnum", "groupAdmin"})
 public class StudyGroup implements Comparable<StudyGroup>, Serializable {
 
     private Integer id;
@@ -27,6 +20,7 @@ public class StudyGroup implements Comparable<StudyGroup>, Serializable {
     private data.FormOfEducation formOfEducation;
     private data.Semester semesterEnum;
     private data.Person groupAdmin;
+    private String author;
 
     /**
      * Class construct
@@ -45,8 +39,6 @@ public class StudyGroup implements Comparable<StudyGroup>, Serializable {
     public StudyGroup(int aId, String aName, Coordinates aCoordinates, Date aCreationDate, int aStudentsCount,
                       Double aAverageMark, data.FormOfEducation aFormOfEducation, data.Semester aSemesterEnum,
                       data.Person aGroupAdmin) {
-
-
         id = aId;
         name = aName;
         coordinates = aCoordinates;
@@ -56,58 +48,23 @@ public class StudyGroup implements Comparable<StudyGroup>, Serializable {
         formOfEducation = aFormOfEducation;
         semesterEnum = aSemesterEnum;
         groupAdmin = aGroupAdmin;
+        author = null;
     }
 
-    /**
-     * Class constructor for Xml parser
-     */
-    public StudyGroup() {
-    }
-
-    @XmlAttribute
     public void setId(Integer anId) {
         id = anId;
     }
 
-    @XmlElement
     public void setName(String aName) {
         name = aName;
     }
 
-    @XmlElement
-    public void setCoordinates(Coordinates aCoordinates) {
-        coordinates = aCoordinates;
-    }
-
-    @XmlElement
-    @XmlJavaTypeAdapter(DateAdapter.class)
     public void setCreationDate(Date aCreationDate) {
         creationDate = aCreationDate;
     }
 
-    @XmlElement
-    public void setStudentsCount(Integer aStudentsCount) {
-        studentsCount = aStudentsCount;
-    }
-
-    @XmlElement
-    public void setAverageMark(Double anAverageMark) {
-        averageMark = anAverageMark;
-    }
-
-    @XmlElement
-    public void setFormOfEducation(data.FormOfEducation aFormOfEducation) {
-        formOfEducation = aFormOfEducation;
-    }
-
-    @XmlElement
-    public void setSemesterEnum(data.Semester aSemesterEnum) {
-        semesterEnum = aSemesterEnum;
-    }
-
-    @XmlElement
-    public void setGroupAdmin(data.Person aGroupAdmin) {
-        groupAdmin = aGroupAdmin;
+    public void setAuthor(String anAuthor){
+        author = anAuthor;
     }
 
     public Integer getId() {
@@ -144,6 +101,10 @@ public class StudyGroup implements Comparable<StudyGroup>, Serializable {
 
     public data.Person getGroupAdmin() {
         return groupAdmin;
+    }
+
+    public String getAuthor(){
+        return author;
     }
 
     /**
@@ -188,12 +149,14 @@ public class StudyGroup implements Comparable<StudyGroup>, Serializable {
                 "Average mark" + "\t\t:\t" + averageMark + "\n" +
                 "Form of education" + "\t:\t" + formOfEducation + "\n" +
                 "Semester enum" + "\t\t:\t" + semesterEnum + "\n" +
-                "Group admin" + "\t\t:\t" + groupAdmin;
+                "Group admin" + "\t\t:\t" + groupAdmin + "\n" +
+                "Author" + "\t\t:\t" + author;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, coordinates, studentsCount, averageMark, formOfEducation, semesterEnum, groupAdmin);
+        return Objects.hash(name, coordinates, studentsCount, averageMark, formOfEducation, semesterEnum, groupAdmin,
+                author);
     }
 
     @Override
@@ -207,14 +170,14 @@ public class StudyGroup implements Comparable<StudyGroup>, Serializable {
         StudyGroup other = (StudyGroup) otherObject;
 
         if (((this.getAverageMark() == null) && (other.getAverageMark() != null))
-                || ((this.getAverageMark() != null) && (other.getAverageMark() == null))) {
-            return false;
-        }
+                || ((this.getAverageMark() != null) && (other.getAverageMark() == null))) return false;
 
         if (((this.getFormOfEducation() == null) && (other.getFormOfEducation() != null))
-                || ((this.getFormOfEducation() != null) && (other.getFormOfEducation() == null))) {
-            return false;
-        }
+                || ((this.getFormOfEducation() != null) && (other.getFormOfEducation() == null))) return false;
+
+        if (((this.getAuthor() == null) && (other.getAuthor() != null))
+                || ((this.getAuthor() != null) && (other.getAuthor() == null))) return false;
+
 
         return (this.getName().equals(other.getName())
                 && this.getCoordinates().getX().equals(other.getCoordinates().getX())
@@ -227,6 +190,7 @@ public class StudyGroup implements Comparable<StudyGroup>, Serializable {
                 && this.getSemesterEnum().equals(other.getSemesterEnum())
                 && this.getGroupAdmin().getName().equals(other.getGroupAdmin().getName())
                 && this.getGroupAdmin().getWeight().equals(other.getGroupAdmin().getWeight())
-                && this.getGroupAdmin().getHairColor().equals(other.getGroupAdmin().getHairColor()));
+                && this.getGroupAdmin().getHairColor().equals(other.getGroupAdmin().getHairColor())
+                && this.getAuthor().equals(other.getAuthor()));
     }
 }

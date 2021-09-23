@@ -16,6 +16,6 @@ public class Clear extends CommandAbstract {
 
     @Override
     public Response execute(Request aCommand) {
-        return receiver.clear();
+        return receiver.clear(aCommand);
     }
 }

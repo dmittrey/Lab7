@@ -70,6 +70,17 @@ public class DBWorker {
         return null;
     }
 
+    public String clear(String username) {
+        try {
+            PreparedStatement preparedStatement = db.prepareStatement(Statements.clearAllByUser.getStatement());
+            preparedStatement.setString(1, username);
+            preparedStatement.executeUpdate();
+            return null;
+        } catch (SQLException throwables) {
+            return TextFormatting.getRedText("\n\tAn object with this id does not exist!\n");
+        }
+    }
+
     private Integer generateId() {
         try {
             Statement statement = db.createStatement();

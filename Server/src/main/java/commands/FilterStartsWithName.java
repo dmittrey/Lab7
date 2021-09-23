@@ -16,6 +16,8 @@ public class FilterStartsWithName extends CommandAbstract {
     }
 
     public Response execute(Request aCommand) {
-        return receiver.filterStartsWithName(aCommand);
+
+        String startName = aCommand.getCommand().getArg();
+        return receiver.filterStartsWithName(startName);
     }
 }

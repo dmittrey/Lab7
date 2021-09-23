@@ -1,5 +1,6 @@
 package commands;
 
+import data.StudyGroup;
 import utility.*;
 
 /**
@@ -16,6 +17,8 @@ public class Add extends CommandAbstract {
 
     @Override
     public Response execute(Request aRequest) {
-        return receiver.add(aRequest);
+
+        StudyGroup studyGroup = aRequest.getCommand().getStudyGroup();
+        return receiver.add(studyGroup);
     }
 }

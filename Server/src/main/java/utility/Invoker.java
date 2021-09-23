@@ -1,6 +1,5 @@
 package utility;
 
-import Database.DBWorker;
 import commands.*;
 
 import java.util.*;
@@ -14,16 +13,14 @@ public class Invoker {
     private final Deque<String> previousCommands;
     private final Receiver receiver;
 
-    public Invoker(CollectionManager aCollectionManager, DBWorker aDBWorker) {
-
+    public Invoker(Receiver aReceiver) {
         previousCommands = new ArrayDeque<>(14);
         commands = new HashMap<>();
         initMap();
-        receiver = new Receiver(aCollectionManager, aDBWorker, commands, previousCommands);
+        receiver = aReceiver;
     }
 
     public Response execute(Request aRequest) {
-
         String aCommand = aRequest.getCommand().getCommand();
 
         previousCommands.offerLast(aCommand);
@@ -33,7 +30,7 @@ public class Invoker {
     }
 
     private void initMap() {
-        commands.put("help", new Help(receiver));
+        commands.put("help", new Help(commands));
         commands.put("info", new Info(receiver));
         commands.put("show", new Show(receiver));
         commands.put("add", new Add(receiver));
@@ -42,7 +39,7 @@ public class Invoker {
         commands.put("clear", new Clear(receiver));
         commands.put("add_if_max", new AddIfMax(receiver));
         commands.put("add_if_min", new AddIfMin(receiver));
-        commands.put("history", new History(receiver));
+        commands.put("history", new History(previousCommands));
         commands.put("min_by_students_count", new MinByStudentsCount(receiver));
         commands.put("count_less_than_students_count", new CountLessThanStudentsCount(receiver));
         commands.put("filter_starts_with_name", new FilterStartsWithName(receiver));

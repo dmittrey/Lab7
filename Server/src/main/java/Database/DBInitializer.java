@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Class to initialize database tables
+ */
 public class DBInitializer {
 
     private final Connection dbConnection;

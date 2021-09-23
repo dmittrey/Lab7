@@ -1,5 +1,6 @@
 package commands;
 
+import data.StudyGroup;
 import utility.*;
 
 /**
@@ -16,7 +17,10 @@ public class UpdateId extends CommandAbstract {
     }
 
     @Override
-    public Response execute(Request aCommand) {
-        return receiver.updateId(aCommand);
+    public Response execute(Request aRequest) {
+
+        StudyGroup upgradedGroup = aRequest.getCommand().getStudyGroup();
+        int id = Integer.parseInt(aRequest.getCommand().getArg());
+        return receiver.updateId(upgradedGroup, id);
     }
 }

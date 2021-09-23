@@ -1,5 +1,6 @@
 package commands;
 
+import data.StudyGroup;
 import utility.*;
 
 /**
@@ -17,6 +18,8 @@ public class AddIfMax extends CommandAbstract {
 
     @Override
     public Response execute(Request aRequest) {
-        return receiver.addIfMax(aRequest);
+
+        StudyGroup studyGroup = aRequest.getCommand().getStudyGroup();
+        return receiver.addIfMax(studyGroup);
     }
 }

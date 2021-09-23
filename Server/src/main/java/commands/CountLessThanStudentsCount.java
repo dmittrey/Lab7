@@ -18,6 +18,8 @@ public class CountLessThanStudentsCount extends CommandAbstract {
 
     @Override
     public Response execute(Request aRequest) {
-        return receiver.countLessThanStudentsCount(aRequest);
+
+        Integer count = Integer.valueOf(aRequest.getCommand().getArg());
+        return receiver.countLessThanStudentsCount(count);
     }
 }

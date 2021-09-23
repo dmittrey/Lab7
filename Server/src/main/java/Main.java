@@ -23,36 +23,35 @@ public class Main {
 
         logger.info("Entering server!");
 
-        try (Scanner scanner = new Scanner(System.in);
-             DatagramSocket datagramSocket = getDatagramSocket(scanner)) {
+        try (Scanner scanner = new Scanner(System.in)) {
 
+            DatagramSocket datagramSocket = getDatagramSocket(scanner);
+            int localPort = datagramSocket.getLocalPort();
             logger.info("Server listening port " + datagramSocket.getLocalPort() + "!");
 
             CollectionManager collectionManager = new CollectionManager();
             DBWorker dbWorker = connectToDB();//отладить
+            Receiver receiver = new Receiver(collectionManager, dbWorker);
 
-            FileWorker fileWorker = new FileWorker(collectionManager);
-            if (!fileWorker.getFromXmlFormat()) return;
+            Executor deliverManager = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() / 3);
 
-            Invoker invoker = new Invoker(collectionManager, dbWorker);
-            AutoGenFieldsSetter fieldsSetter = new AutoGenFieldsSetter(collectionManager.getHighUsedId());
-            Executor deliverManager = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()/3);
-
-            Runtime.getRuntime().addShutdownHook(new Thread(new ExitSaver(fileWorker)));
+            Runtime.getRuntime().addShutdownHook(new Thread(new ExitSaver()));
 
             while (true) {
                 byte[] buf = new byte[4096];
                 DatagramPacket packet = new DatagramPacket(buf, buf.length);
                 datagramSocket.receive(packet);
+                Invoker invoker = new Invoker(receiver);
                 RequestReceiver requestReceiver = new RequestReceiver(datagramSocket, packet, invoker, deliverManager);
                 requestReceiver.start();
+                datagramSocket = getDatagramSocket(localPort);
             }
         } catch (IOException e) {
             logger.info("Some problem's with network!");
         }
     }
 
-    private static DBWorker connectToDB(){
+    private static DBWorker connectToDB() {
         Connection db;
         try {
             db = DBConnector.connect();
@@ -86,7 +85,7 @@ public class Main {
         Pattern remoteHostPortPattern = Pattern.compile("^\\s*\\b(\\d{1,5})\\b\\s*");
 
         do {
-            System.out.print(TextFormatting.getGreenText("Please, enter remote host port(1-65535): "));
+            System.out.print(TextFormatting.getGreenText("Please, enter local host port(1-65535): "));
             arg = scanner.nextLine();
         } while (!remoteHostPortPattern.matcher(arg).find() || (Integer.parseInt(arg.trim()) >= 65536)
                 || (Integer.parseInt(arg.trim()) <= 0));
@@ -103,5 +102,10 @@ public class Main {
                 System.out.println(TextFormatting.getRedText("Socket could not bind to the specified local port!"));
             }
         }
+    }
+
+    private static DatagramSocket getDatagramSocket(int aLocalPort) throws SocketException {
+
+            return new DatagramSocket(aLocalPort);
     }
 }

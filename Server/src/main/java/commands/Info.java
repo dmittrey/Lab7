@@ -16,7 +16,7 @@ public class Info extends CommandAbstract {
     }
 
     @Override
-    public Response execute(Request aCommand) {
+    public Response execute(Request aRequest) {
         return receiver.info();
     }
 }

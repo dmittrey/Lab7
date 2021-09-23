@@ -1,5 +1,8 @@
 package Database;
 
+/**
+ * Enum of database universal statements
+ */
 public enum Statements {
 
     insertStudyGroup("INSERT INTO s312502StudyGroups " +

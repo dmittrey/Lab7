@@ -8,6 +8,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 
+/**
+ * Class to work with database
+ */
 public class DBWorker {
     private final Connection db;
     private final MessageDigest digest;
@@ -17,10 +20,10 @@ public class DBWorker {
         digest = MessageDigest.getInstance("SHA-512");
     }
 
-    public boolean addStudyGroup(StudyGroup aStudyGroup, String anUsername) {
+    public boolean addStudyGroup(StudyGroup aStudyGroup) {
         try {
             PreparedStatement preparedStatement = db.prepareStatement(Statements.insertStudyGroup.getStatement());
-            setStudyGroupToStatement(preparedStatement, aStudyGroup, anUsername);
+            setStudyGroupToStatement(preparedStatement, aStudyGroup);
             preparedStatement.executeUpdate();
         } catch (SQLException throwables) {
             return false;
@@ -28,9 +31,9 @@ public class DBWorker {
         return true;
     }
 
-    public String updateById(StudyGroup aStudyGroup, int anId, String anUsername) {
+    public String updateById(StudyGroup aStudyGroup, int anId) {
         try {
-            String getStatus = getById(anId, anUsername);
+            String getStatus = getById(anId, aStudyGroup.getAuthor());
             if (getStatus != null) return getStatus;
 
             PreparedStatement preparedStatement = db.prepareStatement(Statements.updateStudyGroup.getStatement());
@@ -94,7 +97,7 @@ public class DBWorker {
         }
     }
 
-    private void setStudyGroupToStatement(PreparedStatement stmt, StudyGroup sg, String anUsername) throws SQLException {
+    private void setStudyGroupToStatement(PreparedStatement stmt, StudyGroup sg) throws SQLException {
         sg.setId(generateId());
         stmt.setInt(1, sg.getId());
         stmt.setString(2, sg.getName());
@@ -107,7 +110,7 @@ public class DBWorker {
         stmt.setString(9, sg.getGroupAdmin().getName());
         stmt.setLong(10, sg.getGroupAdmin().getWeight());
         stmt.setString(11, sg.getGroupAdmin().getHairColor().toString());
-        stmt.setString(12, anUsername);
+        stmt.setString(12, sg.getAuthor());
     }
 
     private void setUpdatedStudyGroupToStatement(PreparedStatement stmt, StudyGroup sg) throws SQLException {

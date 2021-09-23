@@ -6,21 +6,16 @@ import java.util.Date;
 
 public class AutoGenFieldsSetter {
 
-    private int lastUsedId;
+    public static Request setFields(Request aRequest) {
 
-    public AutoGenFieldsSetter(int aLastUsedId) {
-        lastUsedId = aLastUsedId;
-    }
-
-    public Request setFields(Request aCommand) {
-
-        StudyGroup studyGroup = aCommand.getCommand().getStudyGroup();
+        StudyGroup studyGroup = aRequest.getCommand().getStudyGroup();
+        String author = aRequest.getSession().getName();
 
         if (studyGroup != null) {
-            studyGroup.setId(++lastUsedId);
             studyGroup.setCreationDate(new Date());
+            studyGroup.setAuthor(author);
         }
 
-        return aCommand;
+        return aRequest;
     }
 }

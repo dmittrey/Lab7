@@ -1,4 +1,4 @@
-package utility.Interfaces;
+package Interfaces;
 
 import data.Coordinates;
 import data.FormOfEducation;

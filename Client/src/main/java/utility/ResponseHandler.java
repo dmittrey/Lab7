@@ -1,6 +1,6 @@
 package utility;
 
-import utility.Interfaces.ResponseHandlerInterface;
+import Interfaces.ResponseHandlerInterface;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

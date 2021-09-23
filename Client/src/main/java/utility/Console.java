@@ -1,6 +1,6 @@
 package utility;
 
-import utility.Interfaces.ConsoleInterface;
+import Interfaces.ConsoleInterface;
 
 import java.io.BufferedReader;
 import java.io.IOException;

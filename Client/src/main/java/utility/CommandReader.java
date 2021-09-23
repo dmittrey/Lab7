@@ -1,8 +1,8 @@
 package utility;
 
-import utility.Interfaces.CommandManagerInterface;
-import utility.Interfaces.CommandReaderInterface;
-import utility.Interfaces.ConsoleInterface;
+import Interfaces.CommandManagerInterface;
+import Interfaces.CommandReaderInterface;
+import Interfaces.ConsoleInterface;
 
 import java.io.IOException;
 import java.util.regex.Matcher;

@@ -1,6 +1,6 @@
 package utility;
 
-import utility.Interfaces.ValidatorInterface;
+import Interfaces.ValidatorInterface;
 
 /**
  * Class to validate commands

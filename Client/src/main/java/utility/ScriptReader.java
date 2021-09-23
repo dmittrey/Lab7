@@ -1,8 +1,8 @@
 package utility;
 
-import utility.Interfaces.CommandManagerInterface;
-import utility.Interfaces.CommandReaderInterface;
-import utility.Interfaces.ScriptReaderInterface;
+import Interfaces.CommandManagerInterface;
+import Interfaces.CommandReaderInterface;
+import Interfaces.ScriptReaderInterface;
 
 import java.io.*;
 

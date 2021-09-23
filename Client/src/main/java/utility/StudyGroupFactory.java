@@ -1,12 +1,12 @@
 package utility;
 
 import data.*;
-import utility.Interfaces.FieldsReceiver;
+import Interfaces.FieldsReceiver;
 
 /**
  * Class for creating Study groups without id and Date
  */
-public class StudyGroupFactory implements utility.Interfaces.StudyGroupFactoryInterface {
+public class StudyGroupFactory implements Interfaces.StudyGroupFactoryInterface {
 
     private final FieldsReceiver fieldsReceiver;
 

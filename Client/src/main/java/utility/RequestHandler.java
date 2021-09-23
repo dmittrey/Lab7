@@ -1,8 +1,8 @@
 package utility;
 
 import data.StudyGroup;
-import utility.Interfaces.RequestHandlerInterface;
-import utility.Interfaces.SessionWorkerInterface;
+import Interfaces.RequestHandlerInterface;
+import Interfaces.SessionWorkerInterface;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

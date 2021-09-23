@@ -1,7 +1,7 @@
 package utility;
 
 import data.*;
-import utility.Interfaces.FieldsReceiver;
+import Interfaces.FieldsReceiver;
 
 import java.io.IOException;
 import java.util.Arrays;

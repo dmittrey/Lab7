@@ -1,9 +1,8 @@
 package utility;
 
 import data.StudyGroup;
-import utility.Interfaces.ObjectValidator;
+import Interfaces.ObjectValidator;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**

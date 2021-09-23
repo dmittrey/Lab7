@@ -1,7 +1,7 @@
 package utility;
 
-import utility.Interfaces.ConsoleInterface;
-import utility.Interfaces.SessionWorkerInterface;
+import Interfaces.ConsoleInterface;
+import Interfaces.SessionWorkerInterface;
 
 import java.io.IOException;
 import java.util.regex.Pattern;

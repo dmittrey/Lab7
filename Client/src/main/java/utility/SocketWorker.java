@@ -1,7 +1,7 @@
 package utility;
 
-import utility.Interfaces.ResponseHandlerInterface;
-import utility.Interfaces.SocketWorkerInterface;
+import Interfaces.ResponseHandlerInterface;
+import Interfaces.SocketWorkerInterface;
 
 import java.io.IOException;
 import java.net.SocketAddress;

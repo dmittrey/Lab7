@@ -37,8 +37,7 @@ public class Help extends CommandAbstract {
                 .append(TextFormatting.getBlueText("\n\tYou should to enter script name after entering a command"))
                 .append("\n\n");
         sb.append("\t")
-                .append("exit : end the program (without saving it to a file)")
-                .append("\n\n");
+                .append("exit : end the program (without saving it to a file)");
 
         receiver.addToHistory(username, "help");
         return new Response(sb.toString());

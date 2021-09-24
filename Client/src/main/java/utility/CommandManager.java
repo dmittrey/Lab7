@@ -33,7 +33,9 @@ public class CommandManager implements CommandManagerInterface {
     @Override
     public void transferCommand(Command aCommand) {
 
-        if (validator.notObjectArgumentCommands(aCommand))
+        if (aCommand == null) console.print(TextFormatting.getRedText("\n\tCommand entered incorrectly!\n"));
+
+        else if (validator.notObjectArgumentCommands(aCommand))
             console.print(requestHandler.send(aCommand) + "\n");
 
         else if (validator.objectArgumentCommands(aCommand))
@@ -64,10 +66,10 @@ public class CommandManager implements CommandManagerInterface {
                     if (usedScripts.size() == 0) console.setExeStatus(false);
 
                     if (!new File(scriptName).exists()) console.print(
-                            TextFormatting.getRedText("\n\tThe script does not exist!\n"));
+                            TextFormatting.getRedText("\n\tThe script does not exist!\n\n"));
                     else if (!new File(scriptName).canRead()) console.print(
-                            TextFormatting.getRedText("\n\tThe system does not have permission to read the file!\n"));
-                    else console.print("\n\tWe have some problem's with script!\n");
+                            TextFormatting.getRedText("\n\tThe system does not have permission to read the file!\n\n"));
+                    else console.print("\n\tWe have some problem's with script!\n\n");
                 }
                 usedScripts.remove(scriptName);
                 if (usedScripts.size() == 0) console.setExeStatus(false);

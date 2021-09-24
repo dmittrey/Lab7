@@ -14,6 +14,7 @@ public class Response implements Serializable {
     private String information;
     private StudyGroup studyGroup;
     private Set<StudyGroup> collection;
+    private boolean status;
 
     public Response(String anInformation) {
         information = anInformation;
@@ -27,12 +28,20 @@ public class Response implements Serializable {
         collection = aCollection;
     }
 
+    public Response(boolean aBoolean) {
+        status = aBoolean;
+    }
+
     public StudyGroup getStudyGroup() {
         return studyGroup;
     }
 
     public Set<StudyGroup> getCollection() {
         return collection;
+    }
+
+    public boolean getStatus() {
+        return status;
     }
 
     @Override

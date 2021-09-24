@@ -16,7 +16,6 @@ public class LoginUser extends CommandAbstract{
 
         String username = aRequest.getSession().getName();
         String password = aRequest.getSession().getPassword();
-        return receiver.loginUser(username, password) ? null
-                : new Response(TextFormatting.getRedText("\n\tAccount with this parameters doesn't exist!\n"));
+        return receiver.loginUser(username, password) ? new Response(true) : new Response(false);
     }
 }

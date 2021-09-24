@@ -22,9 +22,6 @@ public class RequestReceiver extends Thread {
                            Invoker anInvoker, Executor aDeliverManager) throws SocketException {
 
         datagramSocket = aDatagramSocket;
-        // Сделал для того, чтобы не создавать под каждый новый запрос новый тред и тем самым корректно
-        // выводить команды в history для каждого клиента
-        datagramSocket.connect(aDatagramPacket.getSocketAddress());
         requestHandler = new RequestHandler(anInvoker, aDeliverManager);
         datagramPacket = aDatagramPacket;
     }
@@ -33,24 +30,15 @@ public class RequestReceiver extends Thread {
     public void run() {
 
         try {
-            while (true) {
-                ObjectInputStream inObj = new ObjectInputStream(new ByteArrayInputStream(datagramPacket.getData()));
-                Request request = AutoGenFieldsSetter.setFields((Request) inObj.readObject());
-                logger.info("Server received command: " + request.toString()
-                        + " from " + datagramPacket.getSocketAddress());
+            ObjectInputStream inObj = new ObjectInputStream(new ByteArrayInputStream(datagramPacket.getData()));
+            Request request = AutoGenFieldsSetter.setFields((Request) inObj.readObject());
+            logger.info("Server received command: " + request.toString());
 
-                requestHandler.process(request, datagramSocket, datagramPacket.getSocketAddress());
-
-                byte[] buf = new byte[4096];
-                DatagramPacket packet = new DatagramPacket(buf, buf.length);
-                datagramSocket.receive(packet);
-            }
+            requestHandler.process(request, datagramSocket, datagramPacket.getSocketAddress());
         } catch (ClassNotFoundException e) {
             logger.info("Client sent outdated request!");
         } catch (IOException e) {
             logger.info("Some problem's with getting request!");
-        } finally {
-            datagramSocket.close();
         }
     }
 }

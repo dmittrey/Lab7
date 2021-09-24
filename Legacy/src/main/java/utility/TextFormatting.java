@@ -21,4 +21,8 @@ public class TextFormatting {
     public static String getBlueText(String text) {
         return ANSI_BLUE + text + ANSI_RESET;
     }
+
+    public static String capitalize(String oldString) {
+        return oldString.substring(0, 1).toUpperCase() + oldString.substring(1).toLowerCase();
+    }
 }

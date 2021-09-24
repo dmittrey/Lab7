@@ -2,6 +2,8 @@ package utility;
 
 import Database.DBWorker;
 import data.StudyGroup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -10,6 +12,7 @@ public class Receiver {
 
     private final CollectionManager collectionManager;
     private final DBWorker dbWorker;
+    public static final Logger logger = LoggerFactory.getLogger("Register");
 
     public Receiver(CollectionManager aCollectionManager, DBWorker aDBWorker) {
 
@@ -37,7 +40,7 @@ public class Receiver {
 
         if (id != 0) {
             collectionManager.add(aStudyGroup.setId(id));
-            return null;
+            return new Response(TextFormatting.getGreenText("\n\tStudy group has been added!\n\n"));
         } else {
             return new Response(TextFormatting.getRedText("\tThis element probably duplicates " +
                     "existing one and can't be added\n"));
@@ -136,7 +139,6 @@ public class Receiver {
     }
 
     public boolean registerUser(String username, String password) {
-        System.out.println(2);
         return dbWorker.addUser(username, password);
     }
 

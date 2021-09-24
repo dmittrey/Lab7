@@ -26,11 +26,10 @@ public class Main {
         try (Scanner scanner = new Scanner(System.in)) {
 
             DatagramSocket datagramSocket = getDatagramSocket(scanner);
-            int localPort = datagramSocket.getLocalPort();
             logger.info("Server listening port " + datagramSocket.getLocalPort() + "!");
 
             CollectionManager collectionManager = new CollectionManager();
-            DBWorker dbWorker = connectToDB();//отладить
+            DBWorker dbWorker = connectToDB();//отладить при выходе из проги
             Receiver receiver = new Receiver(collectionManager, dbWorker);
 
             Executor deliverManager = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() / 3);
@@ -41,10 +40,9 @@ public class Main {
                 byte[] buf = new byte[4096];
                 DatagramPacket packet = new DatagramPacket(buf, buf.length);
                 datagramSocket.receive(packet);
-                Invoker invoker = new Invoker(receiver);
-                RequestReceiver requestReceiver = new RequestReceiver(datagramSocket, packet, invoker, deliverManager);
+                RequestReceiver requestReceiver = new RequestReceiver(datagramSocket, packet,
+                        new Invoker(receiver), deliverManager);
                 requestReceiver.start();
-                datagramSocket = getDatagramSocket(localPort);
             }
         } catch (IOException e) {
             logger.info("Some problem's with network!");
@@ -52,17 +50,17 @@ public class Main {
     }
 
     private static DBWorker connectToDB() {
-        Connection db;
-        try {
-            db = new DBConnector().connect();
-        } catch (SQLException e) {
-            System.out.println("Connection establishing problems");
-            e.printStackTrace();
-            return null;
-        }
+//        Connection db;
+//        try {
+//            db = new DBConnector().connect();
+//        } catch (SQLException e) {
+//            System.out.println("Connection establishing problems");
+//            e.printStackTrace();
+//            return null;
+//        }
 //
-//        DBConnector databaseConnector = new DBConnector();
-//        Connection db = databaseConnector.makeConnection();
+        DBConnector databaseConnector = new DBConnector();
+        Connection db = databaseConnector.makeConnection();
 
         DBInitializer dbInitializer = new DBInitializer(db);
         try {
@@ -101,13 +99,8 @@ public class Main {
             try {
                 return new DatagramSocket(getPort(scanner));
             } catch (SocketException ignored) {
-                System.out.println(TextFormatting.getRedText("Socket could not bind to the specified local port!"));
+                System.out.println(TextFormatting.getRedText("\tSocket could not bind to the specified local port!"));
             }
         }
-    }
-
-    private static DatagramSocket getDatagramSocket(int aLocalPort) throws SocketException {
-
-            return new DatagramSocket(aLocalPort);
     }
 }

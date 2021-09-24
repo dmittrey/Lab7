@@ -13,32 +13,35 @@ public class Invoker {
     private final Deque<String> previousCommands;
     private final Receiver receiver;
 
+
     public Invoker(Receiver aReceiver) {
         previousCommands = new ArrayDeque<>(14);
         commands = new HashMap<>();
-        initMap();
         receiver = aReceiver;
+        initMap();
+    }
+
+    public Receiver getReceiver(){
+        return receiver;
     }
 
     public Response execute(Request aRequest) {
-        Response status;
+        boolean status;
         String aCommand = aRequest.getCommand().getCommand();
 
         if (aRequest.getSession().getTypeOfSession() == TypeOfSession.Register) {
-            System.out.println(4);
-            System.out.println(commands.get("register"));
-            status = commands.get("register").execute(aRequest);
-        } else status = commands.get("login").execute(aRequest);
+            status = commands.get("register").execute(aRequest).getStatus();
+            if (!status) return new Response(TextFormatting.getRedText("\n\tThis account already registered!\n"));
+        } else {
+            status = commands.get("login").execute(aRequest).getStatus();
+            if (!status)
+                return new Response(TextFormatting.getRedText("\n\tAccount with this parameters doesn't exist!\n"));
+        }
 
-        System.out.println("\n\n\n" + status + "\n\n\n");
+        previousCommands.offerLast(aCommand);
+        if (previousCommands.size() == 15) previousCommands.removeFirst();
 
-        if (status == null) {
-            previousCommands.offerLast(aCommand);
-            System.out.println(aCommand);
-            if (previousCommands.size() == 15) previousCommands.removeFirst();
-
-            return commands.get(aCommand).execute(aRequest);
-        } else return status;
+        return commands.get(aCommand).execute(aRequest);
     }
 
     private void initMap() {

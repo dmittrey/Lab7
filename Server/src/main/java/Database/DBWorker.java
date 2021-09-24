@@ -130,8 +130,16 @@ public class DBWorker {
         stmt.setInt(3, sg.getCoordinates().getX());
         stmt.setDouble(4, sg.getCoordinates().getY());
         stmt.setInt(5, sg.getStudentsCount());
-        stmt.setDouble(6, sg.getAverageMark());
-        stmt.setString(7, sg.getFormOfEducation().toString());
+        if ((sg.getAverageMark() == null)) {
+            stmt.setNull(6, Types.BIGINT);
+        } else {
+            stmt.setDouble(6, sg.getAverageMark());
+        }
+        if ((sg.getFormOfEducation() == null)) {
+            stmt.setNull(7, Types.VARCHAR);
+        } else {
+            stmt.setString(7, sg.getFormOfEducation().toString());
+        }
         stmt.setString(8, sg.getSemesterEnum().toString());
         stmt.setString(9, sg.getGroupAdmin().getName());
         stmt.setLong(10, sg.getGroupAdmin().getWeight());
@@ -147,8 +155,16 @@ public class DBWorker {
         stmt.setInt(2, sg.getCoordinates().getX());
         stmt.setDouble(3, sg.getCoordinates().getY());
         stmt.setInt(4, sg.getStudentsCount());
-        stmt.setDouble(5, sg.getAverageMark());
-        stmt.setString(6, sg.getFormOfEducation().toString());
+        if ((sg.getAverageMark() == null)) {
+            stmt.setNull(5, Types.BIGINT);
+        } else {
+            stmt.setDouble(5, sg.getAverageMark());
+        }
+        if ((sg.getFormOfEducation() == null)) {
+            stmt.setNull(6, Types.VARCHAR);
+        } else {
+            stmt.setString(6, sg.getFormOfEducation().toString());
+        }
         stmt.setString(7, sg.getSemesterEnum().toString());
         stmt.setString(8, sg.getGroupAdmin().getName());
         stmt.setLong(9, sg.getGroupAdmin().getWeight());

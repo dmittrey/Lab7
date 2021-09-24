@@ -16,7 +16,6 @@ public class Clear extends CommandAbstract {
 
     @Override
     public Response execute(Request aRequest) {
-
         String username = aRequest.getSession().getName();
         return receiver.clear(username);
     }

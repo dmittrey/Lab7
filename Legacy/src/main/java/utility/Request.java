@@ -26,6 +26,6 @@ public class Request implements Serializable {
 
     @Override
     public String toString() {
-        return command.toString() + "\n\t from user \n(" + session.toString() + ")";
+        return command.toString() + " from (" + session.toString() + ")";
     }
 }

@@ -17,6 +17,8 @@ public class Info extends CommandAbstract {
 
     @Override
     public Response execute(Request aRequest) {
+        String username = aRequest.getSession().getName();
+        receiver.addToHistory(username, "info");
         return receiver.info();
     }
 }

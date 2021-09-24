@@ -16,7 +16,8 @@ public class MinByStudentsCount extends CommandAbstract {
     }
 
     @Override
-    public Response execute(Request aCommand) {
-        return receiver.minByStudentsCount();
+    public Response execute(Request aRequest) {
+        String username = aRequest.getSession().getName();
+        return receiver.minByStudentsCount(username);
     }
 }

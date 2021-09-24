@@ -9,7 +9,7 @@ public class Session implements Serializable {
 
     private final String name;
     private final String password;
-    private final TypeOfSession typeOfSession;
+    private TypeOfSession typeOfSession;
 
     public Session (String aName, String aPassword, TypeOfSession aTypeOfSession) {
         name = aName;
@@ -29,8 +29,8 @@ public class Session implements Serializable {
         return typeOfSession;
     }
 
-    public boolean isPasswordSpecified(){
-        return password != null;
+    public void setTypeOfSession(TypeOfSession aTypeOfSession) {
+        typeOfSession = aTypeOfSession;
     }
 
     @Override

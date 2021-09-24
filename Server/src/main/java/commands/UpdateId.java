@@ -18,7 +18,6 @@ public class UpdateId extends CommandAbstract {
 
     @Override
     public Response execute(Request aRequest) {
-
         StudyGroup upgradedGroup = aRequest.getCommand().getStudyGroup();
         int id = Integer.parseInt(aRequest.getCommand().getArg());
         return receiver.updateId(upgradedGroup, id);

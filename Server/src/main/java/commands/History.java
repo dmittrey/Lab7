@@ -1,31 +1,25 @@
 package commands;
 
+import utility.Receiver;
 import utility.Request;
 import utility.Response;
-
-import java.util.Deque;
 
 /**
  * Class for displaying last 14 commands
  */
 public class History extends CommandAbstract {
 
-    private final Deque<String> previousCommands;
+    private final Receiver receiver;
 
-    public History(Deque<String> aPreviousCommands) {
+    public History(Receiver aReceiver) {
         super("history", "print the last 14 commands (without their arguments)");
-        previousCommands = aPreviousCommands;
+        receiver = aReceiver;
     }
 
     @Override
-    public Response execute(Request aCommand) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("\n");
+    public Response execute(Request aRequest) {
 
-        previousCommands.stream()
-                .map(command -> ")" + command + "\n")
-                .forEach(sb::append);
-
-        return new Response(sb.toString());
+        String username = aRequest.getSession().getName();
+        return receiver.history(username);
     }
 }

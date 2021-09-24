@@ -1,7 +1,4 @@
-import utility.CommandReader;
-import utility.Console;
-import utility.RequestHandler;
-import utility.TextFormatting;
+import utility.*;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -24,6 +21,7 @@ public class Main {
 
                 getRequestHandlerProperties(scanner, InetAddress.getLocalHost());
                 RequestHandler.getInstance().setSocketStatus(true);
+                getSession();
                 System.out.println(RequestHandler.getInstance().getInformation());
 
                 CommandReader commandReader = new CommandReader();
@@ -97,5 +95,9 @@ public class Main {
         }
         RequestHandler.getInstance().setRemoteHostSocketAddress(
                 new InetSocketAddress(remoteHostAddress, getPort(scanner)));
+    }
+
+    private static void getSession() {
+        RequestHandler.getInstance().setSession(new SessionWorker(Console.getInstance()).getSession());
     }
 }

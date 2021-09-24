@@ -25,9 +25,7 @@ public enum Statements {
 
     deleteById("DELETE FROM s312502StudyGroups WHERE id = ?"),
 
-    clearAllByUser("DELETE FROM s312502StudyGroups WHERE author = ?"),
-
-    takeAll("SELECT * FROM s312502StudyGroups");
+    clearAllByUser("DELETE FROM s312502StudyGroups WHERE author = ?");
 
     private final String statement;
 

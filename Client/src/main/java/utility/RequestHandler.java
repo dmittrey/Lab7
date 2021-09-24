@@ -18,6 +18,7 @@ public class RequestHandler implements RequestHandlerInterface {
     private InetSocketAddress socketAddress;
     private boolean socketStatus;
     private final SessionWorkerInterface sessionWorker;
+    private Session session;
 
     public static RequestHandler getInstance() {
         if (instance == null) instance = new RequestHandler();
@@ -31,12 +32,13 @@ public class RequestHandler implements RequestHandlerInterface {
     @Override
     public String send(Command aCommand) {
         try {
-            Request request = new Request(aCommand, sessionWorker.getSession());
+            Request request = new Request(aCommand, session);
 
             SocketWorker socketWorker = new SocketWorker(socketAddress);
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(8192);
             ObjectOutputStream outObj = new ObjectOutputStream(byteArrayOutputStream);
             outObj.writeObject(request);
+            session.setTypeOfSession(TypeOfSession.Login);
             return socketWorker.sendRequest(byteArrayOutputStream.toByteArray());
         } catch (IOException e) {
             return TextFormatting.getRedText("\tRequest can't be serialized, call programmer!\n");
@@ -75,5 +77,10 @@ public class RequestHandler implements RequestHandlerInterface {
     @Override
     public boolean getSocketStatus() {
         return socketStatus;
+    }
+
+    @Override
+    public void setSession(Session aSession) {
+        session = aSession;
     }
 }

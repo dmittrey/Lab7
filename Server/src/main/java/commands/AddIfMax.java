@@ -18,8 +18,12 @@ public class AddIfMax extends CommandAbstract {
 
     @Override
     public Response execute(Request aRequest) {
-
         StudyGroup studyGroup = aRequest.getCommand().getStudyGroup();
-        return receiver.addIfMax(studyGroup);
+        String username = aRequest.getSession().getName();
+        String response = receiver.addIfMax(studyGroup);
+        if (response.equals(TextFormatting.getGreenText("\n\tStudy group has been added!\n"))){
+            receiver.addToHistory(username, "add_if_max");
+        }
+        return new Response(response);
     }
 }

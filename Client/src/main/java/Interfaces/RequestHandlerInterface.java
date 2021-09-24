@@ -2,6 +2,7 @@ package Interfaces;
 
 import data.StudyGroup;
 import utility.Command;
+import utility.Session;
 
 import java.net.InetSocketAddress;
 
@@ -36,4 +37,6 @@ public interface RequestHandlerInterface {
      * Return socket alive status
      */
     boolean getSocketStatus();
+
+    void setSession(Session aSession);
 }

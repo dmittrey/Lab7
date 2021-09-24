@@ -18,8 +18,7 @@ public class AddIfMin extends CommandAbstract {
 
     @Override
     public Response execute(Request aRequest) {
-
         StudyGroup studyGroup = aRequest.getCommand().getStudyGroup();
-        return receiver.addIfMin(studyGroup);
+        return new Response(receiver.addIfMin(studyGroup));
     }
 }

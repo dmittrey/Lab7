@@ -18,8 +18,8 @@ public class CountLessThanStudentsCount extends CommandAbstract {
 
     @Override
     public Response execute(Request aRequest) {
-
+        String username = aRequest.getSession().getName();
         Integer count = Integer.valueOf(aRequest.getCommand().getArg());
-        return receiver.countLessThanStudentsCount(count);
+        return receiver.countLessThanStudentsCount(count, username);
     }
 }

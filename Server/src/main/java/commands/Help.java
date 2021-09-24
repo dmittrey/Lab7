@@ -1,5 +1,6 @@
 package commands;
 
+import utility.Receiver;
 import utility.Request;
 import utility.Response;
 import utility.TextFormatting;
@@ -12,14 +13,17 @@ import java.util.Map;
 public class Help extends CommandAbstract {
 
     private final Map<String, CommandAbstract> commands;
+    private final Receiver receiver;
 
-    public Help(Map<String, CommandAbstract> aCommands) {
+    public Help(Map<String, CommandAbstract> aCommands, Receiver aReceiver) {
         super("help", "display help for available commands");
         commands = aCommands;
+        receiver = aReceiver;
     }
 
     @Override
     public Response execute(Request aRequest) {
+        String username = aRequest.getSession().getName();
         StringBuilder sb = new StringBuilder();
         sb.append(TextFormatting.getBlueText("\nList of commands:\n\n"));
 
@@ -36,6 +40,7 @@ public class Help extends CommandAbstract {
                 .append("exit : end the program (without saving it to a file)")
                 .append("\n\n");
 
+        receiver.addToHistory(username, "help");
         return new Response(sb.toString());
     }
 }

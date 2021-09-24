@@ -4,6 +4,9 @@ import data.StudyGroup;
 
 import java.util.Date;
 
+/**
+ * Set autogenerate fields to group
+ */
 public class AutoGenFieldsSetter {
 
     public static Request setFields(Request aRequest) {

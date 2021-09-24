@@ -31,22 +31,22 @@ public class DBInitializer {
                 "averageMark bigint CHECK(averageMark > 0)," +
                 "formOfEducation varchar(20) " +
                 "CHECK(formOfEducation='DISTANCE_EDUCATION' OR " +
-                    "formOfEducation='FULL_TIME_EDUCATION' OR " +
-                    "formOfEducation='EVENING_CLASSES')," +
+                "formOfEducation='FULL_TIME_EDUCATION' OR " +
+                "formOfEducation='EVENING_CLASSES')," +
                 "semesterEnum varchar(6) NOT NULL " +
                 "CHECK(semesterEnum='SECOND' OR " +
-                    "semesterEnum='THIRD' OR " +
-                    "semesterEnum='FOURTH' OR " +
-                    "semesterEnum='FIFTH' OR " +
-                    "semesterEnum='SIXTH')," +
+                "semesterEnum='THIRD' OR " +
+                "semesterEnum='FOURTH' OR " +
+                "semesterEnum='FIFTH' OR " +
+                "semesterEnum='SIXTH')," +
                 "groupAdminName varchar(255) NOT NULL CHECK(groupAdminName<>'')," +
                 "groupAdminWeight bigint NOT NULL CHECK(groupAdminWeight>0)," +
                 "groupAdminHairColor varchar(6) NOT NULL " +
                 "CHECK(groupAdminHairColor='BLACK' OR " +
-                    "groupAdminHairColor='BLUE' OR " +
-                    "groupAdminHairColor='YELLOW' OR " +
-                    "groupAdminHairColor='WHITE' OR " +
-                    "groupAdminHairColor='BROWN')," +
+                "groupAdminHairColor='BLUE' OR " +
+                "groupAdminHairColor='YELLOW' OR " +
+                "groupAdminHairColor='WHITE' OR " +
+                "groupAdminHairColor='BROWN')," +
                 "author varchar(255)" +
                 ")");
 

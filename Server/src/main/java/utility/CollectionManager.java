@@ -11,13 +11,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CollectionManager {
 
     private Set<StudyGroup> studyGroups;
-    private final HashSet<Integer> usedId;
     private final String initTime;
 
     public CollectionManager() {
         studyGroups = Collections.newSetFromMap(new ConcurrentHashMap<>());
         initTime = new Date().toString();
-        usedId = new HashSet<>();
     }
 
     public String getInfo() {

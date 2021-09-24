@@ -23,9 +23,9 @@ public class Main {
 
         logger.info("Entering server!");
 
-        try (Scanner scanner = new Scanner(System.in)) {
+        try (Scanner scanner = new Scanner(System.in);
+             DatagramSocket datagramSocket = getDatagramSocket(scanner)) {
 
-            DatagramSocket datagramSocket = getDatagramSocket(scanner);
             logger.info("Server listening port " + datagramSocket.getLocalPort() + "!");
 
             CollectionManager collectionManager = new CollectionManager();
@@ -50,17 +50,14 @@ public class Main {
     }
 
     private static DBWorker connectToDB() {
-//        Connection db;
-//        try {
-//            db = new DBConnector().connect();
-//        } catch (SQLException e) {
-//            System.out.println("Connection establishing problems");
-//            e.printStackTrace();
-//            return null;
-//        }
-//
-        DBConnector databaseConnector = new DBConnector();
-        Connection db = databaseConnector.makeConnection();
+        Connection db;
+        try {
+            db = new DBConnector().connect();
+        } catch (SQLException e) {
+            System.out.println("Connection establishing problems");
+            e.printStackTrace();
+            return null;
+        }
 
         DBInitializer dbInitializer = new DBInitializer(db);
         try {

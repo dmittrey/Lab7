@@ -16,12 +16,16 @@ public class Main {
             System.out.println(getEntryInformation());
 
             while (true) {
-
                 Console.getInstance().setScanner(scanner);
 
                 getRequestHandlerProperties(scanner, InetAddress.getLocalHost());
                 RequestHandler.getInstance().setSocketStatus(true);
-                getSession();
+                String sessionStatus = getSession();
+                if (!sessionStatus.equals("")) {
+                    System.out.println(TextFormatting.getRedText(sessionStatus));
+                    continue;
+                }
+
                 System.out.println(RequestHandler.getInstance().getInformation());
 
                 CommandReader commandReader = new CommandReader();
@@ -97,7 +101,13 @@ public class Main {
                 new InetSocketAddress(remoteHostAddress, getPort(scanner)));
     }
 
-    private static void getSession() {
-        RequestHandler.getInstance().setSession(new SessionWorker(Console.getInstance()).getSession());
+    private static String getSession() {
+        Session session = new SessionWorker(Console.getInstance()).getSession();
+
+        if (session.getTypeOfSession().equals(TypeOfSession.Register)) {
+            return RequestHandler.getInstance().register(session);
+        } else {
+            return RequestHandler.getInstance().login(session);
+        }
     }
 }

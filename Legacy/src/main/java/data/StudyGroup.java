@@ -51,6 +51,21 @@ public class StudyGroup implements Comparable<StudyGroup>, Serializable {
         author = null;
     }
 
+    public StudyGroup(int aId, String aName, Coordinates aCoordinates, Date aCreationDate, int aStudentsCount,
+                      Double aAverageMark, data.FormOfEducation aFormOfEducation, data.Semester aSemesterEnum,
+                      data.Person aGroupAdmin, String anAuthor) {
+        id = aId;
+        name = aName;//String
+        coordinates = aCoordinates;// Integer, Double
+        creationDate = aCreationDate; //Date
+        studentsCount = aStudentsCount; // Integer
+        averageMark = aAverageMark;//Double null
+        formOfEducation = aFormOfEducation;//String null
+        semesterEnum = aSemesterEnum;//String
+        groupAdmin = aGroupAdmin;//String, Long, String
+        author = anAuthor;//String
+    }
+
     public StudyGroup setId(Integer anId) {
         id = anId;
         return this;

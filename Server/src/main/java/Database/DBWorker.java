@@ -20,6 +20,15 @@ public class DBWorker {
         digest = MessageDigest.getInstance("SHA-512");
     }
 
+    public ResultSet getCollection() {
+        try {
+            PreparedStatement preparedStatement = db.prepareStatement(Statements.takeAll.getStatement());
+            return preparedStatement.executeQuery();
+        } catch (SQLException throwables) {
+            return null;
+        }
+    }
+
     public Integer addStudyGroup(StudyGroup aStudyGroup) {
         try {
             PreparedStatement preparedStatement = db.prepareStatement(Statements.addStudyGroup.getStatement());

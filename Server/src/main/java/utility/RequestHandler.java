@@ -1,8 +1,5 @@
 package utility;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.net.DatagramSocket;
 import java.net.SocketAddress;
 import java.util.concurrent.Executor;
@@ -19,7 +16,7 @@ public class RequestHandler {
     }
 
     public void process(Request request, DatagramSocket datagramSocket, SocketAddress socketAddress) {
-        ForkJoinPool requestHandler = new ForkJoinPool(Runtime.getRuntime().availableProcessors()/3);
+        ForkJoinPool requestHandler = new ForkJoinPool(Runtime.getRuntime().availableProcessors() / 3);
         Task task = new Task(invoker, request);
         Response response = requestHandler.invoke(task);
 

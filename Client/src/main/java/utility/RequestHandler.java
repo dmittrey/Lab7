@@ -38,7 +38,6 @@ public class RequestHandler implements RequestHandlerInterface {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(8192);
             ObjectOutputStream outObj = new ObjectOutputStream(byteArrayOutputStream);
             outObj.writeObject(request);
-            session.setTypeOfSession(TypeOfSession.Login);
             return socketWorker.sendRequest(byteArrayOutputStream.toByteArray());
         } catch (IOException e) {
             return TextFormatting.getRedText("\tRequest can't be serialized, call programmer!\n");
@@ -82,5 +81,15 @@ public class RequestHandler implements RequestHandlerInterface {
     @Override
     public void setSession(Session aSession) {
         session = aSession;
+    }
+
+    public String register(Session aSession) {
+        setSession(aSession);
+        return send(new Command("register", ""));
+    }
+
+    public String login(Session aSession) {
+        setSession(aSession);
+        return send(new Command("login", ""));
     }
 }

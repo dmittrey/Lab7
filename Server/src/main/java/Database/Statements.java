@@ -25,11 +25,13 @@ public enum Statements {
 
     deleteById("DELETE FROM s312502StudyGroups WHERE id = ?"),
 
-    clearAllByUser("DELETE FROM s312502StudyGroups WHERE author = ?");
+    clearAllByUser("DELETE FROM s312502StudyGroups WHERE author = ?"),
+
+    takeAll("SELECT * FROM s312502StudyGroups");
 
     private final String statement;
 
-    Statements (String aStatement) {
+    Statements(String aStatement) {
         statement = aStatement;
     }
 

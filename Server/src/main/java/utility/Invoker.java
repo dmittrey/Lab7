@@ -19,24 +19,12 @@ public class Invoker {
         initMap();
     }
 
-    public Receiver getReceiver(){
+    public Receiver getReceiver() {
         return receiver;
     }
 
     public Response execute(Request aRequest) {
-        boolean status;
         String aCommand = aRequest.getCommand().getCommand();
-
-        if (aRequest.getSession().getTypeOfSession() == TypeOfSession.Register) {
-            status = commands.get("register").execute(aRequest).getStatus();
-            if (!status) return new Response(TextFormatting.getRedText("\n\tThis account already registered!\n"));
-        } else {
-            status = commands.get("login").execute(aRequest).getStatus();
-            if (!status)
-                return new Response(TextFormatting.getRedText("\n\tAccount with this parameters doesn't exist! " +
-                        "Reboot the client to authorize again!\n"));
-        }
-
         return commands.get(aCommand).execute(aRequest);
     }
 

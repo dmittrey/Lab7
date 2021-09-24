@@ -2,7 +2,7 @@ package commands;
 
 import utility.*;
 
-public class LoginUser extends CommandAbstract{
+public class LoginUser extends CommandAbstract {
 
     private final Receiver receiver;
 
@@ -16,6 +16,9 @@ public class LoginUser extends CommandAbstract{
 
         String username = aRequest.getSession().getName();
         String password = aRequest.getSession().getPassword();
-        return receiver.loginUser(username, password) ? new Response(true) : new Response(false);
+        return receiver.loginUser(username, password)
+                ? new Response("")
+                : new Response(TextFormatting.getRedText("\n\tAccount with this parameters doesn't exist! " +
+                "Reboot the client to authorize again!\n"));
     }
 }

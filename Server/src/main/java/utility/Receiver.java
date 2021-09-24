@@ -1,10 +1,10 @@
 package utility;
 
 import Database.DBWorker;
-import data.StudyGroup;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import data.*;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,13 +16,36 @@ public class Receiver {
     private final CollectionManager collectionManager;
     private final DBWorker dbWorker;
     private final Map<String, ArrayDeque<String>> previousCommands;
-    public static final Logger logger = LoggerFactory.getLogger("Register");
 
     public Receiver(CollectionManager aCollectionManager, DBWorker aDBWorker) {
 
         collectionManager = aCollectionManager;
         dbWorker = aDBWorker;
         previousCommands = new HashMap<>();
+        getCollection();
+    }
+
+    private void getCollection() {
+        try {
+            ResultSet data = dbWorker.getCollection();
+            while (data.next()) {
+                collectionManager.add(new StudyGroup(
+                        data.getInt(1),
+                        data.getString(2),
+                        new Coordinates(data.getInt(3), data.getDouble(4)),
+                        data.getDate(5),//date
+                        data.getInt(6),//students count
+                        data.getString(7) != null ? Double.valueOf(data.getString(7)) : null,//average mark
+                        data.getString(8) != null ?
+                                FormOfEducation.valueOf(data.getString(8)) : null,//form of education
+                        Semester.valueOf(data.getString(9)),//semester enum
+                        new Person(data.getString(10),//name
+                                data.getLong(11),// weight
+                                Color.valueOf(data.getString(12))),//hair color
+                        data.getString(13)));//author
+            }
+        } catch (SQLException ignored) {
+        }
     }
 
     public Response info() {

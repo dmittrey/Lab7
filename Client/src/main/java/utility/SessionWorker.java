@@ -24,6 +24,7 @@ public class SessionWorker implements SessionWorkerInterface {
 
     /**
      * Type of Session
+     *
      * @return true if login, false if register
      */
     private boolean getSessionStatus() {
@@ -61,9 +62,7 @@ public class SessionWorker implements SessionWorkerInterface {
     }
 
     private String getUserPassword() {
-
         if (System.console() == null) {
-
             String password;
             Pattern passwordPattern = Pattern.compile("^\\s*\\b([\\d\\w]*)\\b\\s*");
             while (true) {
@@ -79,16 +78,15 @@ public class SessionWorker implements SessionWorkerInterface {
             }
             return password.trim();
         } else {
-
             String password;
             Pattern passwordPattern = Pattern.compile("^\\s*\\b([\\d\\w]*)\\b\\s*");
-
-            do {
+            while (true) {
                 console.print(TextFormatting.getGreenText("\tPlease, enter password! " +
                         "(You can skip this by keeping field in empty state): "));
                 password = new String(System.console().readPassword());
+                if (passwordPattern.matcher(password).find()) break;
                 console.print(TextFormatting.getRedText("\tPassword should be string of letters and digits!\n"));
-            } while (!passwordPattern.matcher(password).find());
+            }
             return password.trim();
         }
     }

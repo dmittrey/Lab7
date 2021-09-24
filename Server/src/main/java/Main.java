@@ -29,7 +29,8 @@ public class Main {
             logger.info("Server listening port " + datagramSocket.getLocalPort() + "!");
 
             CollectionManager collectionManager = new CollectionManager();
-            DBWorker dbWorker = connectToDB();//отладить при выходе из проги
+            DBWorker dbWorker = connectToDB();
+            if (dbWorker == null) return;
             Receiver receiver = new Receiver(collectionManager, dbWorker);
 
             Executor deliverManager = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() / 3);
@@ -50,28 +51,30 @@ public class Main {
     }
 
     private static DBWorker connectToDB() {
-        Connection db;
-        try {
-            db = new DBConnector().connect();
-        } catch (SQLException e) {
-            System.out.println("Connection establishing problems");
-            e.printStackTrace();
-            return null;
-        }
+//        Connection db;
+//        try {
+//            db = new DBConnector().connect();
+//            if (db == null) return null;
+//        } catch (SQLException e) {
+//            System.out.println("Connection establishing problems");
+//            return null;
+//        }
+
+        DBConnector databaseConnector = new DBConnector();
+        Connection db = databaseConnector.makeConnection();
 
         DBInitializer dbInitializer = new DBInitializer(db);
         try {
             dbInitializer.initialize();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warn("Something wrong with db!");
             return null;
         }
 
         try {
             return new DBWorker(db);
         } catch (NoSuchAlgorithmException e) {
-            System.out.println("Hashing algorithm  not found");
-            e.printStackTrace();
+            logger.warn("Hashing algorithm  not found");
             return null;
         }
     }

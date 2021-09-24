@@ -14,6 +14,8 @@ public class Task extends RecursiveTask<Response> {
 
     @Override
     protected Response compute() {
+        System.out.println(request);
+        System.out.println(invoker);
         return invoker.execute(request);
     }
 }

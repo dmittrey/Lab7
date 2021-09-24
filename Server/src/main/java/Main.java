@@ -54,12 +54,15 @@ public class Main {
     private static DBWorker connectToDB() {
         Connection db;
         try {
-            db = DBConnector.connect();
+            db = new DBConnector().connect();
         } catch (SQLException e) {
             System.out.println("Connection establishing problems");
             e.printStackTrace();
             return null;
         }
+//
+//        DBConnector databaseConnector = new DBConnector();
+//        Connection db = databaseConnector.makeConnection();
 
         DBInitializer dbInitializer = new DBInitializer(db);
         try {
@@ -70,8 +73,7 @@ public class Main {
         }
 
         try {
-            DBWorker dbWorker = new DBWorker(db);
-            return dbWorker;
+            return new DBWorker(db);
         } catch (NoSuchAlgorithmException e) {
             System.out.println("Hashing algorithm  not found");
             e.printStackTrace();

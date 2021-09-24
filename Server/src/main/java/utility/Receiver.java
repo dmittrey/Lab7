@@ -136,6 +136,7 @@ public class Receiver {
     }
 
     public boolean registerUser(String username, String password) {
+        System.out.println(2);
         return dbWorker.addUser(username, password);
     }
 

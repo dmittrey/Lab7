@@ -25,10 +25,10 @@ public class DBInitializer {
                 "id int PRIMARY KEY," +
                 "name varchar(255) NOT NULL CHECK(name<>'')," +
                 "xCoordinate int," +
-                "yCoordinate double NOT NULL," +
+                "yCoordinate bigint NOT NULL," +
                 "creationDate date DEFAULT (current_date)," +
                 "studentsCount int NOT NULL CHECK(studentsCount > 0)," +
-                "averageMark double CHECK(averageMark > 0)," +
+                "averageMark bigint CHECK(averageMark > 0)," +
                 "formOfEducation varchar(20) " +
                 "CHECK(formOfEducation='DISTANCE_EDUCATION' OR " +
                     "formOfEducation='FULL_TIME_EDUCATION' OR " +

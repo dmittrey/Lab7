@@ -21,15 +21,23 @@ public class Invoker {
     }
 
     public Response execute(Request aRequest) {
+        Response status;
         String aCommand = aRequest.getCommand().getCommand();
 
-        previousCommands.offerLast(aCommand);
-        if (previousCommands.size() == 15) previousCommands.removeFirst();
+        if (aRequest.getSession().getTypeOfSession() == TypeOfSession.Register)
+            status = commands.get("register").execute(aRequest);
+        else status = commands.get("login").execute(aRequest);
 
-        return commands.get(aCommand).execute(aRequest);
+        if (status == null) {
+            previousCommands.offerLast(aCommand);
+            if (previousCommands.size() == 15) previousCommands.removeFirst();
+
+            return commands.get(aCommand).execute(aRequest);
+        } else return status;
     }
 
     private void initMap() {
+        // TODO: 24/09/2021 Убрать утилитарные команды из help
         commands.put("help", new Help(commands));
         commands.put("info", new Info(receiver));
         commands.put("show", new Show(receiver));
@@ -43,5 +51,7 @@ public class Invoker {
         commands.put("min_by_students_count", new MinByStudentsCount(receiver));
         commands.put("count_less_than_students_count", new CountLessThanStudentsCount(receiver));
         commands.put("filter_starts_with_name", new FilterStartsWithName(receiver));
+        commands.put("register", new RegisterUser(receiver));
+        commands.put("login", new LoginUser(receiver));
     }
 }

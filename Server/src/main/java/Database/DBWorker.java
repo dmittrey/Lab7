@@ -20,15 +20,15 @@ public class DBWorker {
         digest = MessageDigest.getInstance("SHA-512");
     }
 
-    public boolean addStudyGroup(StudyGroup aStudyGroup) {
+    public Integer addStudyGroup(StudyGroup aStudyGroup) {
         try {
-            PreparedStatement preparedStatement = db.prepareStatement(Statements.insertStudyGroup.getStatement());
-            setStudyGroupToStatement(preparedStatement, aStudyGroup);
+            PreparedStatement preparedStatement = db.prepareStatement(Statements.addStudyGroup.getStatement());
+            Integer newId = setStudyGroupToStatement(preparedStatement, aStudyGroup);
             preparedStatement.executeUpdate();
+            return newId;
         } catch (SQLException throwables) {
-            return false;
+            return 0;
         }
-        return true;
     }
 
     public String updateById(StudyGroup aStudyGroup, int anId) {
@@ -84,6 +84,31 @@ public class DBWorker {
         }
     }
 
+    public boolean addUser(String anUsername, String aPassword) {
+        try {
+            PreparedStatement insertStatement = db.prepareStatement(Statements.addUserWithPassword.getStatement());
+            insertStatement.setString(1, anUsername);
+            insertStatement.setBytes(2, getHash(aPassword));
+            insertStatement.executeUpdate();
+        } catch (SQLException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean loginUser(String anUsername, String aPassword) {
+        try {
+            PreparedStatement checkStatement = db.prepareStatement(Statements.checkUser.getStatement());
+            checkStatement.setString(1, anUsername);
+            checkStatement.setBytes(2, getHash(aPassword));
+            ResultSet user = checkStatement.executeQuery();
+            return user.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     private Integer generateId() {
         try {
             Statement statement = db.createStatement();
@@ -97,8 +122,9 @@ public class DBWorker {
         }
     }
 
-    private void setStudyGroupToStatement(PreparedStatement stmt, StudyGroup sg) throws SQLException {
-        sg.setId(generateId());
+    private Integer setStudyGroupToStatement(PreparedStatement stmt, StudyGroup sg) throws SQLException {
+        Integer newId = generateId();
+        sg.setId(newId);
         stmt.setInt(1, sg.getId());
         stmt.setString(2, sg.getName());
         stmt.setInt(3, sg.getCoordinates().getX());
@@ -111,6 +137,8 @@ public class DBWorker {
         stmt.setLong(10, sg.getGroupAdmin().getWeight());
         stmt.setString(11, sg.getGroupAdmin().getHairColor().toString());
         stmt.setString(12, sg.getAuthor());
+
+        return newId;
     }
 
     private void setUpdatedStudyGroupToStatement(PreparedStatement stmt, StudyGroup sg) throws SQLException {

@@ -9,15 +9,12 @@ public class Session implements Serializable {
 
     private final String name;
     private final String password;
+    private final TypeOfSession typeOfSession;
 
-    public Session(String aName, String aPassword) {
+    public Session (String aName, String aPassword, TypeOfSession aTypeOfSession) {
         name = aName;
-        password = aPassword;
-    }
-
-    public Session(String aName) {
-        name = aName;
-        password = null;
+        password = (aPassword.trim().equals("")) ? null : aPassword;
+        typeOfSession = aTypeOfSession;
     }
 
     public String getName(){
@@ -26,6 +23,10 @@ public class Session implements Serializable {
 
     public String getPassword(){
         return password;
+    }
+
+    public TypeOfSession getTypeOfSession(){
+        return typeOfSession;
     }
 
     public boolean isPasswordSpecified(){

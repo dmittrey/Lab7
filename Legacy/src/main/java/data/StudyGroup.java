@@ -51,8 +51,9 @@ public class StudyGroup implements Comparable<StudyGroup>, Serializable {
         author = null;
     }
 
-    public void setId(Integer anId) {
+    public StudyGroup setId(Integer anId) {
         id = anId;
+        return this;
     }
 
     public void setName(String aName) {

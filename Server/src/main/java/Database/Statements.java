@@ -5,14 +5,14 @@ package Database;
  */
 public enum Statements {
 
-    insertStudyGroup("INSERT INTO s312502StudyGroups " +
+    addStudyGroup("INSERT INTO s312502StudyGroups " +
             "(id, name, xCoordinate, yCoordinate, studentsCount, averageMark, formOfEducation, " +
             "semesterEnum, groupAdminName, groupAdminWeight, groupAdminHairColor, author) " +
             "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"),
 
     generateId("SELECT nextval('ids')"),
 
-    insertUserWithPassword("INSERT INTO s312502Users (username, hashPassword) VALUES(?, ?)"),
+    addUserWithPassword("INSERT INTO s312502Users (username, hashPassword) VALUES(?, ?)"),
 
     checkUser("SELECT * FROM s312502Users WHERE username=? AND hashPassword=?"),
 

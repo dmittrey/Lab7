@@ -25,6 +25,7 @@ public class Help extends CommandAbstract {
 
         commands.keySet()
                 .stream()
+                .filter(str -> !(str.equals("register") || str.equals("login")))
                 .map(command -> "\t" + commands.get(command).getDescription() + "\n\n")
                 .forEach(sb::append);
         sb.append("\t")

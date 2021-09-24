@@ -33,9 +33,11 @@ public class Receiver {
 
     public Response add(StudyGroup aStudyGroup) {
 
-        if (dbWorker.addStudyGroup(aStudyGroup)) {
-            collectionManager.add(aStudyGroup);
-            return new Response(TextFormatting.getGreenText("\n\tStudy group has been added!\n"));
+        Integer id = dbWorker.addStudyGroup(aStudyGroup);
+
+        if (id != 0) {
+            collectionManager.add(aStudyGroup.setId(id));
+            return null;
         } else {
             return new Response(TextFormatting.getRedText("\tThis element probably duplicates " +
                     "existing one and can't be added\n"));
@@ -84,24 +86,18 @@ public class Receiver {
 
     public Response addIfMax(StudyGroup aStudyGroup) {
 
-        if (collectionManager.getMax() != null && aStudyGroup.compareTo(collectionManager.getMax()) >= 0) {
-            if (dbWorker.addStudyGroup(aStudyGroup)) {
-                collectionManager.add(aStudyGroup);
-                return new Response(TextFormatting.getGreenText("\n\n\tStudy group has been added!\n"));
-            }
-            return new Response(TextFormatting.getRedText("\n\tFailed to add study group to db!\n"));
-        } else return new Response(TextFormatting.getRedText("\n\tStudy group isn't max!\n"));
+        if (collectionManager.getMax() != null && aStudyGroup.compareTo(collectionManager.getMax()) >= 0)
+            return add(aStudyGroup);
+
+        else return new Response(TextFormatting.getRedText("\n\tStudy group isn't max!\n"));
     }
 
     public Response addIfMin(StudyGroup aStudyGroup) {
 
-        if (collectionManager.getMax() != null && aStudyGroup.compareTo(collectionManager.getMin()) <= 0) {
-            if (dbWorker.addStudyGroup(aStudyGroup)) {
-                collectionManager.add(aStudyGroup);
-                return new Response(TextFormatting.getGreenText("\n\n\tStudy group has been added!\n"));
-            }
-            return new Response(TextFormatting.getRedText("\n\tFailed to add study group to db!\n"));
-        } else return new Response(TextFormatting.getRedText("\n\tStudy group isn't min!\n"));
+        if (collectionManager.getMax() != null && aStudyGroup.compareTo(collectionManager.getMin()) <= 0)
+            return add(aStudyGroup);
+
+        else return new Response(TextFormatting.getRedText("\n\tStudy group isn't min!\n"));
     }
 
     public Response minByStudentsCount() {
@@ -137,5 +133,13 @@ public class Receiver {
         if (groups.isEmpty()) return new Response(TextFormatting.getRedText("\n\tNo objects found!\n"));
 
         return new Response(groups);
+    }
+
+    public boolean registerUser(String username, String password) {
+        return dbWorker.addUser(username, password);
+    }
+
+    public boolean loginUser(String anUsername, String aPassword) {
+        return dbWorker.loginUser(anUsername, aPassword);
     }
 }

@@ -19,7 +19,6 @@ public class RequestHandler implements RequestHandlerInterface {
     private boolean socketStatus;
     private final SessionWorkerInterface sessionWorker;
 
-
     public static RequestHandler getInstance() {
         if (instance == null) instance = new RequestHandler();
         return instance;

@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
 import java.util.regex.Pattern;
 
 public class Main {
@@ -34,6 +35,7 @@ public class Main {
             Receiver receiver = new Receiver(collectionManager, dbWorker);
 
             Executor deliverManager = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() / 3);
+            ForkJoinPool forkJoinPool = new ForkJoinPool(Runtime.getRuntime().availableProcessors() / 3);
 
             Runtime.getRuntime().addShutdownHook(new Thread(new ExitSaver()));
 
@@ -42,7 +44,7 @@ public class Main {
                 DatagramPacket packet = new DatagramPacket(buf, buf.length);
                 datagramSocket.receive(packet);
                 RequestReceiver requestReceiver = new RequestReceiver(datagramSocket, packet,
-                        new Invoker(receiver), deliverManager);
+                        new Invoker(receiver), deliverManager, forkJoinPool);
                 requestReceiver.start();
             }
         } catch (IOException e) {
@@ -71,7 +73,7 @@ public class Main {
         try {
             return new DBWorker(db);
         } catch (NoSuchAlgorithmException e) {
-            logger.warn("Hashing algorithm  not found");
+            logger.warn("Hashing algorithm not found!");
             return null;
         }
     }

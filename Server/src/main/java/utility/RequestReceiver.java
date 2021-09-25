@@ -10,6 +10,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ForkJoinPool;
 
 public class RequestReceiver extends Thread {
 
@@ -19,10 +20,10 @@ public class RequestReceiver extends Thread {
     public static final Logger logger = LoggerFactory.getLogger("Server");
 
     public RequestReceiver(DatagramSocket aDatagramSocket, DatagramPacket aDatagramPacket,
-                           Invoker anInvoker, Executor aDeliverManager) throws SocketException {
+                           Invoker anInvoker, Executor aDeliverManager, ForkJoinPool aForkJoinPool) throws SocketException {
 
         datagramSocket = aDatagramSocket;
-        requestHandler = new RequestHandler(anInvoker, aDeliverManager);
+        requestHandler = new RequestHandler(anInvoker, aDeliverManager, aForkJoinPool);
         datagramPacket = aDatagramPacket;
     }
 

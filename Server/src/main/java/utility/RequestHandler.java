@@ -9,16 +9,17 @@ public class RequestHandler {
 
     private final Invoker invoker;
     private final Executor deliverManager;
+    private final ForkJoinPool forkJoinPool;
 
-    public RequestHandler(Invoker anInvoker, Executor aDeliverManager) {
+    public RequestHandler(Invoker anInvoker, Executor aDeliverManager, ForkJoinPool aForkJoinPool) {
         invoker = anInvoker;
         deliverManager = aDeliverManager;
+        forkJoinPool = aForkJoinPool;
     }
 
     public void process(Request request, DatagramSocket datagramSocket, SocketAddress socketAddress) {
-        ForkJoinPool requestHandler = new ForkJoinPool(Runtime.getRuntime().availableProcessors() / 3);
         Task task = new Task(invoker, request);
-        Response response = requestHandler.invoke(task);
+        Response response = forkJoinPool.invoke(task);
 
         Deliver deliver = new Deliver(datagramSocket, response, socketAddress);
         deliverManager.execute(deliver);

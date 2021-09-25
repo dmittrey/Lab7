@@ -1,4 +1,4 @@
-package Database;
+package database;
 
 /**
  * Enum of database universal statements

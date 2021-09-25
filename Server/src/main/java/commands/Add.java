@@ -18,11 +18,6 @@ public class Add extends CommandAbstract {
     @Override
     public Response execute(Request aRequest) {
         StudyGroup studyGroup = aRequest.getCommand().getStudyGroup();
-        String username = aRequest.getSession().getName();
-        String response = receiver.add(studyGroup);
-        if (response.equals(TextFormatting.getGreenText("\n\tStudy group has been added!\n"))) {
-            receiver.addToHistory(username, "add");
-        }
-        return new Response(response);
+        return new Response(receiver.add(studyGroup));
     }
 }

@@ -1,6 +1,6 @@
-import Database.DBConnector;
-import Database.DBInitializer;
-import Database.DBWorker;
+import database.DBConnector;
+import database.DBInitializer;
+import database.DBWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utility.*;

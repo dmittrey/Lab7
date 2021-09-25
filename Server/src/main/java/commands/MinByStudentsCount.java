@@ -1,5 +1,6 @@
 package commands;
 
+import data.StudyGroup;
 import utility.*;
 
 /**
@@ -18,6 +19,7 @@ public class MinByStudentsCount extends CommandAbstract {
     @Override
     public Response execute(Request aRequest) {
         String username = aRequest.getSession().getName();
-        return receiver.minByStudentsCount(username);
+        StudyGroup minGroup = receiver.minByStudentsCount(username);
+        return (minGroup == null) ? new Response(TypeOfAnswer.EMPTYCOLLECTION) : new Response(minGroup);
     }
 }

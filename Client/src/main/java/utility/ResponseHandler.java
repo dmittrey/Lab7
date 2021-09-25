@@ -26,9 +26,10 @@ public class ResponseHandler implements ResponseHandlerInterface {
     @Override
     public String receive(ByteBuffer buffer) {
         try {
+            Animator animator = Animator.getInstance();
             ObjectInputStream inObj = new ObjectInputStream(new ByteArrayInputStream(buffer.array()));
             Response response = (Response) inObj.readObject();
-            return response.toString();
+            return animator.animate(response);
         } catch (ClassNotFoundException e) {
             return TextFormatting.getRedText("\tServer version is unsupported!\n");
         } catch (InvalidClassException e) {

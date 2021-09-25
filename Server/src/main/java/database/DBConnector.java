@@ -1,4 +1,4 @@
-package Database;
+package database;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class DBConnector {
 
-    public static final Logger logger = LoggerFactory.getLogger("Database");
+    public static final Logger logger = LoggerFactory.getLogger("database");
 
     public Connection connect() throws SQLException {
         try {

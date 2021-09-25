@@ -1,27 +1,27 @@
 package utility;
 
-import Database.DBWorker;
+import database.DBWorker;
 import data.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayDeque;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class Receiver {
 
     private final CollectionManager collectionManager;
     private final DBWorker dbWorker;
-    private final Map<String, ArrayDeque<String>> previousCommands;
+    private final Map<String, ArrayBlockingQueue<String>> previousCommands;
 
     public Receiver(CollectionManager aCollectionManager, DBWorker aDBWorker) {
 
         collectionManager = aCollectionManager;
         dbWorker = aDBWorker;
-        previousCommands = new HashMap<>();
+        previousCommands = new ConcurrentHashMap<>();
         getCollection();
     }
 
@@ -33,169 +33,127 @@ public class Receiver {
                         data.getInt(1),
                         data.getString(2),
                         new Coordinates(data.getInt(3), data.getDouble(4)),
-                        data.getDate(5),//date
-                        data.getInt(6),//students count
-                        data.getString(7) != null ? Double.valueOf(data.getString(7)) : null,//average mark
+                        data.getDate(5),
+                        data.getInt(6),
+                        data.getString(7) != null ? Double.valueOf(data.getString(7)) : null,
                         data.getString(8) != null ?
-                                FormOfEducation.valueOf(data.getString(8)) : null,//form of education
-                        Semester.valueOf(data.getString(9)),//semester enum
-                        new Person(data.getString(10),//name
-                                data.getLong(11),// weight
-                                Color.valueOf(data.getString(12))),//hair color
-                        data.getString(13)));//author
+                                FormOfEducation.valueOf(data.getString(8)) : null,
+                        Semester.valueOf(data.getString(9)),
+                        new Person(data.getString(10),
+                                data.getLong(11),
+                                Color.valueOf(data.getString(12))),
+                        data.getString(13)));
             }
         } catch (SQLException ignored) {
         }
     }
 
-    public Response info() {
-
-        return new Response(TextFormatting.getBlueText("\nInformation about collection:\n")
-                + collectionManager.getInfo());
+    public String info() {
+        return collectionManager.getInfo();
     }
 
-    public Response show() {
-
-        if (collectionManager.getCollection().size() == 0)
-            return new Response(TextFormatting.getRedText("\n\tCollection is empty!\n"));
-
-        return new Response(collectionManager.getCollection());
+    public Set<StudyGroup> show() {
+        if (collectionManager.getCollection().size() == 0) return null;
+        else return collectionManager.getCollection();
     }
 
-    public String add(StudyGroup aStudyGroup) {
-
+    public TypeOfAnswer add(StudyGroup aStudyGroup) {
         Integer id = dbWorker.addStudyGroup(aStudyGroup);
 
         if (id != 0) {
             collectionManager.add(aStudyGroup.setId(id));
-            return TextFormatting.getGreenText("\n\tStudy group has been added!\n");
+            this.addToHistory(aStudyGroup.getAuthor(), "add");
+            return TypeOfAnswer.SUCCESSFUL;
         } else {
-            return TextFormatting.getRedText("\tThis element probably duplicates " +
-                    "existing one and can't be added\n");
+            return TypeOfAnswer.DUPLICATESDETECTED;
         }
     }
 
-    public Response updateId(StudyGroup anUpgradedGroup, int anId) {
+    public TypeOfAnswer updateId(StudyGroup anUpgradedGroup, int anId) {
+        TypeOfAnswer status = dbWorker.updateById(anUpgradedGroup, anId);
 
-        String status = dbWorker.updateById(anUpgradedGroup, anId);
-
-        if (status == null) {
+        if (status.equals(TypeOfAnswer.SUCCESSFUL)) {
             StudyGroup studyGroup = collectionManager.getId(anId);
             collectionManager.remove(studyGroup);
             anUpgradedGroup.setId(anId);
             collectionManager.add(anUpgradedGroup);
             this.addToHistory(anUpgradedGroup.getAuthor(), "update");
-            return new Response(TextFormatting.getGreenText("\n\tObject has been updated!\n"));
-        }
-
-        return new Response(status);
+            return TypeOfAnswer.SUCCESSFUL;
+        } else return status;
     }
 
-    public Response removeById(String anUsername, int anId) {
+    public TypeOfAnswer removeById(String anUsername, int anId) {
+        TypeOfAnswer status = dbWorker.removeById(anId, anUsername);
 
-        String status = dbWorker.removeById(anId, anUsername);
-
-        if (status == null) {
+        if (status.equals(TypeOfAnswer.SUCCESSFUL)) {
             StudyGroup studyGroup = collectionManager.getId(anId);
             collectionManager.remove(studyGroup);
             this.addToHistory(anUsername, "remove_by_id");
-            return new Response(TextFormatting.getGreenText("\n\tObject has been removed!\n"));
-        }
-
-        return new Response(status);
+            return TypeOfAnswer.SUCCESSFUL;
+        } else return status;
     }
 
-    public Response clear(String anUsername) {
+    public TypeOfAnswer clear(String anUsername) {
+        TypeOfAnswer status = dbWorker.clear(anUsername);
 
-        String status = dbWorker.clear(anUsername);
-
-        if (status == null) {
+        if (status.equals(TypeOfAnswer.SUCCESSFUL)) {
             collectionManager.clear(anUsername);
             this.addToHistory(anUsername, "clear");
-            return new Response(TextFormatting.getGreenText("\n\tSuccessful!\n"));
-        }
-
-        return new Response(status);
+            return TypeOfAnswer.SUCCESSFUL;
+        } else return status;
     }
 
-    public String addIfMax(StudyGroup aStudyGroup) {
-
+    public TypeOfAnswer addIfMax(StudyGroup aStudyGroup) {
         if (collectionManager.getMax() != null && aStudyGroup.compareTo(collectionManager.getMax()) >= 0)
             return add(aStudyGroup);
-
-        else return TextFormatting.getRedText("\n\tStudy group isn't max!\n");
+        else return TypeOfAnswer.ISNTMAX;
     }
 
-    public String addIfMin(StudyGroup aStudyGroup) {
-
+    public TypeOfAnswer addIfMin(StudyGroup aStudyGroup) {
         if (collectionManager.getMax() != null && aStudyGroup.compareTo(collectionManager.getMin()) <= 0)
             return add(aStudyGroup);
-
-        else return TextFormatting.getRedText("\n\tStudy group isn't min!\n");
+        else return TypeOfAnswer.ISNTMIN;
     }
 
-    public Response history(String anUsername) {
-        ArrayDeque<String> userCommands = previousCommands.get(anUsername);
-        if (userCommands != null) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("\n");
-            userCommands.stream()
-                    .map(command -> ")" + command + "\n")
-                    .forEach(sb::append);
-            return new Response(sb.toString());
-        } else return new Response(TextFormatting.getRedText("\n\tNo commands executed!\n"));
+    public ArrayBlockingQueue<String> history(String anUsername) {
+        return previousCommands.get(anUsername);
     }
 
     public void addToHistory(String anUsername, String aCommand) {
-        ArrayDeque<String> previousUserCommands = previousCommands.get(anUsername);
+        ArrayBlockingQueue<String> previousUserCommands = previousCommands.get(anUsername);
         if (previousUserCommands != null) {
-            previousUserCommands.offerLast(aCommand);
-            if (previousCommands.size() == 15) previousUserCommands.removeFirst();
+            previousUserCommands.offer(aCommand);
+            if (previousCommands.size() == 15) previousUserCommands.poll();
         } else {
-            previousCommands.put(anUsername, new ArrayDeque<>(14));
-            previousCommands.get(anUsername).offerLast(aCommand);
+            previousCommands.put(anUsername, new ArrayBlockingQueue<>(14));
+            previousCommands.get(anUsername).offer(aCommand);
         }
     }
 
-    public Response minByStudentsCount(String anUsername) {
-
+    public StudyGroup minByStudentsCount(String anUsername) {
         this.addToHistory(anUsername, "min_by_students_count");
-
-        if (collectionManager.getMinStudentsCount() != null)
-            return new Response(collectionManager.getMinStudentsCount());
-        else
-            return new Response(TextFormatting.getRedText("\n\tThere are no study groups in the collection yet!\n"));
+        return collectionManager.getMinStudentsCount();
     }
 
-    public Response countLessThanStudentsCount(Integer aCount, String anUsername) {
-
+    public Long countLessThanStudentsCount(Integer aCount, String anUsername) {
         this.addToHistory(anUsername, "count_less_than_students_count");
 
-        if (collectionManager.getCollection().size() == 0)
-            return new Response(TextFormatting.getRedText("\n\tCollection is empty!\n"));
-
-        long count = collectionManager.getCollection().stream().filter(studyGroup ->
-                studyGroup.getStudentsCount() < aCount).count();
-
-        return new Response(TextFormatting.getGreenText("\n\tAmount of elements: " + count + "\n"));
+        if (collectionManager.getCollection().size() == 0) return null;
+        return collectionManager.getCollection()
+                .stream()
+                .filter(studyGroup -> studyGroup.getStudentsCount() < aCount)
+                .count();
     }
 
-    public Response filterStartsWithName(String aStartName, String anUsername) {
-
+    public Set<StudyGroup> filterStartsWithName(String aStartName, String anUsername) {
         this.addToHistory(anUsername, "filter_starts_with_name");
 
         Set<StudyGroup> collection = collectionManager.getCollection();
+        if (collection.size() == 0) return null;
 
-        if (collection.size() == 0) return new Response(TextFormatting.getRedText("\n\tCollection is empty!\n"));
-
-        Set<StudyGroup> groups = collection
-                .stream()
+        return collection.stream()
                 .filter(studyGroup -> studyGroup.getName().startsWith(aStartName))
                 .collect(Collectors.toSet());
-
-        if (groups.isEmpty()) return new Response(TextFormatting.getRedText("\n\tNo objects found!\n"));
-
-        return new Response(groups);
     }
 
     public boolean registerUser(String username, String password) {

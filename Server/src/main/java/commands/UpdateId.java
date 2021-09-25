@@ -20,6 +20,6 @@ public class UpdateId extends CommandAbstract {
     public Response execute(Request aRequest) {
         StudyGroup upgradedGroup = aRequest.getCommand().getStudyGroup();
         int id = Integer.parseInt(aRequest.getCommand().getArg());
-        return receiver.updateId(upgradedGroup, id);
+        return new Response(receiver.updateId(upgradedGroup, id));
     }
 }

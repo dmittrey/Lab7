@@ -1,9 +1,6 @@
 package commands;
 
-import utility.Receiver;
-import utility.Request;
-import utility.Response;
-import utility.TextFormatting;
+import utility.*;
 
 public class RegisterUser extends CommandAbstract {
 
@@ -16,12 +13,11 @@ public class RegisterUser extends CommandAbstract {
 
     @Override
     public Response execute(Request aRequest) {
-
         String username = aRequest.getSession().getName();
         String password = aRequest.getSession().getPassword();
         if (!receiver.loginUser(username, password)) {
-            if (receiver.registerUser(username, password)) return new Response("");
+            if (receiver.registerUser(username, password)) return new Response(TypeOfAnswer.SUCCESSFUL);
         }
-        return new Response(TextFormatting.getRedText("\n\tThis account already registered!\n"));
+        return new Response(TypeOfAnswer.ALREADYREGISTERED);
     }
 }

@@ -1,7 +1,7 @@
-package Database;
+package database;
 
 import data.StudyGroup;
-import utility.TextFormatting;
+import utility.TypeOfAnswer;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -34,62 +34,62 @@ public class DBWorker {
             PreparedStatement preparedStatement = db.prepareStatement(Statements.addStudyGroup.getStatement());
             Integer newId = setStudyGroupToStatement(preparedStatement, aStudyGroup);
             preparedStatement.executeUpdate();
-            return newId;
+            return (newId == null) ? 0 : newId;
         } catch (SQLException throwables) {
             return 0;
         }
     }
 
-    public String updateById(StudyGroup aStudyGroup, int anId) {
+    public TypeOfAnswer updateById(StudyGroup aStudyGroup, int anId) {
         try {
-            String getStatus = getById(anId, aStudyGroup.getAuthor());
-            if (getStatus != null) return getStatus;
+            TypeOfAnswer status = getById(anId, aStudyGroup.getAuthor());
+            if (!status.equals(TypeOfAnswer.SUCCESSFUL)) return status;
 
             PreparedStatement preparedStatement = db.prepareStatement(Statements.updateStudyGroup.getStatement());
             setUpdatedStudyGroupToStatement(preparedStatement, aStudyGroup);
             preparedStatement.executeUpdate();
-            return null;
+            return TypeOfAnswer.SUCCESSFUL;
         } catch (SQLException throwables) {
-            return TextFormatting.getRedText("\n\tSome problem's with DB, try again!\n");
+            return TypeOfAnswer.SQLPROBLEM;
         }
     }
 
-    public String removeById(int anId, String anUsername) {
+    public TypeOfAnswer removeById(int anId, String anUsername) {
         try {
-            String getStatus = getById(anId, anUsername);
-            if (getStatus != null) return getStatus;
+            TypeOfAnswer status = getById(anId, anUsername);
+            if (!status.equals(TypeOfAnswer.SUCCESSFUL)) return status;
 
             PreparedStatement preparedStatement = db.prepareStatement(Statements.deleteById.getStatement());
             preparedStatement.setInt(1, anId);
             preparedStatement.executeUpdate();
-            return null;
+            return TypeOfAnswer.SUCCESSFUL;
         } catch (SQLException throwables) {
-            return TextFormatting.getRedText("\n\tSome problem's with DB, try again!\n");
+            return TypeOfAnswer.SQLPROBLEM;
         }
     }
 
-    public String getById(int anId, String anUsername) throws SQLException {
+    public TypeOfAnswer getById(int anId, String anUsername) throws SQLException {
         PreparedStatement preparedStatement = db.prepareStatement(Statements.getById.getStatement());
         preparedStatement.setInt(1, anId);
         ResultSet deletingStudyGroup = preparedStatement.executeQuery();
 
         if (!deletingStudyGroup.next())
-            return TextFormatting.getRedText("\n\tAn object with this id does not exist!\n");
+            return TypeOfAnswer.OBJECTNOTEXIST;
 
         if (!deletingStudyGroup.getString("author").equals(anUsername))
-            return TextFormatting.getRedText("\n\tPermission denied\n");
+            return TypeOfAnswer.PERMISSIONDENIED;
 
-        return null;
+        return TypeOfAnswer.SUCCESSFUL;
     }
 
-    public String clear(String username) {
+    public TypeOfAnswer clear(String username) {
         try {
             PreparedStatement preparedStatement = db.prepareStatement(Statements.clearAllByUser.getStatement());
             preparedStatement.setString(1, username);
             preparedStatement.executeUpdate();
-            return null;
+            return TypeOfAnswer.SUCCESSFUL;
         } catch (SQLException throwables) {
-            return TextFormatting.getRedText("\n\tAn object with this id does not exist!\n");
+            return TypeOfAnswer.SQLPROBLEM;
         }
     }
 
@@ -113,7 +113,6 @@ public class DBWorker {
             ResultSet user = checkStatement.executeQuery();
             return user.next();
         } catch (SQLException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -133,6 +132,8 @@ public class DBWorker {
 
     private Integer setStudyGroupToStatement(PreparedStatement stmt, StudyGroup sg) throws SQLException {
         Integer newId = generateId();
+        if (newId == null) return null;
+
         sg.setId(newId);
         stmt.setInt(1, sg.getId());
         stmt.setString(2, sg.getName());

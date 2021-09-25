@@ -20,10 +20,10 @@ public class AddIfMax extends CommandAbstract {
     public Response execute(Request aRequest) {
         StudyGroup studyGroup = aRequest.getCommand().getStudyGroup();
         String username = aRequest.getSession().getName();
-        String response = receiver.addIfMax(studyGroup);
-        if (response.equals(TextFormatting.getGreenText("\n\tStudy group has been added!\n"))) {
+        TypeOfAnswer status = receiver.addIfMax(studyGroup);
+        if (status.equals(TypeOfAnswer.SUCCESSFUL)) {
             receiver.addToHistory(username, "add_if_max");
         }
-        return new Response(response);
+        return new Response(status);
     }
 }

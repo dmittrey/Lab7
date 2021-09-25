@@ -1,5 +1,7 @@
 package Interfaces;
 
+import utility.Command;
+
 import java.nio.ByteBuffer;
 
 public interface ResponseHandlerInterface {

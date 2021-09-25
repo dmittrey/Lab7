@@ -1,5 +1,7 @@
 package Interfaces;
 
+import utility.Command;
+
 public interface SocketWorkerInterface {
 
     /**

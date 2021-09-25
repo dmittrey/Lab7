@@ -20,6 +20,7 @@ public class CountLessThanStudentsCount extends CommandAbstract {
     public Response execute(Request aRequest) {
         String username = aRequest.getSession().getName();
         Integer count = Integer.valueOf(aRequest.getCommand().getArg());
-        return receiver.countLessThanStudentsCount(count, username);
+        Long countStudyGroups = receiver.countLessThanStudentsCount(count, username);
+        return (countStudyGroups == null) ? new Response(TypeOfAnswer.EMPTYCOLLECTION) : new Response(countStudyGroups);
     }
 }

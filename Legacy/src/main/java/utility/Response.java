@@ -12,12 +12,18 @@ import java.util.Set;
 public class Response implements Serializable {
 
     private String information;
+    private TypeOfAnswer responseStatus;
     private StudyGroup studyGroup;
     private Set<StudyGroup> collection;
     private boolean status;
+    private long count;
 
     public Response(String anInformation) {
         information = anInformation;
+    }
+
+    public Response(TypeOfAnswer aTypeOfResponse) {
+        responseStatus = aTypeOfResponse;
     }
 
     public Response(StudyGroup aStudyGroup) {
@@ -32,6 +38,10 @@ public class Response implements Serializable {
         status = aBoolean;
     }
 
+    public Response(long aCount) {
+        count = aCount;
+    }
+
     public StudyGroup getStudyGroup() {
         return studyGroup;
     }
@@ -42,6 +52,14 @@ public class Response implements Serializable {
 
     public boolean getStatus() {
         return status;
+    }
+
+    public TypeOfAnswer getResponseStatus(){
+        return responseStatus;
+    }
+
+    public String getInformation(){
+        return information;
     }
 
     @Override

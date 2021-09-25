@@ -1,6 +1,10 @@
 package commands;
 
+import data.StudyGroup;
+import utility.TypeOfAnswer;
 import utility.*;
+
+import java.util.Set;
 
 /**
  * Class to print all elements from collection in stdout
@@ -18,6 +22,9 @@ public class Show extends CommandAbstract {
     public Response execute(Request aCommand) {
         String username = aCommand.getSession().getName();
         receiver.addToHistory(username, "show");
-        return receiver.show();
+
+        Set<StudyGroup> studyGroups = receiver.show();
+        if (studyGroups == null) return new Response(TypeOfAnswer.EMPTYCOLLECTION);
+        else return new Response(studyGroups);
     }
 }

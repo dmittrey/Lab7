@@ -19,6 +19,11 @@ public class AddIfMin extends CommandAbstract {
     @Override
     public Response execute(Request aRequest) {
         StudyGroup studyGroup = aRequest.getCommand().getStudyGroup();
-        return new Response(receiver.addIfMin(studyGroup));
+        String username = aRequest.getSession().getName();
+        TypeOfAnswer status = receiver.addIfMin(studyGroup);
+        if (status.equals(TypeOfAnswer.SUCCESSFUL)) {
+            receiver.addToHistory(username, "add_if_min");
+        }
+        return new Response(status);
     }
 }

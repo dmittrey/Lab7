@@ -13,12 +13,10 @@ public class LoginUser extends CommandAbstract {
 
     @Override
     public Response execute(Request aRequest) {
-
         String username = aRequest.getSession().getName();
         String password = aRequest.getSession().getPassword();
         return receiver.loginUser(username, password)
-                ? new Response("")
-                : new Response(TextFormatting.getRedText("\n\tAccount with this parameters doesn't exist! " +
-                "Reboot the client to authorize again!\n"));
+                ? new Response(TypeOfAnswer.SUCCESSFUL)
+                : new Response(TypeOfAnswer.NOTMATCH);
     }
 }

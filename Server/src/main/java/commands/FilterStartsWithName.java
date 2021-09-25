@@ -1,6 +1,9 @@
 package commands;
 
+import data.StudyGroup;
 import utility.*;
+
+import java.util.Set;
 
 /**
  * Class for print elements which name field starts with special substring
@@ -18,6 +21,7 @@ public class FilterStartsWithName extends CommandAbstract {
     public Response execute(Request aRequest) {
         String username = aRequest.getSession().getName();
         String startName = aRequest.getCommand().getArg();
-        return receiver.filterStartsWithName(startName, username);
+        Set<StudyGroup> setOfGroups = receiver.filterStartsWithName(startName, username);
+        return (setOfGroups == null) ? new Response(TypeOfAnswer.EMPTYCOLLECTION) : new Response(setOfGroups);
     }
 }

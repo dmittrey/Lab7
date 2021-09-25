@@ -17,9 +17,8 @@ public class RemoveById extends CommandAbstract {
 
     @Override
     public Response execute(Request aRequest) {
-
         String username = aRequest.getSession().getName();
         int id = Integer.parseInt(aRequest.getCommand().getArg());
-        return receiver.removeById(username, id);
+        return new Response(receiver.removeById(username, id));
     }
 }

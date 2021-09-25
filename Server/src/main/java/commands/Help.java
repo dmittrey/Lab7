@@ -6,6 +6,8 @@ import utility.Response;
 import utility.TextFormatting;
 
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Class for displaying all commands with explanations

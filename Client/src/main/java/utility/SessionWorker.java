@@ -59,7 +59,7 @@ public class SessionWorker implements SessionWorkerInterface {
     private String getUserPassword() throws IOException {
         if (System.console() == null) {
             String password;
-            Pattern passwordPattern = Pattern.compile("^\\s*\\b([\\d\\w]*)\\b\\s*");
+            Pattern passwordPattern = Pattern.compile("^\\s*([\\d\\w]*)\\s*");
             while (true) {
                 console.print(TextFormatting.getGreenText("\tPlease, enter password! " +
                         "(You can skip this by keeping field in empty state): "));
@@ -70,7 +70,7 @@ public class SessionWorker implements SessionWorkerInterface {
             return password.trim();
         } else {
             String password;
-            Pattern passwordPattern = Pattern.compile("^\\s*\\b([\\d\\w]*)\\b\\s*");
+            Pattern passwordPattern = Pattern.compile("^\\s*([\\d\\w]*)\\s*");
             while (true) {
                 console.print(TextFormatting.getGreenText("\tPlease, enter password! " +
                         "(You can skip this by keeping field in empty state): "));

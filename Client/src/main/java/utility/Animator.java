@@ -36,7 +36,6 @@ public class Animator {
             if (aResponse.getCount() != null) {
                 sb.append("\tAmount of elements: ")
                         .append(TextFormatting.getGreenText(String.valueOf(aResponse.getCount())))
-                        .append(aResponse.getCount())
                         .append("\n");
             }
             if (sb.toString().equals("\n")) return TextFormatting.getGreenText("\n\tAction processed successful!\n");

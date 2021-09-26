@@ -5,6 +5,9 @@ import java.net.SocketAddress;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
 
+/**
+ * Class that process requests
+ */
 public class RequestHandler {
 
     private final Invoker invoker;

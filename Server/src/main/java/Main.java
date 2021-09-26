@@ -63,6 +63,9 @@ public class Main {
             return null;
         }
 
+//        DBConnector dbConnector = new DBConnector();
+//        Connection db = dbConnector.connect();
+
         DBInitializer dbInitializer = new DBInitializer(db);
         try {
             dbInitializer.initialize();

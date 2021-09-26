@@ -8,6 +8,9 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketAddress;
 
+/**
+ * Class to deliver response to client
+ */
 public class Deliver implements Runnable {
 
     private final DatagramSocket datagramSocket;

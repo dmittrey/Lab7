@@ -15,12 +15,23 @@ public class Main {
 
             System.out.println(getEntryInformation());
             Console.getInstance().setScanner(scanner);
+            String sessionStatus;
 
             while (true) {
-                getRequestHandlerProperties(scanner, InetAddress.getLocalHost());
+                try {
+                    getRequestHandlerProperties(scanner, InetAddress.getLocalHost());
+                } catch (UnknownHostException e) {
+                    System.out.println(TextFormatting.getRedText("\nYour computer has problems with the network, " +
+                            "run the application again!"));
+                    return;
+                }
                 RequestHandler.getInstance().setSocketStatus(true);
-
-                String sessionStatus = getSession();
+                try {
+                    sessionStatus = getSession();
+                } catch (IOException e) {
+                    System.out.println(TextFormatting.getRedText("Client can't get authorization on server, try again!"));
+                    return;
+                }
                 if (!sessionStatus.equals(TextFormatting.getGreenText("\n\tAction processed successful!\n"))) {
                     System.out.println(TextFormatting.getRedText(sessionStatus));
                     continue;
@@ -31,11 +42,6 @@ public class Main {
                 CommandReader commandReader = new CommandReader();
                 if (commandReader.enable()) return;
             }
-
-        } catch (IOException e) {
-            System.out.println(TextFormatting.getRedText("\nYour computer has problems with the network, " +
-                    "run the application again!"));
-            return;
         }
     }
 
@@ -93,14 +99,14 @@ public class Main {
             } catch (UnknownHostException e) {
                 System.out.println(TextFormatting.getRedText(
                         "\nThe program could not find the server by the specified address!\n " +
-                        "The default address(localhost) will be used!"));
+                                "The default address(localhost) will be used!"));
             }
         }
         RequestHandler.getInstance().setRemoteHostSocketAddress(
                 new InetSocketAddress(remoteHostAddress, getPort(scanner)));
     }
 
-    private static String getSession() {
+    private static String getSession() throws IOException {
         Session session = new SessionWorker(Console.getInstance()).getSession();
         if (session.getTypeOfSession().equals(TypeOfSession.Register)) {
             return RequestHandler.getInstance().register(session);

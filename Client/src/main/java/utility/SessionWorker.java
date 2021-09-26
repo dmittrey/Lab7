@@ -6,6 +6,9 @@ import Interfaces.SessionWorkerInterface;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+/**
+ * Class that helps to get session settings from console
+ */
 public class SessionWorker implements SessionWorkerInterface {
 
     private final ConsoleInterface console;
@@ -15,7 +18,7 @@ public class SessionWorker implements SessionWorkerInterface {
     }
 
     @Override
-    public Session getSession() {
+    public Session getSession() throws IOException {
         console.print(TextFormatting.getBlueText("\nAuthorization(Registration): \n"));
         boolean sessionStatus = getSessionStatus();
         return sessionStatus ? new Session(getUsername(), getUserPassword(), TypeOfSession.Login)
@@ -27,53 +30,41 @@ public class SessionWorker implements SessionWorkerInterface {
      *
      * @return true if login, false if register
      */
-    private boolean getSessionStatus() {
+    private boolean getSessionStatus() throws IOException{
         String answer;
 
         do {
             System.out.print(TextFormatting.getGreenText("\tDo you register or login? [\"r\", \"l\"]: "));
-            try {
                 answer = console.read();
-            } catch (IOException e) {
-                answer = null;
-            }
         } while (answer == null || !answer.equals("r") && !answer.equals("l"));
 
         return answer.equals("l");
     }
 
-    private String getUsername() {
+    private String getUsername() throws IOException {
 
         String username;
         Pattern usernamePattern = Pattern.compile("^\\s*\\b(\\w+)\\b\\s*");
 
         while (true) {
             console.print(TextFormatting.getGreenText("\tPlease, enter username! (Example: Lololoshka1337): "));
-            try {
-                username = console.read();
-                if (username != null && usernamePattern.matcher(username).find()) break;
-            } catch (IOException e) {
-                username = null;
-            }
+            username = console.read();
+            if (username != null && usernamePattern.matcher(username).find()) break;
             console.print(TextFormatting.getRedText("\tUsername should be not empty string of letters and digits!\n"));
         }
 
         return username.trim();
     }
 
-    private String getUserPassword() {
+    private String getUserPassword() throws IOException {
         if (System.console() == null) {
             String password;
             Pattern passwordPattern = Pattern.compile("^\\s*\\b([\\d\\w]*)\\b\\s*");
             while (true) {
                 console.print(TextFormatting.getGreenText("\tPlease, enter password! " +
                         "(You can skip this by keeping field in empty state): "));
-                try {
-                    password = console.read();
-                    if (password != null && passwordPattern.matcher(password).find()) break;
-                } catch (IOException e) {
-                    password = null;
-                }
+                password = console.read();
+                if (password != null && passwordPattern.matcher(password).find()) break;
                 console.print(TextFormatting.getRedText("\tPassword should be string of letters and digits!\n"));
             }
             return password.trim();

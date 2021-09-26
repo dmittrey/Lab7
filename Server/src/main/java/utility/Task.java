@@ -2,6 +2,9 @@ package utility;
 
 import java.util.concurrent.RecursiveTask;
 
+/**
+ * Class that implement task for ForkJoinPool
+ */
 public class Task extends RecursiveTask<Response> {
 
     private final Invoker invoker;

@@ -1,14 +1,11 @@
 package data;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Class for study group admin
  */
-@XmlType(propOrder = {"name", "weight", "hairColor"})
 public class Person implements Serializable {
     private String name;
     private Long weight;
@@ -24,30 +21,6 @@ public class Person implements Serializable {
     public Person(String aName, Long aWeight, Color aHairColor) {
         name = aName;
         weight = aWeight;
-        hairColor = aHairColor;
-    }
-
-    /**
-     * Class constructor for Xml parser
-     */
-    public Person() {
-        name = null;
-        weight = null;
-        hairColor = null;
-    }
-
-    @XmlElement
-    public void setName(String aName) {
-        name = aName;
-    }
-
-    @XmlElement
-    public void setWeight(Long aWeight) {
-        weight = aWeight;
-    }
-
-    @XmlElement
-    public void setHairColor(Color aHairColor) {
         hairColor = aHairColor;
     }
 

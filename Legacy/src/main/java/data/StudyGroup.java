@@ -3,6 +3,7 @@ package data;
 import utility.TextFormatting;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -157,10 +158,11 @@ public class StudyGroup implements Comparable<StudyGroup>, Serializable {
 
     @Override
     public String toString() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         return TextFormatting.getBlueText(name) + ":" + "\n" +
                 "Id" + "\t\t\t:\t" + id + "\n" +
                 "Coordinates" + "\t\t:\t" + coordinates + "\n" +
-                "Creation date" + "\t\t:\t" + creationDate + "\n" +
+                "Creation date" + "\t\t:\t" + formatter.format(creationDate) + "\n" +
                 "Students count" + "\t\t:\t" + studentsCount + "\n" +
                 "Average mark" + "\t\t:\t" + averageMark + "\n" +
                 "Form of education" + "\t:\t" + formOfEducation + "\n" +

@@ -29,15 +29,14 @@ public enum FormOfEducation implements Comparable<FormOfEducation>, Serializable
 
     public static boolean isIncludeElement(String aFormOfEducation) {
 
-        return Arrays.stream(FormOfEducation.values()).anyMatch(formOfEducation -> {
-                    return aFormOfEducation.equals(formOfEducation.getStringInLowerCaseRepresentation()) ||
-                            aFormOfEducation.equals(formOfEducation.getStringInUpperCaseRepresentation());
-                }
+        return Arrays.stream(FormOfEducation.values()).anyMatch(formOfEducation -> aFormOfEducation.equals(
+                formOfEducation.getStringInLowerCaseRepresentation()) ||
+                aFormOfEducation.equals(formOfEducation.getStringInUpperCaseRepresentation())
         );
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return getStringInUpperCaseRepresentation();
     }
 }

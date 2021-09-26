@@ -1,6 +1,5 @@
 package data;
 
-import javax.xml.bind.annotation.XmlElement;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -8,8 +7,8 @@ import java.util.Objects;
  * Class for study group coordinates
  */
 public class Coordinates implements Comparable<Coordinates>, Serializable {
-    private Integer x;
-    private Double y;
+    private final Integer x;
+    private final Double y;
 
     /**
      * Class constructor
@@ -22,24 +21,6 @@ public class Coordinates implements Comparable<Coordinates>, Serializable {
         y = aY;
     }
 
-    /**
-     * Class constructor for Xml parser
-     */
-    public Coordinates() {
-        x = null;
-        y = null;
-    }
-
-    @XmlElement(name = "CoordinateX")
-    public void setX(Integer aX) {
-        x = aX;
-    }
-
-    @XmlElement(name = "CoordinateY")
-    public void setY(Double aY) {
-        y = aY;
-    }
-
     public Integer getX() {
         return x;
     }
@@ -49,7 +30,7 @@ public class Coordinates implements Comparable<Coordinates>, Serializable {
     }
 
     private double dist0(Coordinates aCoordinates) {
-        return Math.sqrt(Math.pow(aCoordinates.getX(),2) + Math.pow(aCoordinates.getY(),2));
+        return Math.sqrt(Math.pow(aCoordinates.getX(), 2) + Math.pow(aCoordinates.getY(), 2));
     }
 
     @Override
@@ -66,7 +47,7 @@ public class Coordinates implements Comparable<Coordinates>, Serializable {
     public int compareTo(Coordinates o) {
         double dist = dist0(this) - dist0(o);
         if (dist > 0) return 1;
-        else if (dist ==0) return 0;
+        else if (dist == 0) return 0;
         else return -1;
     }
 }

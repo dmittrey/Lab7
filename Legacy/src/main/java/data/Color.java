@@ -31,10 +31,9 @@ public enum Color implements Serializable {
 
     public static boolean isIncludeElement(String aColor) {
 
-        return Arrays.stream(Color.values()).anyMatch(color -> {
-                    return aColor.equals(color.getStringInLowerCaseRepresentation()) ||
-                            aColor.equals(color.getStringInUpperCaseRepresentation());
-                }
+        return Arrays.stream(Color.values()).anyMatch(color -> aColor.equals(
+                color.getStringInLowerCaseRepresentation()) ||
+                aColor.equals(color.getStringInUpperCaseRepresentation())
         );
     }
 

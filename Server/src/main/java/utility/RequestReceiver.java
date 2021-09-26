@@ -12,6 +12,9 @@ import java.net.SocketException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
 
+/**
+ * Class that receiving requests
+ */
 public class RequestReceiver extends Thread {
 
     private final DatagramPacket datagramPacket;

@@ -28,17 +28,12 @@ public class Invoker {
 
     public Response execute(Request aRequest) {
         String aCommand = aRequest.getCommand().getCommand();
+        TypeOfSession typeOfSession = aRequest.getSession().getTypeOfSession();
         String username = aRequest.getSession().getName();
         String password = aRequest.getSession().getPassword();
-        if (aRequest.getSession().getTypeOfSession().equals(TypeOfSession.Login)) {
-            if (receiver.loginUser(username, password)) {
-                return commands.get(aCommand).execute(aRequest);
-            } else return new Response(TypeOfAnswer.NOTMATCH);
-        } else {
-            if (receiver.registerUser(username, password)) {
-                return new Response(TypeOfAnswer.SUCCESSFUL);
-            } else return new Response(TypeOfAnswer.ALREADYREGISTERED);
-        }
+        if (typeOfSession.equals(TypeOfSession.Register) ^ receiver.loginUser(username, password)) {
+            return commands.get(aCommand).execute(aRequest);
+        } else return new Response(TypeOfAnswer.NOTMATCH);
     }
 
     private void initMap() {

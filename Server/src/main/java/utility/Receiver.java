@@ -5,13 +5,17 @@ import data.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+/**
+ * Class that receive requests from commands and execute their
+ * <p>
+ * see Pattern Command
+ */
 public class Receiver {
 
     private final CollectionManager collectionManager;
@@ -19,7 +23,6 @@ public class Receiver {
     private final Map<String, ArrayBlockingQueue<String>> previousCommands;
 
     public Receiver(CollectionManager aCollectionManager, DBWorker aDBWorker) {
-
         collectionManager = aCollectionManager;
         dbWorker = aDBWorker;
         previousCommands = new ConcurrentHashMap<>();

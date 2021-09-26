@@ -19,8 +19,8 @@ public class Show extends CommandAbstract {
     }
 
     @Override
-    public Response execute(Request aCommand) {
-        String username = aCommand.getSession().getName();
+    public Response execute(Request aRequest) {
+        String username = aRequest.getSession().getName();
         receiver.addToHistory(username, "show");
 
         Set<StudyGroup> studyGroups = receiver.show();

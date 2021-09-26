@@ -30,10 +30,14 @@ public class Animator {
                                 .append("\n\n"));
             }
             if (aResponse.getStudyGroup() != null) {
-                sb.append(aResponse.getStudyGroup().toString()).append("\n");
+                sb.append(aResponse.getStudyGroup().toString())
+                        .append("\n");
             }
             if (aResponse.getCount() != null) {
-                sb.append(aResponse.getCount());
+                sb.append("\tAmount of elements: ")
+                        .append(TextFormatting.getGreenText(String.valueOf(aResponse.getCount())))
+                        .append(aResponse.getCount())
+                        .append("\n");
             }
             if (sb.toString().equals("\n")) return TextFormatting.getGreenText("\n\tAction processed successful!\n");
         } else {

@@ -58,7 +58,7 @@ public class SocketWorker implements SocketWorkerInterface {
             } else {
                 RequestHandler.getInstance().setSocketStatus(false);
                 return TextFormatting.getRedText("\n\tServer isn't available at the moment! " +
-                        "Please, select another remote host!");
+                        "Please, select another remote host!\n\n");
             }
         }
     }

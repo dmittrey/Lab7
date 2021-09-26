@@ -54,20 +54,14 @@ public class Main {
 
     private static DBWorker connectToDB() {
 
-//        Connection db;
-//        try {
-//            db = new DBConnector().connect();
-//            if (db == null) return null;
-//        } catch (SQLException e) {
-//            System.out.println("Connection establishing problems");
-//            return null;
-//        }
-
-        DBConnector databaseConnector = new DBConnector();
-        Connection db = databaseConnector.connect();
-
-//        DBConnector databaseConnector = new DBConnector();
-//        Connection db = databaseConnector.connect();
+        Connection db;
+        try {
+            db = new DBConnector().connect();
+            if (db == null) return null;
+        } catch (SQLException e) {
+            System.out.println("Connection establishing problems");
+            return null;
+        }
 
         DBInitializer dbInitializer = new DBInitializer(db);
         try {

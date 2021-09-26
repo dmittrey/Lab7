@@ -157,7 +157,7 @@ public class StudyGroup implements Comparable<StudyGroup>, Serializable {
 
     @Override
     public String toString() {
-        return "\n" + TextFormatting.getBlueText(name) + ":" + "\n" +
+        return TextFormatting.getBlueText(name) + ":" + "\n" +
                 "Id" + "\t\t\t:\t" + id + "\n" +
                 "Coordinates" + "\t\t:\t" + coordinates + "\n" +
                 "Creation date" + "\t\t:\t" + creationDate + "\n" +

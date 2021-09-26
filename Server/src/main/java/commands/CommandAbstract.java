@@ -29,32 +29,7 @@ public abstract class CommandAbstract implements CommandInterface {
      */
     @Override
     public String getDescription() {
-
-        switch (name) {
-            case "help":
-            case "info":
-            case "show":
-            case "clear":
-            case "save":
-            case "exit":
-            case "history":
-            case "min_by_students_count":
-                return name + " : " + description;
-            case "update":
-                return name + " id {element} : " + description;
-            case "add":
-            case "add_if_max":
-            case "add_if_min":
-                return name + " {element} : " + description;
-            case "remove_by_id":
-                return name + " id : " + description;
-            case "execute_script":
-                return name + " file_name : " + description;
-            case "count_less_than_students_count":
-                return name + " studentsCount : " + description;
-            default:
-                return name + " name : " + description;
-        }
+        return description;
     }
 
     /**

@@ -42,8 +42,8 @@ public class Invoker {
     }
 
     private void initMap() {
-        commands.put("help", new Help(commands, receiver));//Map<String, List<String>>
-        commands.put("info", new Info(receiver));//Map<String, List<String>>
+        commands.put("help", new Help(commands, receiver));//Map<String, String>
+        commands.put("info", new Info(receiver));//Map<String, String>
         commands.put("show", new Show(receiver));//Set<StudyGroup>
         commands.put("add", new Add(receiver));//TypeOfAnswer
         commands.put("update", new UpdateId(receiver));//TypeOfAnswer
@@ -51,7 +51,7 @@ public class Invoker {
         commands.put("clear", new Clear(receiver));//TypeOfAnswer
         commands.put("add_if_max", new AddIfMax(receiver));//TypeOfAnswer
         commands.put("add_if_min", new AddIfMin(receiver));//TypeOfAnswer
-        commands.put("history", new History(receiver));//Map<String, List<String>>
+        commands.put("history", new History(receiver));//Map<String, String>
         commands.put("min_by_students_count", new MinByStudentsCount(receiver));//StudyGroup
         commands.put("count_less_than_students_count", new CountLessThanStudentsCount(receiver));//Long
         commands.put("filter_starts_with_name", new FilterStartsWithName(receiver));//Set<StudyGroup>

@@ -12,7 +12,7 @@ public class AddIfMax extends CommandAbstract {
 
     public AddIfMax(Receiver aReceiver) {
         super("add_if_max", "add new element to the collection, if it`s greater, " +
-                "than biggest element of this collection.");
+                "than biggest element of this collection");
         receiver = aReceiver;
     }
 

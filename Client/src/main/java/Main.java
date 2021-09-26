@@ -14,15 +14,15 @@ public class Main {
         try (Scanner scanner = new Scanner(System.in)) {
 
             System.out.println(getEntryInformation());
+            Console.getInstance().setScanner(scanner);
 
             while (true) {
-                Console.getInstance().setScanner(scanner);
-
                 getRequestHandlerProperties(scanner, InetAddress.getLocalHost());
                 RequestHandler.getInstance().setSocketStatus(true);
+
                 String sessionStatus = getSession();
-                if (!sessionStatus.equals("")) {
-                    System.out.println(TextFormatting.getRedText(sessionStatus));
+                if (!sessionStatus.equals("\n")) {
+                    System.out.print(TextFormatting.getRedText(sessionStatus));
                     continue;
                 }
 
@@ -41,7 +41,7 @@ public class Main {
 
     private static String getEntryInformation() {
         return TextFormatting.getGreenText("\n\t\t\t\u0020\u0020\u0020----------------") +
-                TextFormatting.getGreenText("\n\t\t\tWelcome to Lab6 Client!") +
+                TextFormatting.getGreenText("\n\t\t\tWelcome to Lab7 Client!") +
                 TextFormatting.getGreenText("\n\t\t\t\u0020\u0020------------------\n");
     }
 
@@ -61,7 +61,6 @@ public class Main {
     }
 
     private static int getPort(Scanner scanner) {
-
         String arg;
         Pattern remoteHostPortPattern = Pattern.compile("^\\s*\\b(\\d{1,5})\\b\\s*");
 
@@ -103,7 +102,6 @@ public class Main {
 
     private static String getSession() {
         Session session = new SessionWorker(Console.getInstance()).getSession();
-
         if (session.getTypeOfSession().equals(TypeOfSession.Register)) {
             return RequestHandler.getInstance().register(session);
         } else {

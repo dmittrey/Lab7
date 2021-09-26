@@ -18,13 +18,13 @@ public class CollectionManager {
         initTime = new Date().toString();
     }
 
-    public Map<String, List<String>> getInfo() {
-        Map<String, List<String>> typesOfInfo = new HashMap<>();
-        typesOfInfo.put("Type of collection", Collections.singletonList("HashSet"));
-        typesOfInfo.put("Type of collection items", Collections.singletonList("Study groups"));
-        typesOfInfo.put("Priority", Collections.singletonList("Student's count, Average mark, Creation date"));
-        typesOfInfo.put("Initialization date", Collections.singletonList(initTime));
-        typesOfInfo.put("Number of items in te collection", Collections.singletonList(String.valueOf(studyGroups.size())));
+    public Map<String, String> getInfo() {
+        Map<String, String> typesOfInfo = new HashMap<>();
+        typesOfInfo.put("Type of collection", "HashSet");
+        typesOfInfo.put("Type of collection items", "Study groups");
+        typesOfInfo.put("Priority", "Student's count, Average mark, Creation date");
+        typesOfInfo.put("Initialization date", initTime);
+        typesOfInfo.put("Number of items in te collection", String.valueOf(studyGroups.size()));
         return typesOfInfo;
     }
 

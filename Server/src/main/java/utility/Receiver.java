@@ -49,7 +49,7 @@ public class Receiver {
         }
     }
 
-    public Map<String, List<String>> info() {
+    public Map<String, String> info() {
         return collectionManager.getInfo();
     }
 

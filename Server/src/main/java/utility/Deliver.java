@@ -13,7 +13,7 @@ public class Deliver implements Runnable {
     private final DatagramSocket datagramSocket;
     private final Response answer;
     private final SocketAddress socketAddress;
-    public static final Logger logger = LoggerFactory.getLogger("Server");
+    public static final Logger logger = LoggerFactory.getLogger("Deliver");
 
     public Deliver(DatagramSocket aDatagramSocket, Response anAnswer, SocketAddress aSocketAddress) {
         datagramSocket = aDatagramSocket;

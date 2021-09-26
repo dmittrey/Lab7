@@ -17,16 +17,11 @@ public class RequestHandler implements RequestHandlerInterface {
     private static RequestHandler instance;
     private InetSocketAddress socketAddress;
     private boolean socketStatus;
-    private final SessionWorkerInterface sessionWorker;
     private Session session;
 
     public static RequestHandler getInstance() {
         if (instance == null) instance = new RequestHandler();
         return instance;
-    }
-
-    private RequestHandler() {
-        sessionWorker = new SessionWorker(Console.getInstance());
     }
 
     @Override
@@ -38,6 +33,7 @@ public class RequestHandler implements RequestHandlerInterface {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(8192);
             ObjectOutputStream outObj = new ObjectOutputStream(byteArrayOutputStream);
             outObj.writeObject(request);
+            session.setTypeOfSession(TypeOfSession.Login);
             return socketWorker.sendRequest(byteArrayOutputStream.toByteArray());
         } catch (IOException e) {
             return TextFormatting.getRedText("\tRequest can't be serialized, call programmer!\n");

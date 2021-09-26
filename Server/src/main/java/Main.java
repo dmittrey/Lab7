@@ -66,6 +66,9 @@ public class Main {
         DBConnector databaseConnector = new DBConnector();
         Connection db = databaseConnector.connect();
 
+//        DBConnector databaseConnector = new DBConnector();
+//        Connection db = databaseConnector.connect();
+
         DBInitializer dbInitializer = new DBInitializer(db);
         try {
             dbInitializer.initialize();

@@ -30,8 +30,11 @@ public class History extends CommandAbstract {
         ArrayBlockingQueue<String> userCommands = receiver.history(username);
         receiver.addToHistory(username, "history");
         if (userCommands != null) {
-            Map<String, List<String>> userHistory = new HashMap<>();
-            userHistory.put(username, new ArrayList<>(userCommands));
+            Map<String, String> userHistory = new HashMap<>();
+            int i = 0;
+            for (String command : userCommands) {
+                userHistory.put(String.valueOf(i++), command);
+            }
             return new Response(userHistory, TypeOfAnswer.SUCCESSFUL);
         } else return new Response(TypeOfAnswer.EMPTYCOLLECTION);
     }

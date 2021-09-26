@@ -1,6 +1,8 @@
 package utility;
 
-public enum TypeOfAnswer {
+import java.io.Serializable;
+
+public enum TypeOfAnswer implements Serializable {
     OBJECTNOTEXIST,
     DUPLICATESDETECTED,
     ISNTMAX,
@@ -10,5 +12,5 @@ public enum TypeOfAnswer {
     SQLPROBLEM,
     EMPTYCOLLECTION,
     ALREADYREGISTERED,
-    NOTMATCH;
+    NOTMATCH
 }

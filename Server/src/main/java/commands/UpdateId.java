@@ -11,8 +11,7 @@ public class UpdateId extends CommandAbstract {
     private final Receiver receiver;
 
     public UpdateId(Receiver aReceiver) {
-        super("update", "update the element`s value, whose ID is equal to the given. " +
-                TextFormatting.getBlueText("\n\tYou should to enter ID after entering a command"));
+        super("update", "update the element`s value, whose ID is equal to the given");
         receiver = aReceiver;
     }
 

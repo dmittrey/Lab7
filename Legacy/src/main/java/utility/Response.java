@@ -3,7 +3,6 @@ package utility;
 import data.StudyGroup;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,13 +11,13 @@ import java.util.Set;
  */
 public class Response implements Serializable {
 
-    private Map<String, List<String>> information = null;
+    private Map<String, String> information = null;
     private Set<StudyGroup> setOfStudyGroups = null;
     private final TypeOfAnswer status;
     private StudyGroup studyGroup = null;
     private Long count = null;
 
-    public Response(Map<String, List<String>> anInformation, TypeOfAnswer aStatus) {
+    public Response(Map<String, String> anInformation, TypeOfAnswer aStatus) {
         information = anInformation;
         status = aStatus;
     }
@@ -42,7 +41,7 @@ public class Response implements Serializable {
         status = aStatus;
     }
 
-    public Map<String, List<String>> getInformation() {
+    public Map<String, String> getInformation() {
         return information;
     }
 
@@ -56,5 +55,18 @@ public class Response implements Serializable {
 
     public TypeOfAnswer getStatus() {
         return status;
+    }
+
+    public Long getCount(){
+        return count;
+    }
+
+    @Override
+    public String toString(){
+        return information + "\n" +
+                setOfStudyGroups + "\n" +
+                status + "\n" +
+                studyGroup + "\n" +
+                count + "\n";
     }
 }

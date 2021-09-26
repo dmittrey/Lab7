@@ -18,12 +18,14 @@ public class CollectionManager {
         initTime = new Date().toString();
     }
 
-    public String getInfo() {
-        return "Type of collection" + "  \t\t\t:\t" + "HashSet" + "\n" +
-                "Type of collection items" + "\t\t:\t" + "Study groups" + "\n" +
-                "Priority" + "\t\t\t\t:\t" + "Student's count, Average mark, Creation date" + "\n" +
-                "Initialization date" + "\t\t\t:\t" + initTime + "\n" +
-                "Number of items in te collection" + "\t:\t" + studyGroups.size() + "\n\n";
+    public Map<String, List<String>> getInfo() {
+        Map<String, List<String>> typesOfInfo = new HashMap<>();
+        typesOfInfo.put("Type of collection", Collections.singletonList("HashSet"));
+        typesOfInfo.put("Type of collection items", Collections.singletonList("Study groups"));
+        typesOfInfo.put("Priority", Collections.singletonList("Student's count, Average mark, Creation date"));
+        typesOfInfo.put("Initialization date", Collections.singletonList(initTime));
+        typesOfInfo.put("Number of items in te collection", Collections.singletonList(String.valueOf(studyGroups.size())));
+        return typesOfInfo;
     }
 
     public Set<StudyGroup> getCollection() {

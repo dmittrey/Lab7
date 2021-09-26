@@ -5,7 +5,12 @@ import utility.Request;
 import utility.Response;
 import utility.TypeOfAnswer;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.stream.Collectors;
 
 /**
  * Class for displaying last 14 commands
@@ -25,12 +30,9 @@ public class History extends CommandAbstract {
         ArrayBlockingQueue<String> userCommands = receiver.history(username);
         receiver.addToHistory(username, "history");
         if (userCommands != null) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("\n");
-            userCommands.stream()
-                    .map(command -> ")" + command + "\n")
-                    .forEach(sb::append);
-            return new Response(sb.toString());
+            Map<String, List<String>> userHistory = new HashMap<>();
+            userHistory.put(username, new ArrayList<>(userCommands));
+            return new Response(userHistory, TypeOfAnswer.SUCCESSFUL);
         } else return new Response(TypeOfAnswer.EMPTYCOLLECTION);
     }
 }

@@ -29,6 +29,8 @@ public class ResponseHandler implements ResponseHandlerInterface {
             Animator animator = Animator.getInstance();
             ObjectInputStream inObj = new ObjectInputStream(new ByteArrayInputStream(buffer.array()));
             Response response = (Response) inObj.readObject();
+            // TODO: 26.09.2021 Сделать нормальное форматирование ответа Type of answer
+            // TODO: 26.09.2021 Сделать нормальное форматирование работы команды
             return animator.animate(response);
         } catch (ClassNotFoundException e) {
             return TextFormatting.getRedText("\tServer version is unsupported!\n");

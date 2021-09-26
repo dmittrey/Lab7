@@ -25,6 +25,6 @@ public class Show extends CommandAbstract {
 
         Set<StudyGroup> studyGroups = receiver.show();
         if (studyGroups == null) return new Response(TypeOfAnswer.EMPTYCOLLECTION);
-        else return new Response(studyGroups);
+        else return new Response(studyGroups, TypeOfAnswer.SUCCESSFUL);
     }
 }

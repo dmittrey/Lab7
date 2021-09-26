@@ -22,6 +22,8 @@ public class FilterStartsWithName extends CommandAbstract {
         String username = aRequest.getSession().getName();
         String startName = aRequest.getCommand().getArg();
         Set<StudyGroup> setOfGroups = receiver.filterStartsWithName(startName, username);
-        return (setOfGroups == null) ? new Response(TypeOfAnswer.EMPTYCOLLECTION) : new Response(setOfGroups);
+        return (setOfGroups == null)
+                ? new Response(TypeOfAnswer.EMPTYCOLLECTION)
+                : new Response(setOfGroups, TypeOfAnswer.SUCCESSFUL);
     }
 }

@@ -20,6 +20,8 @@ public class MinByStudentsCount extends CommandAbstract {
     public Response execute(Request aRequest) {
         String username = aRequest.getSession().getName();
         StudyGroup minGroup = receiver.minByStudentsCount(username);
-        return (minGroup == null) ? new Response(TypeOfAnswer.EMPTYCOLLECTION) : new Response(minGroup);
+        return (minGroup == null)
+                ? new Response(TypeOfAnswer.EMPTYCOLLECTION)
+                : new Response(minGroup, TypeOfAnswer.SUCCESSFUL);
     }
 }

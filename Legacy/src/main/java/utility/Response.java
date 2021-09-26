@@ -3,7 +3,8 @@ package utility;
 import data.StudyGroup;
 
 import java.io.Serializable;
-import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -11,71 +12,49 @@ import java.util.Set;
  */
 public class Response implements Serializable {
 
-    private String information;
-    private TypeOfAnswer responseStatus;
-    private StudyGroup studyGroup;
-    private Set<StudyGroup> collection;
-    private boolean status;
-    private long count;
+    private Map<String, List<String>> information = null;
+    private Set<StudyGroup> setOfStudyGroups = null;
+    private final TypeOfAnswer status;
+    private StudyGroup studyGroup = null;
+    private Long count = null;
 
-    public Response(String anInformation) {
+    public Response(Map<String, List<String>> anInformation, TypeOfAnswer aStatus) {
         information = anInformation;
+        status = aStatus;
     }
 
-    public Response(TypeOfAnswer aTypeOfResponse) {
-        responseStatus = aTypeOfResponse;
+    public Response(Set<StudyGroup> aSetOfStudyGroups, TypeOfAnswer aStatus) {
+        setOfStudyGroups = aSetOfStudyGroups;
+        status = aStatus;
     }
 
-    public Response(StudyGroup aStudyGroup) {
+    public Response(StudyGroup aStudyGroup, TypeOfAnswer aStatus) {
         studyGroup = aStudyGroup;
+        status = aStatus;
     }
 
-    public Response(Set<StudyGroup> aCollection) {
-        collection = aCollection;
-    }
-
-    public Response(boolean aBoolean) {
-        status = aBoolean;
-    }
-
-    public Response(long aCount) {
+    public Response(Long aCount, TypeOfAnswer aStatus) {
         count = aCount;
+        status = aStatus;
+    }
+
+    public Response(TypeOfAnswer aStatus) {
+        status = aStatus;
+    }
+
+    public Map<String, List<String>> getInformation() {
+        return information;
+    }
+
+    public Set<StudyGroup> getSetOfStudyGroups() {
+        return setOfStudyGroups;
     }
 
     public StudyGroup getStudyGroup() {
         return studyGroup;
     }
 
-    public Set<StudyGroup> getCollection() {
-        return collection;
-    }
-
-    public boolean getStatus() {
+    public TypeOfAnswer getStatus() {
         return status;
-    }
-
-    public TypeOfAnswer getResponseStatus(){
-        return responseStatus;
-    }
-
-    public String getInformation(){
-        return information;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        if (information != null)
-            sb.append(information);
-
-        if (studyGroup != null)
-            sb.append(studyGroup).append("\n");
-
-        if (collection != null)
-            collection.stream().sorted(Comparator.comparing(StudyGroup::getCoordinates)).
-                    forEach(sg -> sb.append(sg).append("\n"));
-
-        return sb.toString();
     }
 }

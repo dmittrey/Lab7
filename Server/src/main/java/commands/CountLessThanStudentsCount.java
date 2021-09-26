@@ -21,6 +21,8 @@ public class CountLessThanStudentsCount extends CommandAbstract {
         String username = aRequest.getSession().getName();
         Integer count = Integer.valueOf(aRequest.getCommand().getArg());
         Long countStudyGroups = receiver.countLessThanStudentsCount(count, username);
-        return (countStudyGroups == null) ? new Response(TypeOfAnswer.EMPTYCOLLECTION) : new Response(countStudyGroups);
+        return (countStudyGroups == null)
+                ? new Response(TypeOfAnswer.EMPTYCOLLECTION)
+                : new Response(countStudyGroups, TypeOfAnswer.SUCCESSFUL);
     }
 }

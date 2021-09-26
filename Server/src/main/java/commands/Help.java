@@ -1,10 +1,8 @@
 package commands;
 
-import utility.Receiver;
-import utility.Request;
-import utility.Response;
-import utility.TextFormatting;
+import utility.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,22 +24,13 @@ public class Help extends CommandAbstract {
     @Override
     public Response execute(Request aRequest) {
         String username = aRequest.getSession().getName();
-        StringBuilder sb = new StringBuilder();
-        sb.append(TextFormatting.getBlueText("\nList of commands:\n\n"));
 
-        commands.keySet()
+        Map<String, List<String>> setOfCommands = commands.keySet()
                 .stream()
                 .filter(str -> !(str.equals("register") || str.equals("login")))
-                .map(command -> "\t" + commands.get(command).getDescription() + "\n\n")
-                .forEach(sb::append);
-        sb.append("\t")
-                .append("execute_script : Read and execute script from entered file")
-                .append(TextFormatting.getBlueText("\n\tYou should to enter script name after entering a command"))
-                .append("\n\n");
-        sb.append("\t")
-                .append("exit : end the program (without saving it to a file)");
+                .collect(Collectors.groupingBy(command -> commands.get(command).getDescription()));
 
         receiver.addToHistory(username, "help");
-        return new Response(sb.toString());
+        return new Response(setOfCommands, TypeOfAnswer.SUCCESSFUL);
     }
 }

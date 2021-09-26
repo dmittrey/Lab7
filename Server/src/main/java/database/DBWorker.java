@@ -99,10 +99,10 @@ public class DBWorker {
             insertStatement.setString(1, anUsername);
             insertStatement.setBytes(2, getHash(aPassword));
             insertStatement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             return false;
         }
-        return true;
     }
 
     public boolean loginUser(String anUsername, String aPassword) {

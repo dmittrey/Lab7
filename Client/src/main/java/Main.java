@@ -21,8 +21,8 @@ public class Main {
                 RequestHandler.getInstance().setSocketStatus(true);
 
                 String sessionStatus = getSession();
-                if (!sessionStatus.equals("\n")) {
-                    System.out.print(TextFormatting.getRedText(sessionStatus));
+                if (!sessionStatus.equals(TextFormatting.getGreenText("\n\tAction processed successful!\n"))) {
+                    System.out.println(TextFormatting.getRedText(sessionStatus));
                     continue;
                 }
 

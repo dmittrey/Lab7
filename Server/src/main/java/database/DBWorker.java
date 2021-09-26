@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
-
+// TODO: 26/09/2021 Переделать считывание даты из дб 
 /**
  * Class to work with database
  */

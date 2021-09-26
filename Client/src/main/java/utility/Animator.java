@@ -35,6 +35,7 @@ public class Animator {
             if (aResponse.getCount() != null) {
                 sb.append(aResponse.getCount());
             }
+            if (sb.toString().equals("\n")) return TextFormatting.getGreenText("\n\tAction processed successful!\n");
         } else {
             switch (aResponse.getStatus()) {
                 case OBJECTNOTEXIST:
@@ -48,8 +49,6 @@ public class Animator {
                     return TextFormatting.getRedText("\n\tStudy group isn't min!\n");
                 case PERMISSIONDENIED:
                     return TextFormatting.getRedText("\n\tPermission denied!\n");
-                case SUCCESSFUL:
-                    return TextFormatting.getGreenText("\n\tAction processed successful!\n");
                 case SQLPROBLEM:
                     return TextFormatting.getRedText("\n\tSome problem's with database on server!\n");
                 case EMPTYCOLLECTION:

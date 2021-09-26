@@ -40,7 +40,7 @@ public class Command implements Serializable {
     @Override
     public String toString() {
         return commandName + " "
-                + (argName != null ? argName : "")
+                + (argName != null ? argName + "\n" : "\n")
                 + (studyGroup != null ? studyGroup : "");
     }
 

@@ -35,6 +35,6 @@ public class Session implements Serializable {
 
     @Override
     public String toString(){
-        return "username: " + name + ", password: " + password;
+        return "username: " + name;
     }
 }

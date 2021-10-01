@@ -28,7 +28,7 @@ public class Help extends CommandAbstract {
         Map<String, String> mapOfCommands = commands.keySet()
                 .stream()
                 .filter(str -> !(str.equals("register") || str.equals("login")))
-                .collect(Collectors.toMap(command -> command, command -> commands.get(command).getDescription()));
+                .collect(Collectors.toConcurrentMap(command -> command, command -> commands.get(command).getDescription()));
         mapOfCommands.put("execute_script", "Read and execute script from entered file");
         mapOfCommands.put("exit", "end the program");
         receiver.addToHistory(username, "help");

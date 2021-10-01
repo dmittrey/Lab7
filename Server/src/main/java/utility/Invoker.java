@@ -28,10 +28,9 @@ public class Invoker {
 
     public Response execute(Request aRequest) {
         String aCommand = aRequest.getCommand().getCommand();
-        TypeOfSession typeOfSession = aRequest.getSession().getTypeOfSession();
         String username = aRequest.getSession().getName();
         String password = aRequest.getSession().getPassword();
-        if (typeOfSession.equals(TypeOfSession.Register) ^ receiver.loginUser(username, password)) {
+        if (aCommand.equals("register") || receiver.loginUser(username, password)) {
             return commands.get(aCommand).execute(aRequest);
         } else return new Response(TypeOfAnswer.NOTMATCH);
     }

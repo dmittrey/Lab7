@@ -11,7 +11,7 @@ public class MinByStudentsCount extends CommandAbstract {
     private final Receiver receiver;
 
     public MinByStudentsCount(Receiver aReceiver) {
-        super("min_by_students_count", "print any object from the collection whose " +
+        super("min_by_students_count", "print object from the collection whose " +
                 "studentsCount field value is minimal");
         receiver = aReceiver;
     }

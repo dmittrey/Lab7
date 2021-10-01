@@ -48,7 +48,7 @@ public class DBConnector {
 //import java.sql.SQLException;
 //import java.util.Properties;
 //
-//public class DatabaseConnector {
+//public class DBConnector {
 //    private String DB_BASE;
 //    private String DB_NAME;
 //    private int DB_PORT;
@@ -64,7 +64,7 @@ public class DBConnector {
 //    private int FORWARDING_PORT;
 //
 //
-//    public DatabaseConnector() {
+//    public DBConnector() {
 //        try {
 //            this.DB_PORT = Integer.parseInt(System.getenv("DB_PORT"));//5432
 //            this.DB_HOST = System.getenv("DB_HOST");// pg
@@ -99,7 +99,7 @@ public class DBConnector {
 //        }
 //    }
 //
-//    public Connection makeConnection() {
+//    public Connection connect() {
 //        try {
 //            Class.forName("org.postgresql.Driver");
 //            return DriverManager.getConnection(DB_BASE + "localhost:" + FORWARDING_PORT + "/" + DB_NAME, SV_LOGIN, SV_PASS);

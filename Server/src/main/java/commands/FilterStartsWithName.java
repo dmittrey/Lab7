@@ -24,6 +24,8 @@ public class FilterStartsWithName extends CommandAbstract {
         Set<StudyGroup> setOfGroups = receiver.filterStartsWithName(startName, username);
         return (setOfGroups == null)
                 ? new Response(TypeOfAnswer.EMPTYCOLLECTION)
-                : new Response(setOfGroups, TypeOfAnswer.SUCCESSFUL);
+                : (setOfGroups.size() == 0)
+                    ? new Response(TypeOfAnswer.OBJECTNOTEXIST)
+                    : new Response(setOfGroups, TypeOfAnswer.SUCCESSFUL);
     }
 }

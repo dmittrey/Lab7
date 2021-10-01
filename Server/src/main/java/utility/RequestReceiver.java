@@ -15,7 +15,7 @@ import java.util.concurrent.ForkJoinPool;
 /**
  * Class that receiving requests
  */
-public class RequestReceiver extends Thread {
+public class RequestReceiver implements Runnable {
 
     private final DatagramPacket datagramPacket;
     private final DatagramSocket datagramSocket;

@@ -1,8 +1,10 @@
 package commands;
 
 import data.StudyGroup;
+import utility.Receiver;
+import utility.Request;
+import utility.Response;
 import utility.TypeOfAnswer;
-import utility.*;
 
 import java.util.Set;
 
@@ -14,7 +16,7 @@ public class Show extends CommandAbstract {
     private final Receiver receiver;
 
     public Show(Receiver aReceiver) {
-        super("show", "print all elements in string representation to standard output");
+        super("print all elements in string representation to standard output");
         receiver = aReceiver;
     }
 

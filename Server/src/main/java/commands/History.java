@@ -5,13 +5,9 @@ import utility.Request;
 import utility.Response;
 import utility.TypeOfAnswer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 /**
  * Class for displaying last 14 commands
@@ -21,7 +17,7 @@ public class History extends CommandAbstract {
     private final Receiver receiver;
 
     public History(Receiver aReceiver) {
-        super("history", "print the last 14 commands (without their arguments)");
+        super("print the last 14 commands (without their arguments)");
         receiver = aReceiver;
     }
 

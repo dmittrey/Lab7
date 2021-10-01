@@ -1,6 +1,9 @@
 package commands;
 
-import utility.*;
+import utility.Receiver;
+import utility.Request;
+import utility.Response;
+import utility.TypeOfAnswer;
 
 /**
  * Class for displaying all information about collection
@@ -10,7 +13,7 @@ public class Info extends CommandAbstract {
     private final Receiver receiver;
 
     public Info(Receiver aReceiver) {
-        super("info", "Print information about the collection (type, "
+        super("Print information about the collection (type, "
                 + "initialization date, number of elements, etc.) to standard output");
         receiver = aReceiver;
     }

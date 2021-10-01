@@ -1,7 +1,10 @@
 package commands;
 
 import data.StudyGroup;
-import utility.*;
+import utility.Receiver;
+import utility.Request;
+import utility.Response;
+import utility.TypeOfAnswer;
 
 import java.util.Set;
 
@@ -13,7 +16,7 @@ public class FilterStartsWithName extends CommandAbstract {
     private final Receiver receiver;
 
     public FilterStartsWithName(Receiver aReceiver) {
-        super("filter_starts_with_name", "output elements whose name field value starts " +
+        super("output elements whose name field value starts " +
                 "with the specified substring");
         receiver = aReceiver;
     }
@@ -25,7 +28,7 @@ public class FilterStartsWithName extends CommandAbstract {
         return (setOfGroups == null)
                 ? new Response(TypeOfAnswer.EMPTYCOLLECTION)
                 : (setOfGroups.size() == 0)
-                    ? new Response(TypeOfAnswer.OBJECTNOTEXIST)
-                    : new Response(setOfGroups, TypeOfAnswer.SUCCESSFUL);
+                ? new Response(TypeOfAnswer.OBJECTNOTEXIST)
+                : new Response(setOfGroups, TypeOfAnswer.SUCCESSFUL);
     }
 }

@@ -1,10 +1,11 @@
 package commands;
 
-import utility.*;
+import utility.Receiver;
+import utility.Request;
+import utility.Response;
+import utility.TypeOfAnswer;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -16,7 +17,7 @@ public class Help extends CommandAbstract {
     private final Receiver receiver;
 
     public Help(Map<String, CommandAbstract> aCommands, Receiver aReceiver) {
-        super("help", "display help for available commands");
+        super("display help for available commands");
         commands = aCommands;
         receiver = aReceiver;
     }

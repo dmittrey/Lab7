@@ -8,17 +8,14 @@ import utility.Response;
  */
 public abstract class CommandAbstract implements CommandInterface {
 
-    private final String name;
     private final String description;
 
     /**
      * Class constructor
      *
-     * @param aName        - Command's name
      * @param aDescription - Command's description
      */
-    public CommandAbstract(String aName, String aDescription) {
-        name = aName;
+    public CommandAbstract(String aDescription) {
         description = aDescription;
     }
 

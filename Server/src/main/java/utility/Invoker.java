@@ -1,8 +1,6 @@
 package utility;
 
 import commands.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -13,8 +11,6 @@ public class Invoker {
 
     private final Map<String, CommandAbstract> commands;
     private final Receiver receiver;
-    public static final Logger logger = LoggerFactory.getLogger("Invoker");
-
 
     public Invoker(Receiver aReceiver) {
         commands = new HashMap<>();

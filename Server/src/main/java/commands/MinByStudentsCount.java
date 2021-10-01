@@ -1,7 +1,10 @@
 package commands;
 
 import data.StudyGroup;
-import utility.*;
+import utility.Receiver;
+import utility.Request;
+import utility.Response;
+import utility.TypeOfAnswer;
 
 /**
  * Class print object form collection
@@ -11,7 +14,7 @@ public class MinByStudentsCount extends CommandAbstract {
     private final Receiver receiver;
 
     public MinByStudentsCount(Receiver aReceiver) {
-        super("min_by_students_count", "print object from the collection whose " +
+        super("print object from the collection whose " +
                 "studentsCount field value is minimal");
         receiver = aReceiver;
     }

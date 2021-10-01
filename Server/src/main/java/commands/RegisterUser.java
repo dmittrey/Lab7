@@ -1,13 +1,16 @@
 package commands;
 
-import utility.*;
+import utility.Receiver;
+import utility.Request;
+import utility.Response;
+import utility.TypeOfAnswer;
 
 public class RegisterUser extends CommandAbstract {
 
     private final Receiver receiver;
 
     public RegisterUser(Receiver aReceiver) {
-        super("register", "add new user to system");
+        super("add new user to system");
         receiver = aReceiver;
     }
 

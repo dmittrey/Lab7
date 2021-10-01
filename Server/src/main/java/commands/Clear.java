@@ -1,6 +1,8 @@
 package commands;
 
-import utility.*;
+import utility.Receiver;
+import utility.Request;
+import utility.Response;
 
 /**
  * Class for remove all elements from collection
@@ -10,7 +12,7 @@ public class Clear extends CommandAbstract {
     private final Receiver receiver;
 
     public Clear(Receiver aReceiver) {
-        super("clear", "clear the collection");
+        super("clear the collection");
         receiver = aReceiver;
     }
 

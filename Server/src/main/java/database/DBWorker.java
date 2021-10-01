@@ -183,7 +183,7 @@ public class DBWorker {
     }
 
     private byte[] getHash(String str) {
-        return  (str == null)
+        return (str == null)
                 ? digest.digest("null".getBytes(StandardCharsets.UTF_8))
                 : digest.digest(str.getBytes(StandardCharsets.UTF_8));
     }

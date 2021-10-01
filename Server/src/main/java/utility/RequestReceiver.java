@@ -32,11 +32,10 @@ public class RequestReceiver implements Runnable {
 
     @Override
     public void run() {
-
         try {
             ObjectInputStream inObj = new ObjectInputStream(new ByteArrayInputStream(datagramPacket.getData()));
             Request request = AutoGenFieldsSetter.setFields((Request) inObj.readObject());
-            logger.info("Server received command: " + request.toString());
+            logger.info("Server received command: {}", request);
 
             requestHandler.process(request, datagramSocket, datagramPacket.getSocketAddress());
         } catch (ClassNotFoundException e) {

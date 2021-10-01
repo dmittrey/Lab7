@@ -27,7 +27,7 @@ public class Main {
         try (Scanner scanner = new Scanner(System.in);
              DatagramSocket datagramSocket = getDatagramSocket(scanner)) {
 
-            logger.info("Server listening port " + datagramSocket.getLocalPort() + "!");
+            logger.info("Server listening port {} !", datagramSocket.getLocalPort());
 
             CollectionManager collectionManager = new CollectionManager();
             DBWorker dbWorker = connectToDB();
@@ -45,7 +45,8 @@ public class Main {
                 datagramSocket.receive(packet);
                 RequestReceiver requestReceiver = new RequestReceiver(datagramSocket, packet,
                         new Invoker(receiver), deliverManager, forkJoinPool);
-                requestReceiver.start();
+                Thread t = new Thread(requestReceiver);
+                t.start();
             }
         } catch (IOException e) {
             logger.info("Some problem's with network!");
@@ -59,7 +60,7 @@ public class Main {
             db = new DBConnector().connect();
             if (db == null) return null;
         } catch (SQLException e) {
-            System.out.println("Connection establishing problems");
+            logger.warn("Connection establishing problems");
             return null;
         }
 
@@ -83,7 +84,6 @@ public class Main {
     }
 
     private static int getPort(Scanner scanner) {
-
         String arg;
         Pattern remoteHostPortPattern = Pattern.compile("^\\s*\\b(\\d{1,5})\\b\\s*");
 
@@ -102,7 +102,7 @@ public class Main {
             try {
                 return new DatagramSocket(getPort(scanner));
             } catch (SocketException ignored) {
-                System.out.println(TextFormatting.getRedText("\tSocket could not bind to the specified local port!"));
+                logger.warn("Socket could not bind to the specified local port!");
             }
         }
     }

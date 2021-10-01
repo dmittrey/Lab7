@@ -1,6 +1,9 @@
 package commands;
 
-import utility.*;
+import utility.Receiver;
+import utility.Request;
+import utility.Response;
+import utility.TypeOfAnswer;
 
 /**
  * Class for count elements whose less than specified amount of students count
@@ -10,7 +13,7 @@ public class CountLessThanStudentsCount extends CommandAbstract {
     private final Receiver receiver;
 
     public CountLessThanStudentsCount(Receiver aReceiver) {
-        super("count_less_than_students_count", "print the number of elements whose "
+        super("print the number of elements whose "
                 + "studentsCount field value is less than the specified one");
         receiver = aReceiver;
     }

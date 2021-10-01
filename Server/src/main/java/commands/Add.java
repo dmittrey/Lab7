@@ -1,7 +1,9 @@
 package commands;
 
 import data.StudyGroup;
-import utility.*;
+import utility.Receiver;
+import utility.Request;
+import utility.Response;
 
 /**
  * Class for add studyGroup in db and collection
@@ -11,7 +13,7 @@ public class Add extends CommandAbstract {
     private final Receiver receiver;
 
     public Add(Receiver aReceiver) {
-        super("add", "add new element to the collection");
+        super("add new element to the collection");
         receiver = aReceiver;
     }
 

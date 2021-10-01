@@ -1,6 +1,8 @@
 package commands;
 
-import utility.*;
+import utility.Receiver;
+import utility.Request;
+import utility.Response;
 
 /**
  * Class that remove object with current id from collection
@@ -10,7 +12,7 @@ public class RemoveById extends CommandAbstract {
     private final Receiver receiver;
 
     public RemoveById(Receiver aReceiver) {
-        super("remove_by_id", "remove an element from the collection by ID");
+        super("remove an element from the collection by ID");
         receiver = aReceiver;
     }
 

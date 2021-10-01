@@ -1,7 +1,10 @@
 package commands;
 
 import data.StudyGroup;
-import utility.*;
+import utility.Receiver;
+import utility.Request;
+import utility.Response;
+import utility.TypeOfAnswer;
 
 /**
  * Class for add maximum element in collection
@@ -11,7 +14,7 @@ public class AddIfMax extends CommandAbstract {
     private final Receiver receiver;
 
     public AddIfMax(Receiver aReceiver) {
-        super("add_if_max", "add new element to the collection, if it`s greater, " +
+        super("add new element to the collection, if it`s greater, " +
                 "than biggest element of this collection");
         receiver = aReceiver;
     }

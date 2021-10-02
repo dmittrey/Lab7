@@ -1,6 +1,8 @@
 package database;
 
 import data.StudyGroup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import utility.TypeOfAnswer;
 
 import java.nio.charset.StandardCharsets;
@@ -12,8 +14,10 @@ import java.sql.*;
  * Class to work with database
  */
 public class DBWorker {
+
     private final Connection db;
     private final MessageDigest digest;
+    public static final Logger logger = LoggerFactory.getLogger("Receiver");
 
     public DBWorker(Connection connection) throws NoSuchAlgorithmException {
         db = connection;
@@ -25,6 +29,7 @@ public class DBWorker {
             PreparedStatement preparedStatement = db.prepareStatement(Statements.takeAll.getStatement());
             return preparedStatement.executeQuery();
         } catch (SQLException throwables) {
+            logger.warn("SQL problem with taking all collection!");
             return null;
         }
     }
@@ -36,6 +41,7 @@ public class DBWorker {
             preparedStatement.executeUpdate();
             return (newId == null) ? 0 : newId;
         } catch (SQLException throwables) {
+            logger.warn("SQL problem with adding new element!");
             return 0;
         }
     }
@@ -50,6 +56,7 @@ public class DBWorker {
             preparedStatement.executeUpdate();
             return TypeOfAnswer.SUCCESSFUL;
         } catch (SQLException throwables) {
+            logger.warn("SQL problem with updating element !");
             return TypeOfAnswer.SQLPROBLEM;
         }
     }
@@ -64,22 +71,29 @@ public class DBWorker {
             preparedStatement.executeUpdate();
             return TypeOfAnswer.SUCCESSFUL;
         } catch (SQLException throwables) {
+            logger.warn("SQL problem with removing element!");
             return TypeOfAnswer.SQLPROBLEM;
         }
     }
 
-    public TypeOfAnswer getById(int anId, String anUsername) throws SQLException {
-        PreparedStatement preparedStatement = db.prepareStatement(Statements.getById.getStatement());
-        preparedStatement.setInt(1, anId);
-        ResultSet deletingStudyGroup = preparedStatement.executeQuery();
+    public TypeOfAnswer getById(int anId, String anUsername) {
+        PreparedStatement preparedStatement;
+        try {
+            preparedStatement = db.prepareStatement(Statements.getById.getStatement());
+            preparedStatement.setInt(1, anId);
+            ResultSet deletingStudyGroup = preparedStatement.executeQuery();
 
-        if (!deletingStudyGroup.next())
-            return TypeOfAnswer.OBJECTNOTEXIST;
+            if (!deletingStudyGroup.next())
+                return TypeOfAnswer.OBJECTNOTEXIST;
 
-        if (!deletingStudyGroup.getString("author").equals(anUsername))
-            return TypeOfAnswer.PERMISSIONDENIED;
+            if (!deletingStudyGroup.getString("author").equals(anUsername))
+                return TypeOfAnswer.PERMISSIONDENIED;
 
-        return TypeOfAnswer.SUCCESSFUL;
+            return TypeOfAnswer.SUCCESSFUL;
+        } catch (SQLException throwables) {
+            logger.warn("SQL problem with getting element!");
+            return TypeOfAnswer.SQLPROBLEM;
+        }
     }
 
     public TypeOfAnswer clear(String username) {
@@ -89,6 +103,7 @@ public class DBWorker {
             preparedStatement.executeUpdate();
             return TypeOfAnswer.SUCCESSFUL;
         } catch (SQLException throwables) {
+            logger.warn("SQL problem with removing elements!");
             return TypeOfAnswer.SQLPROBLEM;
         }
     }
@@ -101,6 +116,7 @@ public class DBWorker {
             insertStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
+            logger.warn("SQL problem with adding user!");
             return false;
         }
     }
@@ -113,6 +129,7 @@ public class DBWorker {
             ResultSet user = checkStatement.executeQuery();
             return user.next();
         } catch (SQLException e) {
+            logger.warn("SQL problem with logging user!");
             return false;
         }
     }
@@ -126,6 +143,7 @@ public class DBWorker {
             }
             return null;
         } catch (SQLException throwables) {
+            logger.warn("SQL problem with generating id!");
             return null;
         }
     }

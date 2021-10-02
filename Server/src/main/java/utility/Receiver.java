@@ -2,6 +2,8 @@ package utility;
 
 import database.DBWorker;
 import data.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,6 +23,7 @@ public class Receiver {
     private final CollectionManager collectionManager;
     private final DBWorker dbWorker;
     private final Map<String, ArrayBlockingQueue<String>> previousCommands;
+    public static final Logger logger = LoggerFactory.getLogger("Receiver");
 
     public Receiver(CollectionManager aCollectionManager, DBWorker aDBWorker) {
         collectionManager = aCollectionManager;
@@ -49,6 +52,7 @@ public class Receiver {
                         data.getString(13)));
             }
         } catch (SQLException ignored) {
+
         }
     }
 

@@ -17,7 +17,7 @@ public class Help extends CommandAbstract {
     private final Receiver receiver;
 
     public Help(Map<String, CommandAbstract> aCommands, Receiver aReceiver) {
-        super("display help for available commands");
+        super("display help for available commands", false);
         commands = aCommands;
         receiver = aReceiver;
     }

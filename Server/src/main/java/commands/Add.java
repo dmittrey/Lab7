@@ -13,7 +13,7 @@ public class Add extends CommandAbstract {
     private final Receiver receiver;
 
     public Add(Receiver aReceiver) {
-        super("add new element to the collection");
+        super("add new element to the collection", true);
         receiver = aReceiver;
     }
 

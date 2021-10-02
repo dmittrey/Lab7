@@ -57,12 +57,12 @@ public class Response implements Serializable {
         return status;
     }
 
-    public Long getCount(){
+    public Long getCount() {
         return count;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return information + "\n" +
                 setOfStudyGroups + "\n" +
                 status + "\n" +

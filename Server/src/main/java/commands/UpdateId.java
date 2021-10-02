@@ -13,7 +13,7 @@ public class UpdateId extends CommandAbstract {
     private final Receiver receiver;
 
     public UpdateId(Receiver aReceiver) {
-        super("update the element`s value, whose ID is equal to the given");
+        super("update the element`s value, whose ID is equal to the given", true);
         receiver = aReceiver;
     }
 

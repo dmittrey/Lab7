@@ -17,7 +17,7 @@ public class History extends CommandAbstract {
     private final Receiver receiver;
 
     public History(Receiver aReceiver) {
-        super("print the last 14 commands (without their arguments)");
+        super("print the last 14 commands (without their arguments)", true);
         receiver = aReceiver;
     }
 

@@ -14,7 +14,7 @@ public class Info extends CommandAbstract {
 
     public Info(Receiver aReceiver) {
         super("Print information about the collection (type, "
-                + "initialization date, number of elements, etc.) to standard output");
+                + "initialization date, number of elements, etc.) to standard output", false);
         receiver = aReceiver;
     }
 

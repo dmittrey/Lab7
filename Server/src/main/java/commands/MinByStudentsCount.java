@@ -15,7 +15,7 @@ public class MinByStudentsCount extends CommandAbstract {
 
     public MinByStudentsCount(Receiver aReceiver) {
         super("print object from the collection whose " +
-                "studentsCount field value is minimal");
+                "studentsCount field value is minimal", false);
         receiver = aReceiver;
     }
 

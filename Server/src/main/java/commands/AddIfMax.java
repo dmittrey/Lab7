@@ -15,7 +15,7 @@ public class AddIfMax extends CommandAbstract {
 
     public AddIfMax(Receiver aReceiver) {
         super("add new element to the collection, if it`s greater, " +
-                "than biggest element of this collection");
+                "than biggest element of this collection", true);
         receiver = aReceiver;
     }
 

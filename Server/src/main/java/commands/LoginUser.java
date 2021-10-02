@@ -10,7 +10,7 @@ public class LoginUser extends CommandAbstract {
     private final Receiver receiver;
 
     public LoginUser(Receiver aReceiver) {
-        super("add new user to system");
+        super("add new user to system", true);
         receiver = aReceiver;
     }
 

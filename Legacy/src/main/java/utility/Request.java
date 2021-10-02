@@ -11,7 +11,6 @@ public class Request implements Serializable {
     private final Session session;
 
     public Request(Command aCommand, Session aSession) {
-
         command = aCommand;
         session = aSession;
     }

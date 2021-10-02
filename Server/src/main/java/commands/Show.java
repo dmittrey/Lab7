@@ -16,7 +16,7 @@ public class Show extends CommandAbstract {
     private final Receiver receiver;
 
     public Show(Receiver aReceiver) {
-        super("print all elements in string representation to standard output");
+        super("print all elements in string representation to standard output", false);
         receiver = aReceiver;
     }
 

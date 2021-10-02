@@ -12,7 +12,7 @@ public class RemoveById extends CommandAbstract {
     private final Receiver receiver;
 
     public RemoveById(Receiver aReceiver) {
-        super("remove an element from the collection by ID");
+        super("remove an element from the collection by ID", true);
         receiver = aReceiver;
     }
 

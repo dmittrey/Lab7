@@ -9,14 +9,16 @@ import utility.Response;
 public abstract class CommandAbstract implements CommandInterface {
 
     private final String description;
+    private final boolean isRequiredAuthorization;
 
     /**
      * Class constructor
      *
      * @param aDescription - Command's description
      */
-    public CommandAbstract(String aDescription) {
+    public CommandAbstract(String aDescription, boolean anIsRequiredAuthorization) {
         description = aDescription;
+        isRequiredAuthorization = anIsRequiredAuthorization;
     }
 
     /**
@@ -27,6 +29,16 @@ public abstract class CommandAbstract implements CommandInterface {
     @Override
     public String getDescription() {
         return description;
+    }
+
+    /**
+     * Method to determine authorization status
+     *
+     * @return booleans status
+     */
+    @Override
+    public boolean getAuthorizationStatus() {
+        return isRequiredAuthorization;
     }
 
     /**

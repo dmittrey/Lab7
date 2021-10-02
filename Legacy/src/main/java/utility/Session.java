@@ -11,21 +11,21 @@ public class Session implements Serializable {
     private final String password;
     private TypeOfSession typeOfSession;
 
-    public Session (String aName, String aPassword, TypeOfSession aTypeOfSession) {
+    public Session(String aName, String aPassword, TypeOfSession aTypeOfSession) {
         name = aName;
         password = (aPassword.trim().equals("")) ? null : aPassword;
         typeOfSession = aTypeOfSession;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public String getPassword(){
+    public String getPassword() {
         return password;
     }
 
-    public TypeOfSession getTypeOfSession(){
+    public TypeOfSession getTypeOfSession() {
         return typeOfSession;
     }
 
@@ -34,7 +34,7 @@ public class Session implements Serializable {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "username: " + name;
     }
 }

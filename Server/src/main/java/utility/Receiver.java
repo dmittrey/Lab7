@@ -125,12 +125,9 @@ public class Receiver {
 
     public void addToHistory(String anUsername, String aCommand) {
         ArrayBlockingQueue<String> previousUserCommands = previousCommands.get(anUsername);
-        if (previousUserCommands != null) {
+        if (previousCommands.putIfAbsent(anUsername, new ArrayBlockingQueue<>(14)) != null) {
             if (previousUserCommands.size() == 14) previousUserCommands.poll();
             previousUserCommands.offer(aCommand);
-        } else {
-            previousCommands.put(anUsername, new ArrayBlockingQueue<>(14));
-            this.addToHistory(anUsername, aCommand);
         }
     }
 

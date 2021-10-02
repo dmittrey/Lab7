@@ -14,7 +14,7 @@ public class CountLessThanStudentsCount extends CommandAbstract {
 
     public CountLessThanStudentsCount(Receiver aReceiver) {
         super("print the number of elements whose "
-                + "studentsCount field value is less than the specified one");
+                + "studentsCount field value is less than the specified one", false);
         receiver = aReceiver;
     }
 

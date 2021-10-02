@@ -15,7 +15,7 @@ public class AddIfMin extends CommandAbstract {
 
     public AddIfMin(Receiver aReceiver) {
         super("add new element to the collection, if it`s value less, than " +
-                "smallest element of this collection");
+                "smallest element of this collection", true);
         receiver = aReceiver;
     }
 

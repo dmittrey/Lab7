@@ -17,7 +17,7 @@ public class FilterStartsWithName extends CommandAbstract {
 
     public FilterStartsWithName(Receiver aReceiver) {
         super("output elements whose name field value starts " +
-                "with the specified substring");
+                "with the specified substring", false);
         receiver = aReceiver;
     }
 

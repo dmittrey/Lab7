@@ -12,7 +12,7 @@ public class Clear extends CommandAbstract {
     private final Receiver receiver;
 
     public Clear(Receiver aReceiver) {
-        super("clear the collection");
+        super("clear the collection", true);
         receiver = aReceiver;
     }
 

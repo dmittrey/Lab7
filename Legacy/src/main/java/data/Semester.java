@@ -31,15 +31,14 @@ public enum Semester implements Serializable {
 
     public static boolean isIncludeElement(String aSemester) {
 
-        return Arrays.stream(Semester.values()).anyMatch(semester -> {
-                    return aSemester.equals(semester.getStringInLowerCaseRepresentation()) ||
-                            aSemester.equals(semester.getStringInUpperCaseRepresentation());
-                }
+        return Arrays.stream(Semester.values()).anyMatch(semester ->
+                aSemester.equals(semester.getStringInLowerCaseRepresentation()) ||
+                        aSemester.equals(semester.getStringInUpperCaseRepresentation())
         );
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return getStringInUpperCaseRepresentation();
     }
 }

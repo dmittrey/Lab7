@@ -26,9 +26,10 @@ public class Invoker {
         String aCommand = aRequest.getCommand().getCommand();
         String username = aRequest.getSession().getName();
         String password = aRequest.getSession().getPassword();
-        if (aCommand.equals("register") || receiver.loginUser(username, password)) {
-            return commands.get(aCommand).execute(aRequest);
-        } else return new Response(TypeOfAnswer.NOTMATCH);
+        return (!commands.get(aCommand).getAuthorizationStatus()) ? commands.get(aCommand).execute(aRequest)
+                : (aCommand.equals("register") || receiver.loginUser(username, password))
+                    ? commands.get(aCommand).execute(aRequest)
+                    : new Response(TypeOfAnswer.NOTMATCH);
     }
 
     private void initMap() {

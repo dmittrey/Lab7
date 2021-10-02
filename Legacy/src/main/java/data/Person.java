@@ -7,9 +7,9 @@ import java.util.Objects;
  * Class for study group admin
  */
 public class Person implements Serializable {
-    private String name;
-    private Long weight;
-    private Color hairColor;
+    private final String name;
+    private final Long weight;
+    private final Color hairColor;
 
     /**
      * Class constructor

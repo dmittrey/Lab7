@@ -14,13 +14,13 @@ public class StudyGroup implements Comparable<StudyGroup>, Serializable {
 
     private Integer id;
     private String name;
-    private Coordinates coordinates;
+    private final Coordinates coordinates;
     private Date creationDate;
-    private Integer studentsCount;
-    private Double averageMark;
-    private data.FormOfEducation formOfEducation;
-    private data.Semester semesterEnum;
-    private data.Person groupAdmin;
+    private final Integer studentsCount;
+    private final Double averageMark;
+    private final data.FormOfEducation formOfEducation;
+    private final data.Semester semesterEnum;
+    private final data.Person groupAdmin;
     private String author;
 
     /**
@@ -56,15 +56,15 @@ public class StudyGroup implements Comparable<StudyGroup>, Serializable {
                       Double aAverageMark, data.FormOfEducation aFormOfEducation, data.Semester aSemesterEnum,
                       data.Person aGroupAdmin, String anAuthor) {
         id = aId;
-        name = aName;//String
-        coordinates = aCoordinates;// Integer, Double
-        creationDate = aCreationDate; //Date
-        studentsCount = aStudentsCount; // Integer
-        averageMark = aAverageMark;//Double null
-        formOfEducation = aFormOfEducation;//String null
-        semesterEnum = aSemesterEnum;//String
-        groupAdmin = aGroupAdmin;//String, Long, String
-        author = anAuthor;//String
+        name = aName;
+        coordinates = aCoordinates;
+        creationDate = aCreationDate;
+        studentsCount = aStudentsCount;
+        averageMark = aAverageMark;
+        formOfEducation = aFormOfEducation;
+        semesterEnum = aSemesterEnum;
+        groupAdmin = aGroupAdmin;
+        author = anAuthor;
     }
 
     public StudyGroup setId(Integer anId) {

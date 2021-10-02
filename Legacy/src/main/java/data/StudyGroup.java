@@ -80,7 +80,7 @@ public class StudyGroup implements Comparable<StudyGroup>, Serializable {
         creationDate = aCreationDate;
     }
 
-    public void setAuthor(String anAuthor){
+    public void setAuthor(String anAuthor) {
         author = anAuthor;
     }
 
@@ -120,7 +120,7 @@ public class StudyGroup implements Comparable<StudyGroup>, Serializable {
         return groupAdmin;
     }
 
-    public String getAuthor(){
+    public String getAuthor() {
         return author;
     }
 
@@ -173,8 +173,7 @@ public class StudyGroup implements Comparable<StudyGroup>, Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, coordinates, studentsCount, averageMark, formOfEducation, semesterEnum, groupAdmin,
-                author);
+        return Objects.hash(name, coordinates, studentsCount, averageMark, formOfEducation, semesterEnum, groupAdmin);
     }
 
     @Override
@@ -193,9 +192,6 @@ public class StudyGroup implements Comparable<StudyGroup>, Serializable {
         if (((this.getFormOfEducation() == null) && (other.getFormOfEducation() != null))
                 || ((this.getFormOfEducation() != null) && (other.getFormOfEducation() == null))) return false;
 
-        if (((this.getAuthor() == null) && (other.getAuthor() != null))
-                || ((this.getAuthor() != null) && (other.getAuthor() == null))) return false;
-
 
         return (this.getName().equals(other.getName())
                 && this.getCoordinates().getX().equals(other.getCoordinates().getX())
@@ -208,7 +204,6 @@ public class StudyGroup implements Comparable<StudyGroup>, Serializable {
                 && this.getSemesterEnum().equals(other.getSemesterEnum())
                 && this.getGroupAdmin().getName().equals(other.getGroupAdmin().getName())
                 && this.getGroupAdmin().getWeight().equals(other.getGroupAdmin().getWeight())
-                && this.getGroupAdmin().getHairColor().equals(other.getGroupAdmin().getHairColor())
-                && this.getAuthor().equals(other.getAuthor()));
+                && this.getGroupAdmin().getHairColor().equals(other.getGroupAdmin().getHairColor()));
     }
 }
